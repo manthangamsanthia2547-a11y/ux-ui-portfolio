@@ -347,6 +347,7 @@ const HIGHLIGHTS = {
     "Understanding of Agile and Scrum methodology through academic project work.",
     "Able to work independently, communicate effectively, and collaborate with a team.",
   ],
+
   TH: [
     "มีประสบการณ์ใช้ Figma ในการออกแบบ UI, Wireframe และ Interactive Prototype",
     "มีความเข้าใจเกี่ยวกับ User-Centered Design (UCD), User Flow และ Design System เบื้องต้น",
@@ -367,6 +368,7 @@ const TRAINING = [
     org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
     date: "December 17, 2025",
   },
+
   {
     title: "Workshop on Document Formatting and Academic Citation",
     org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
@@ -503,7 +505,7 @@ function Nav({
               backdropFilter: "blur(12px)",
               borderColor: "#E8DDD4",
             }
-          : {}
+          : undefined
       }
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between">
@@ -540,7 +542,6 @@ function Nav({
             </a>
           ))}
 
-          {/* Language Button */}
           <button
             onClick={() =>
               setLanguage(language === "EN" ? "TH" : "EN")
@@ -553,17 +554,11 @@ function Nav({
               ...mono,
             }}
             aria-label="Change language"
-            title={
-              language === "EN"
-                ? "เปลี่ยนเป็นภาษาไทย"
-                : "Switch to English"
-            }
           >
             <Globe size={14} />
             {language}
           </button>
 
-          {/* Theme Button */}
           <div className="relative">
             <button
               onClick={() => setShowThemes(!showThemes)}
@@ -612,7 +607,6 @@ function Nav({
           </div>
         </div>
 
-        {/* Mobile Controls */}
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={() =>
@@ -1205,6 +1199,7 @@ function About({
             >
               {t.about.title1}
               <br />
+
               <span
                 className="italic font-semibold"
                 style={{
@@ -1698,7 +1693,8 @@ function Projects({
               "พัฒนาระบบค้นหา Filter Favorites Reading Progress และ Reading History",
               "เพิ่ม Dark/Light Mode เพื่อช่วยให้การอ่านสะดวกมากขึ้น",
             ],
-      liveDemo: "https://mangaverse-reading-platform.vercel.app/",
+      liveDemo:
+        "https://mangaverse-reading-platform.vercel.app/",
       github:
         "https://github.com/manthangamsanthia2547-a11y/mangaverse-reading-platform",
     },
@@ -1963,6 +1959,7 @@ function Education({
       location: "Nakhon Ratchasima, Thailand",
       accent: theme.color,
     },
+
     {
       school: "Thachangratbamroong School",
       degree: t.education.highSchoolDegree,
@@ -2234,6 +2231,7 @@ function Contact({
   ) => {
     try {
       await navigator.clipboard.writeText(text);
+
       setCopied(type);
 
       setTimeout(() => {
@@ -2249,35 +2247,21 @@ function Contact({
       icon: Mail,
       label: t.about.email,
       value: "manthangamsanthia2547@gmail.com",
-      copyable: true,
-      copyText: "manthangamsanthia2547@gmail.com",
       type: "email",
     },
+
     {
       icon: Phone,
       label: t.about.phone,
       value: "094-363-6445",
-      copyable: true,
-      copyText: "094-363-6445",
       type: "phone",
     },
+
     {
       icon: MapPin,
       label: t.about.location,
       value: "Nakhon Ratchasima 30230, Thailand",
-      copyable: true,
-      copyText: "Nakhon Ratchasima 30230, Thailand",
       type: "address",
-    },
-    {
-      icon: Github,
-      label: "GitHub",
-      value:
-        "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
-      href:
-        "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
-      copyable: false,
-      type: "github",
     },
   ];
 
@@ -2290,7 +2274,6 @@ function Contact({
       }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
           <SectionTag center theme={theme}>
             {t.contact.heading}
@@ -2316,7 +2299,6 @@ function Contact({
           </p>
         </div>
 
-        {/* Contact Information */}
         <motion.div
           initial={{
             opacity: 0,
@@ -2334,142 +2316,136 @@ function Contact({
           }}
           className="max-w-3xl mx-auto space-y-4"
         >
+          {/* Email / Phone / Address */}
           {contactInfo.map(
             ({
               icon: Icon,
               label,
               value,
-              href,
-              copyable,
-              copyText,
               type,
-            }) => {
-              // Copyable items
-              if (copyable) {
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() =>
-                      copyToClipboard(copyText!, type)
-                    }
-                    className="w-full flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200 text-left"
+            }) => (
+              <div
+                key={label}
+                className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
+              >
+                {/* Icon */}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: theme.light,
+                    border: `1px solid ${theme.border}`,
+                  }}
+                >
+                  <Icon
+                    size={18}
                     style={{
-                      borderColor: "#E8DDD4",
+                      color: theme.color,
                     }}
+                  />
+                </div>
+
+                {/* Text */}
+                <div className="flex-1 min-w-0">
+                  <div
+                    className="text-xs text-[#8B7B72] mb-1"
+                    style={mono}
                   >
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{
-                        background: theme.light,
-                        border: `1px solid ${theme.border}`,
-                      }}
-                    >
-                      <Icon
-                        size={18}
-                        style={{
-                          color: theme.color,
-                        }}
-                      />
-                    </div>
+                    {label}
+                  </div>
 
-                    <div className="flex-1 min-w-0">
-                      <div
-                        className="text-xs text-[#8B7B72] mb-1"
-                        style={mono}
-                      >
-                        {label}
-                      </div>
+                  <div className="text-base font-medium text-[#1A1614] break-all">
+                    {value}
+                  </div>
+                </div>
 
-                      <div className="flex items-center gap-2">
-                        <div className="text-base font-medium text-[#1A1614] break-all">
-                          {value}
-                        </div>
+                {/* Copy Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    copyToClipboard(value, type)
+                  }
+                  className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
+                  style={{
+                    background:
+                      copied === type
+                        ? "#DCFCE7"
+                        : theme.light,
 
-                        {copied === type ? (
-                          <Check
-                            size={17}
-                            className="flex-shrink-0"
-                            style={{
-                              color: theme.color,
-                            }}
-                          />
-                        ) : (
-                          <Copy
-                            size={17}
-                            className="flex-shrink-0"
-                            style={{
-                              color: "#8B7B72",
-                            }}
-                          />
-                        )}
-                      </div>
+                    color:
+                      copied === type
+                        ? "#16A34A"
+                        : theme.color,
 
-                      {copied === type && (
-                        <div
-                          className="text-xs mt-1.5 font-medium"
-                          style={{
-                            ...mono,
-                            color: theme.color,
-                          }}
-                        >
-                          {language === "TH"
-                            ? "คัดลอกแล้ว ✓"
-                            : "Copied ✓"}
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                );
-              }
+                    border: `1px solid ${
+                      copied === type
+                        ? "#BBF7D0"
+                        : theme.border
+                    }`,
+                  }}
+                >
+                  {copied === type ? (
+                    <>
+                      <Check size={14} />
 
-              // GitHub link
-              if (href) {
-                return (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
-                    style={{
-                      borderColor: "#E8DDD4",
-                    }}
-                  >
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{
-                        background: theme.light,
-                        border: `1px solid ${theme.border}`,
-                      }}
-                    >
-                      <Icon
-                        size={18}
-                        style={{
-                          color: theme.color,
-                        }}
-                      />
-                    </div>
+                      {language === "TH"
+                        ? "คัดลอกแล้ว"
+                        : "Copied"}
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={14} />
 
-                    <div>
-                      <div
-                        className="text-xs text-[#8B7B72] mb-1"
-                        style={mono}
-                      >
-                        {label}
-                      </div>
-
-                      <div className="text-base font-medium text-[#1A1614] break-all">
-                        {value}
-                      </div>
-                    </div>
-                  </a>
-                );
-              }
-
-              return null;
-            }
+                      {language === "TH"
+                        ? "คัดลอก"
+                        : "Copy"}
+                    </>
+                  )}
+                </button>
+              </div>
+            )
           )}
+
+          {/* GitHub */}
+          <a
+            href="https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
+            style={{
+              borderColor: "#E8DDD4",
+            }}
+          >
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{
+                background: theme.light,
+                border: `1px solid ${theme.border}`,
+              }}
+            >
+              <Github
+                size={18}
+                style={{
+                  color: theme.color,
+                }}
+              />
+            </div>
+
+            <div>
+              <div
+                className="text-xs text-[#8B7B72] mb-1"
+                style={mono}
+              >
+                GitHub
+              </div>
+
+              <div className="text-base font-medium text-[#1A1614] break-all">
+                github.com/manthangamsanthia2547-a11y/ux-ui-portfolio
+              </div>
+            </div>
+          </a>
 
           {/* Open to Opportunities */}
           <div
@@ -2558,10 +2534,12 @@ function Footer({
               href={href}
               className="text-sm text-[#8B7B72] transition-colors"
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = theme.color;
+                e.currentTarget.style.color =
+                  theme.color;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#8B7B72";
+                e.currentTarget.style.color =
+                  "#8B7B72";
               }}
             >
               {label}
@@ -2587,45 +2565,50 @@ function Footer({
 export default function App() {
   const [active, setActive] = useState("hero");
 
-  // Language
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === "undefined") {
-      return "EN";
-    }
-
-    const savedLanguage =
-      localStorage.getItem("portfolio-language");
-
-    return savedLanguage === "TH" ? "TH" : "EN";
-  });
-
-  // Theme
-  const [themeIndex, setThemeIndex] = useState(() => {
-    if (typeof window === "undefined") {
-      return 0;
-    }
-
-    const savedTheme =
-      localStorage.getItem("portfolio-theme");
-
-    if (savedTheme !== null) {
-      const parsedTheme = Number(savedTheme);
-
-      if (
-        Number.isInteger(parsedTheme) &&
-        parsedTheme >= 0 &&
-        parsedTheme < THEMES.length
-      ) {
-        return parsedTheme;
+  const [language, setLanguage] =
+    useState<Language>(() => {
+      if (typeof window === "undefined") {
+        return "EN";
       }
-    }
 
-    return 0;
-  });
+      const savedLanguage =
+        localStorage.getItem(
+          "portfolio-language"
+        );
+
+      return savedLanguage === "TH"
+        ? "TH"
+        : "EN";
+    });
+
+  const [themeIndex, setThemeIndex] =
+    useState(() => {
+      if (typeof window === "undefined") {
+        return 0;
+      }
+
+      const savedTheme =
+        localStorage.getItem(
+          "portfolio-theme"
+        );
+
+      if (savedTheme !== null) {
+        const parsedTheme = Number(savedTheme);
+
+        if (
+          Number.isInteger(parsedTheme) &&
+          parsedTheme >= 0 &&
+          parsedTheme < THEMES.length
+        ) {
+          return parsedTheme;
+        }
+      }
+
+      return 0;
+    });
 
   const theme = THEMES[themeIndex];
 
-  // Save selected language
   useEffect(() => {
     localStorage.setItem(
       "portfolio-language",
@@ -2633,7 +2616,6 @@ export default function App() {
     );
   }, [language]);
 
-  // Save selected theme
   useEffect(() => {
     localStorage.setItem(
       "portfolio-theme",
@@ -2641,22 +2623,23 @@ export default function App() {
     );
   }, [themeIndex]);
 
-  // Detect active section
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries.find(
-          (entry) => entry.isIntersecting
-        );
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          const visibleEntry =
+            entries.find(
+              (entry) => entry.isIntersecting
+            );
 
-        if (visibleEntry) {
-          setActive(visibleEntry.target.id);
+          if (visibleEntry) {
+            setActive(visibleEntry.target.id);
+          }
+        },
+        {
+          threshold: 0.3,
         }
-      },
-      {
-        threshold: 0.3,
-      }
-    );
+      );
 
     document
       .querySelectorAll("section[id]")
