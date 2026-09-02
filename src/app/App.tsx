@@ -96,17 +96,6 @@ const TRAINING = [
   },
 ];
 
-// ── Project Tags ─────────────────────────────────────────────────────────────
-
-const PROJECT_TAGS = [
-  "Figma",
-  "UX/UI Design",
-  "User Flow",
-  "Wireframing",
-  "Prototyping",
-  "Usability Testing",
-];
-
 // ── Shared Components ───────────────────────────────────────────────────────
 
 type ChipColor = "rose" | "stone" | "purple";
@@ -144,7 +133,10 @@ function SectionTag({
   if (center) {
     return (
       <div className="flex items-center justify-center gap-2.5 mb-5">
-        <div className="w-6 h-px" style={{ background: "#C2748A" }} />
+        <div
+          className="w-6 h-px"
+          style={{ background: "#C2748A" }}
+        />
 
         <span
           className="text-xs font-semibold tracking-[0.2em] uppercase"
@@ -153,14 +145,20 @@ function SectionTag({
           {children}
         </span>
 
-        <div className="w-6 h-px" style={{ background: "#C2748A" }} />
+        <div
+          className="w-6 h-px"
+          style={{ background: "#C2748A" }}
+        />
       </div>
     );
   }
 
   return (
     <div className="flex items-center gap-2.5 mb-5">
-      <div className="w-6 h-px" style={{ background: "#C2748A" }} />
+      <div
+        className="w-6 h-px"
+        style={{ background: "#C2748A" }}
+      />
 
       <span
         className="text-xs font-semibold tracking-[0.2em] uppercase"
@@ -192,15 +190,16 @@ function Nav({ active }: { active: string }) {
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
-        }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+        scrolled ? "py-3 border-b" : "py-6"
+      }`}
       style={
         scrolled
           ? {
-            background: "rgba(250,247,242,0.95)",
-            backdropFilter: "blur(12px)",
-            borderColor: "#E8DDD4",
-          }
+              background: "rgba(250,247,242,0.95)",
+              backdropFilter: "blur(12px)",
+              borderColor: "#E8DDD4",
+            }
           : {}
       }
     >
@@ -208,7 +207,10 @@ function Nav({ active }: { active: string }) {
         <a
           href="#"
           className="text-2xl font-semibold tracking-tight text-[#1A1614] leading-none"
-          style={{ ...serif, fontStyle: "italic" }}
+          style={{
+            ...serif,
+            fontStyle: "italic",
+          }}
         >
           M.
         </a>
@@ -218,10 +220,11 @@ function Nav({ active }: { active: string }) {
             <a
               key={href}
               href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
-                ? "text-[#C2748A]"
-                : "text-[#8B7B72] hover:text-[#1A1614]"
-                }`}
+              className={`text-sm font-medium transition-colors duration-200 ${
+                active === href.slice(1)
+                  ? "text-[#C2748A]"
+                  : "text-[#8B7B72] hover:text-[#1A1614]"
+              }`}
             >
               {label}
             </a>
@@ -235,6 +238,7 @@ function Nav({ active }: { active: string }) {
         >
           Get In Touch
         </a>
+
         <button
           className="md:hidden text-[#8B7B72] hover:text-[#1A1614] transition-colors"
           onClick={() => setOpen(!open)}
@@ -359,9 +363,9 @@ function Hero() {
           </h1>
 
           <p className="text-lg text-[#6B5E54] leading-relaxed max-w-lg mb-10">
-            UX/UI Designer &amp; Computer Science student passionate about
-            crafting intuitive, visually compelling digital experiences
-            through user-centered design.
+            UX/UI Designer &amp; Computer Science student passionate
+            about crafting intuitive, visually compelling digital
+            experiences through user-centered design.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-12">
@@ -443,25 +447,28 @@ function Hero() {
                 </div>
 
                 <div className="grid grid-cols-4 gap-1.5">
-                  {["#C2748A", "#9B7BB0", "#E8A87C", "#6BA5C9"].map(
-                    (color) => (
-                      <div
-                        key={color}
-                        className="h-10 rounded-lg"
-                        style={{
-                          background: color + "30",
-                          border: `1.5px solid ${color}50`,
-                        }}
-                      >
-                        <div className="flex items-end justify-center h-full pb-1.5">
-                          <div
-                            className="w-3 h-3 rounded-full"
-                            style={{ background: color }}
-                          />
-                        </div>
+                  {[
+                    "#C2748A",
+                    "#9B7BB0",
+                    "#E8A87C",
+                    "#6BA5C9",
+                  ].map((color) => (
+                    <div
+                      key={color}
+                      className="h-10 rounded-lg"
+                      style={{
+                        background: color + "30",
+                        border: `1.5px solid ${color}50`,
+                      }}
+                    >
+                      <div className="flex items-end justify-center h-full pb-1.5">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{ background: color }}
+                        />
                       </div>
-                    )
-                  )}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="space-y-2">
@@ -479,8 +486,8 @@ function Hero() {
                             i === 0
                               ? "linear-gradient(90deg, #C2748A, #9B7BB0)"
                               : i === 1
-                                ? "#E8A87C"
-                                : "#6BA5C9",
+                              ? "#E8A87C"
+                              : "#6BA5C9",
                         }}
                       />
                     </div>
@@ -573,7 +580,12 @@ function Hero() {
               }}
             >
               <div className="flex gap-1.5 mb-1.5">
-                {["#C2748A", "#9B7BB0", "#E8A87C", "#6BA5C9"].map((c) => (
+                {[
+                  "#C2748A",
+                  "#9B7BB0",
+                  "#E8A87C",
+                  "#6BA5C9",
+                ].map((c) => (
                   <div
                     key={c}
                     className="w-3.5 h-3.5 rounded-full"
@@ -687,15 +699,15 @@ function About() {
             </h2>
 
             <p className="text-[#5A4D45] leading-relaxed text-base lg:text-lg mb-4">
-              I am a Computer Science student with a strong interest in UX/UI
-              Design. I enjoy creating simple, intuitive, and user-friendly
-              digital experiences.
+              I am a Computer Science student with a strong interest in
+              UX/UI Design. I enjoy creating simple, intuitive, and
+              user-friendly digital experiences.
             </p>
 
             <p className="text-[#8B7B72] leading-relaxed mb-10">
-              I am looking for an internship opportunity where I can apply
-              what I have learned, improve my design skills, and gain
-              experience working with a professional team.
+              I am looking for an internship opportunity where I can
+              apply what I have learned, improve my design skills, and
+              gain experience working with a professional team.
             </p>
 
             <h3
@@ -892,7 +904,10 @@ function Skills() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map(
-            ({ title, icon: Icon, description, skills, color }, i) => (
+            (
+              { title, icon: Icon, description, skills, color },
+              i
+            ) => (
               <motion.div
                 key={title}
                 initial={{ opacity: 0, y: 28 }}
@@ -978,8 +993,7 @@ function Projects() {
           </p>
         </div>
 
-        {/* ───────────────── PROJECT 01 ───────────────── */}
-
+        {/* Project 01 */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -988,7 +1002,6 @@ function Projects() {
           className="mb-8 rounded-3xl overflow-hidden border bg-white shadow-sm"
           style={{ borderColor: "#E8DDD4" }}
         >
-          {/* Image + Info */}
           <div className="grid lg:grid-cols-2 gap-0">
 
             {/* Image */}
@@ -1004,6 +1017,7 @@ function Projects() {
                 />
               </div>
             </div>
+
             {/* Project Info */}
             <div className="p-7 lg:p-9 flex flex-col justify-center">
 
@@ -1024,7 +1038,7 @@ function Projects() {
               </div>
 
               <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-3">
-                Information System for Common Area Fee Management & Debt
+                Information System for Common Area Fee Management &amp; Debt
                 Tracking
               </h3>
 
@@ -1032,7 +1046,7 @@ function Projects() {
                 className="text-xs font-semibold mb-4"
                 style={{ color: "#C2748A" }}
               >
-                UX/UI Designer & UX Researcher
+                UX/UI Designer &amp; UX Researcher
               </p>
 
               <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
@@ -1084,7 +1098,11 @@ function Projects() {
                   "Prototyping",
                   "Usability Testing",
                 ].map((tag) => (
-                  <Chip key={tag} label={tag} color="rose" />
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    color="rose"
+                  />
                 ))}
               </div>
 
@@ -1092,8 +1110,7 @@ function Projects() {
           </div>
         </motion.div>
 
-        {/* ───────────────── PROJECT 02 ───────────────── */}
-
+        {/* Project 02 */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1201,7 +1218,11 @@ function Projects() {
                   "Wireframing",
                   "Prototyping",
                 ].map((tag) => (
-                  <Chip key={tag} label={tag} color="rose" />
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    color="rose"
+                  />
                 ))}
               </div>
 
@@ -1214,6 +1235,7 @@ function Projects() {
   );
 }
 
+// ── Education ────────────────────────────────────────────────────────────────
 
 function Education() {
   const schools = [
@@ -1244,6 +1266,7 @@ function Education() {
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
+
           <div>
             <SectionTag>Education</SectionTag>
 
@@ -1278,6 +1301,7 @@ function Education() {
                 style={{ borderColor: "#E8DDD4" }}
               >
                 <div className="flex items-start justify-between gap-4 mb-5">
+
                   <div>
                     <h3 className="font-semibold text-lg text-[#1A1614] mb-1.5 leading-snug">
                       {s.school}
@@ -1310,6 +1334,7 @@ function Education() {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
+
                   <div
                     className="flex items-center gap-1.5 text-xs text-[#8B7B72]"
                     style={mono}
@@ -1331,6 +1356,7 @@ function Education() {
                     />
                     {s.location}
                   </div>
+
                 </div>
               </motion.div>
             ))}
@@ -1352,6 +1378,7 @@ function Training() {
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
+
           <div>
             <SectionTag>Training &amp; Seminars</SectionTag>
 
@@ -1420,6 +1447,7 @@ function Training() {
               </motion.div>
             ))}
           </div>
+
         </div>
       </div>
     </section>
@@ -1427,44 +1455,30 @@ function Training() {
 }
 
 // ── Contact ──────────────────────────────────────────────────────────────────
+// ไม่มีแบบฟอร์มกรอกข้อมูลแล้ว
+// แสดงเฉพาะช่องทางการติดต่อ
 
 function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const [sent, setSent] = useState(false);
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    setSent(true);
-
-    setTimeout(() => {
-      setSent(false);
-    }, 4500);
-
-    setForm({
-      name: "",
-      email: "",
-      message: "",
-    });
-  }
-
-  const inputStyle: React.CSSProperties = {
-    background: "#FAF7F2",
-    border: "1.5px solid #E8DDD4",
-    borderRadius: 14,
-    color: "#1A1614",
-    outline: "none",
-    width: "100%",
-    fontFamily:
-      "'Bricolage Grotesque', system-ui, sans-serif",
-    fontSize: "0.875rem",
-    transition: "border-color 0.2s",
-  };
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "manthangamsanthia2547@gmail.com",
+      href: "mailto:manthangamsanthia2547@gmail.com",
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      value: "094-363-6445",
+      href: "tel:0943636445",
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Nakhon Ratchasima 30230, Thailand",
+      href: "#",
+    },
+  ];
 
   return (
     <section
@@ -1474,6 +1488,7 @@ function Contact() {
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
 
+        {/* Header */}
         <div className="text-center mb-16">
           <SectionTag center>Get In Touch</SectionTag>
 
@@ -1490,227 +1505,84 @@ function Contact() {
             </span>
           </h2>
 
-          <p className="mt-4 text-[#8B7B72] max-w-sm mx-auto leading-relaxed">
+          <p className="mt-4 text-[#8B7B72] max-w-md mx-auto leading-relaxed">
             Interested in internship opportunities or collaborations?
-            I would love to hear from you.
+            Feel free to contact me through the information below.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        {/* Contact Information */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mx-auto space-y-4"
+        >
 
-          {/* Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-3 p-8 rounded-3xl border bg-white"
+          {contactInfo.map(
+            ({ icon: Icon, label, value, href }) => (
+              <a
+                key={label}
+                href={href}
+                className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:border-[#D4A0B0] hover:shadow-md transition-all duration-200"
+                style={{ borderColor: "#E8DDD4" }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: "#FFF0F3",
+                    border: "1px solid #FCCDD4",
+                  }}
+                >
+                  <Icon
+                    size={18}
+                    style={{ color: "#C2748A" }}
+                  />
+                </div>
+
+                <div>
+                  <div
+                    className="text-xs text-[#8B7B72] mb-1"
+                    style={mono}
+                  >
+                    {label}
+                  </div>
+
+                  <div className="text-base font-medium text-[#1A1614] break-all">
+                    {value}
+                  </div>
+                </div>
+              </a>
+            )
+          )}
+
+          {/* Open to Opportunities */}
+          <div
+            className="p-6 rounded-2xl border bg-white mt-6"
             style={{ borderColor: "#E8DDD4" }}
           >
-            {sent ? (
-              <div className="text-center py-16">
-                <div className="text-4xl mb-5">
-                  ✉️
-                </div>
+            <div className="flex items-center gap-2.5 mb-2">
+              <span
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{
+                  background: "#34D399",
+                  boxShadow: "0 0 6px #34D39980",
+                }}
+              />
 
-                <div
-                  className="text-xl font-semibold text-[#1A1614] mb-2"
-                  style={serif}
-                >
-                  Message Sent!
-                </div>
-
-                <p className="text-[#8B7B72] text-sm">
-                  I’ll get back to you as soon as possible.
-                  Thank you!
-                </p>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-5"
-              >
-                <div>
-                  <label className="block text-sm font-medium text-[#5A4D45] mb-2">
-                    Your Name
-                  </label>
-
-                  <input
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        name: e.target.value,
-                      })
-                    }
-                    placeholder="Jane Smith"
-                    className="px-4 py-3 placeholder-[#C5B8B0]"
-                    style={inputStyle}
-                    onFocus={(e) =>
-                      (e.target.style.borderColor = "#C2748A")
-                    }
-                    onBlur={(e) =>
-                      (e.target.style.borderColor = "#E8DDD4")
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5A4D45] mb-2">
-                    Email Address
-                  </label>
-
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        email: e.target.value,
-                      })
-                    }
-                    placeholder="jane@company.com"
-                    className="px-4 py-3 placeholder-[#C5B8B0]"
-                    style={inputStyle}
-                    onFocus={(e) =>
-                      (e.target.style.borderColor = "#C2748A")
-                    }
-                    onBlur={(e) =>
-                      (e.target.style.borderColor = "#E8DDD4")
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5A4D45] mb-2">
-                    Message
-                  </label>
-
-                  <textarea
-                    required
-                    value={form.message}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        message: e.target.value,
-                      })
-                    }
-                    placeholder="Tell me about the opportunity..."
-                    rows={5}
-                    className="px-4 py-3 placeholder-[#C5B8B0] resize-none"
-                    style={inputStyle}
-                    onFocus={(e) =>
-                      (e.target.style.borderColor = "#C2748A")
-                    }
-                    onBlur={(e) =>
-                      (e.target.style.borderColor = "#E8DDD4")
-                    }
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3.5 rounded-2xl text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.01] transition-all flex items-center justify-center gap-2"
-                  style={{ background: "#C2748A" }}
-                >
-                  Send Message
-                  <ArrowRight size={14} />
-                </button>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.6,
-              delay: 0.1,
-            }}
-            className="lg:col-span-2 flex flex-col gap-4"
-          >
-            {[
-              {
-                icon: Mail,
-                label: "Email",
-                value: "manthangamsanthia2547@gmail.com",
-              },
-              {
-                icon: Phone,
-                label: "Phone",
-                value: "094-363-6445",
-              },
-              {
-                icon: MapPin,
-                label: "Location",
-                value: "Nakhon Ratchasima 30230, Thailand",
-              },
-            ].map(
-              ({ icon: Icon, label, value }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-4 p-5 rounded-2xl border bg-white hover:border-[#D4A0B0] transition-colors"
-                  style={{ borderColor: "#E8DDD4" }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{
-                      background: "#FFF0F3",
-                      border: "1px solid #FCCDD4",
-                    }}
-                  >
-                    <Icon
-                      size={16}
-                      style={{ color: "#C2748A" }}
-                    />
-                  </div>
-
-                  <div>
-                    <div
-                      className="text-[10px] text-[#8B7B72] mb-0.5"
-                      style={mono}
-                    >
-                      {label}
-                    </div>
-
-                    <div className="text-sm font-medium text-[#1A1614] break-all">
-                      {value}
-                    </div>
-                  </div>
-                </div>
-              )
-            )}
-
-            <div
-              className="p-5 rounded-2xl border bg-white"
-              style={{ borderColor: "#E8DDD4" }}
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <span
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{
-                    background: "#34D399",
-                    boxShadow: "0 0 6px #34D39980",
-                  }}
-                />
-
-                <span className="text-sm font-semibold text-[#1A1614]">
-                  Open to Opportunities
-                </span>
-              </div>
-
-              <p className="text-xs text-[#8B7B72] leading-relaxed">
-                Currently seeking internship opportunities in UX/UI
-                Design and related roles.
-              </p>
+              <span className="text-sm font-semibold text-[#1A1614]">
+                Open to Opportunities
+              </span>
             </div>
-          </motion.div>
-        </div>
+
+            <p className="text-sm text-[#8B7B72] leading-relaxed">
+              Currently seeking internship opportunities in UX/UI
+              Design and related roles.
+            </p>
+          </div>
+
+        </motion.div>
       </div>
     </section>
   );
@@ -1763,6 +1635,7 @@ function Footer() {
         >
           &copy; 2026 All rights reserved.
         </div>
+
       </div>
     </footer>
   );
