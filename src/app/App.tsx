@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { motion, useInView } from "motion/react";
 import {
   Menu,
   X,
@@ -16,1074 +16,812 @@ import {
   Users2,
   Palette,
   Check,
+  Sun,
+  Moon,
+  ExternalLink,
 } from "lucide-react";
 
-// ─────────────────────────────────────────────────────────────
-// Typography
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   TYPES
+========================================================= */
 
-const serif: React.CSSProperties = {
-  fontFamily: "'Fraunces', Georgia, serif",
+type Language = "th" | "en";
+
+type Theme = {
+  name: string;
+  color: string;
+  soft: string;
+  light: string;
 };
 
-const mono: React.CSSProperties = {
-  fontFamily: "'Geist Mono', 'Courier New', monospace",
-};
+/* =========================================================
+   THEMES
+========================================================= */
 
-// ─────────────────────────────────────────────────────────────
-// Theme Colors
-// ─────────────────────────────────────────────────────────────
-
-const THEMES = [
+const THEMES: Theme[] = [
   {
     name: "Rose",
-    color: "#C2748A",
-    light: "#FFF0F3",
-    border: "#FCCDD4",
-    soft: "#D4A0B0",
+    color: "#C47A86",
+    soft: "#F3E1E5",
+    light: "#FBF1F3",
   },
   {
     name: "Sage",
-    color: "#5F8F82",
-    light: "#EEF7F3",
-    border: "#C9E3DA",
-    soft: "#9FC5B9",
+    color: "#789B82",
+    soft: "#DDE9E0",
+    light: "#F1F6F2",
   },
   {
     name: "Lavender",
-    color: "#8B78A8",
-    light: "#F4F0FA",
-    border: "#DDD3EA",
-    soft: "#B8A9CE",
+    color: "#8C82B8",
+    soft: "#E7E3F2",
+    light: "#F5F3FA",
   },
   {
     name: "Blue",
-    color: "#5F8FAF",
-    light: "#EFF7FB",
-    border: "#C9E2EF",
-    soft: "#9FC4D8",
+    color: "#7394B8",
+    soft: "#DCE7F1",
+    light: "#F2F6FA",
   },
 ];
 
-// ─────────────────────────────────────────────────────────────
-// Navigation
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   FONT HELPERS
+========================================================= */
+
+const displayFont = {
+  fontFamily:
+    "'Bricolage Grotesque', 'Inter', ui-sans-serif, system-ui, sans-serif",
+};
+
+const mono = {
+  fontFamily:
+    "'JetBrains Mono', 'SFMono-Regular', Consolas, monospace",
+};
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#education", label: "Education" },
-  { href: "#training", label: "Training" },
-  { href: "#contact", label: "Contact" },
-];
-
-// ─────────────────────────────────────────────────────────────
-// Skills
-// ─────────────────────────────────────────────────────────────
-
-const DESIGN_SKILLS = [
-  "UI Design",
-  "Wireframing",
-  "Interactive Prototyping",
-  "User-Centered Design (UCD)",
-  "User Flow Mapping",
-  "Information Architecture",
-];
-
-const DESIGN_TOOLS = [
-  "Figma",
-  "Canva",
-  "Adobe Photoshop",
-  "Affinity Designer",
-];
-
-const UX_RESEARCH = [
-  "Requirements Analysis",
-  "User Research",
-  "Usability Testing",
-  "User Acceptance Testing (UAT)",
-  "Test Case Preparation",
-];
-
-const SOFT_SKILLS = [
-  "Attention to Detail",
-  "Problem-Solving",
-  "Fast Learner & Adaptability",
-  "Teamwork & Collaboration",
-  "Effective Communication",
-  "Analytical Thinking",
-];
-
-// ─────────────────────────────────────────────────────────────
-// Highlights
-// ─────────────────────────────────────────────────────────────
-
-const HIGHLIGHTS = [
-  "Experience using Figma to create UI designs, wireframes, and interactive prototypes.",
-  "Understanding of User-Centered Design (UCD), user flows, and basic design systems.",
-  "Familiar with usability testing, test case preparation, and User Acceptance Testing (UAT).",
-  "Understanding of Agile and Scrum methodology through academic project work.",
-  "Able to work independently, communicate effectively, and collaborate with a team.",
-];
-
-// ─────────────────────────────────────────────────────────────
-// Training
-// ─────────────────────────────────────────────────────────────
-
-const TRAINING = [
   {
-    title: 'Information Literacy Training: "Innovation Review and AI"',
-    org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
-    date: "December 17, 2025",
+    href: "#about",
+    th: "เกี่ยวกับ",
+    en: "About",
   },
   {
-    title: "Workshop on Document Formatting and Academic Citation",
-    org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
-    date: "January 7, 2026",
+    href: "#skills",
+    th: "ทักษะ",
+    en: "Skills",
+  },
+  {
+    href: "#projects",
+    th: "ผลงาน",
+    en: "Projects",
+  },
+  {
+    href: "#education",
+    th: "การศึกษา",
+    en: "Education",
+  },
+  {
+    href: "#training",
+    th: "การอบรม",
+    en: "Training",
+  },
+  {
+    href: "#contact",
+    th: "ติดต่อ",
+    en: "Contact",
   },
 ];
 
-// ─────────────────────────────────────────────────────────────
-// Shared Components
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   APP
+========================================================= */
 
-type ChipColor = "rose" | "stone" | "purple";
+export default function App() {
+  const [active, setActive] = useState("hero");
 
-function Chip({
-  label,
-  color = "rose",
-}: {
-  label: string;
-  color?: ChipColor;
-}) {
-  const cls: Record<ChipColor, string> = {
-    rose: "bg-rose-50 text-rose-700 border-rose-200/80",
-    stone: "bg-stone-100 text-stone-600 border-stone-200",
-    purple: "bg-purple-50 text-purple-700 border-purple-200/70",
-  };
+  const [themeIndex, setThemeIndex] = useState(0);
 
-  return (
-    <span
-      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${cls[color]}`}
-      style={mono}
-    >
-      {label}
-    </span>
-  );
-}
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === "undefined") {
+      return "th";
+    }
 
-function SectionTag({
-  children,
-  center = false,
-  theme,
-}: {
-  children: React.ReactNode;
-  center?: boolean;
-  theme: (typeof THEMES)[number];
-}) {
+    const saved = localStorage.getItem("portfolio-language");
+
+    return saved === "en" ? "en" : "th";
+  });
+
+  const theme = THEMES[themeIndex];
+
+  useEffect(() => {
+    localStorage.setItem("portfolio-language", language);
+  }, [language]);
+
+  useEffect(() => {
+    const sections = [
+      "hero",
+      "about",
+      "skills",
+      "projects",
+      "education",
+      "training",
+      "contact",
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              b.intersectionRatio - a.intersectionRatio
+          );
+
+        if (visible[0]) {
+          setActive(visible[0].target.id);
+        }
+      },
+      {
+        threshold: [0.15, 0.3, 0.5],
+        rootMargin: "-20% 0px -50% 0px",
+      }
+    );
+
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
-      className={`flex items-center ${center ? "justify-center" : ""
-        } gap-2.5 mb-5`}
+      className="min-h-screen bg-[#FAF7F2] text-[#28221F] overflow-x-hidden"
+      style={{
+        ...displayFont,
+        ["--accent" as string]: theme.color,
+        ["--accent-soft" as string]: theme.soft,
+        ["--accent-light" as string]: theme.light,
+      }}
     >
-      <div
-        className="w-6 h-px"
-        style={{
-          background: theme.color,
-        }}
+      <Nav
+        active={active}
+        theme={theme}
+        themeIndex={themeIndex}
+        setThemeIndex={setThemeIndex}
+        language={language}
+        setLanguage={setLanguage}
       />
 
-      <span
-        className="text-xs font-semibold tracking-[0.2em] uppercase"
-        style={{
-          ...mono,
-          color: theme.color,
-        }}
-      >
-        {children}
-      </span>
-
-      {center && (
-        <div
-          className="w-6 h-px"
-          style={{
-            background: theme.color,
-          }}
+      <main>
+        <Hero
+          theme={theme}
+          language={language}
         />
-      )}
+
+        <About
+          theme={theme}
+          language={language}
+        />
+
+        <Skills
+          theme={theme}
+          language={language}
+        />
+
+        <Projects
+          theme={theme}
+          language={language}
+        />
+
+        <Education
+          theme={theme}
+          language={language}
+        />
+
+        <Training
+          theme={theme}
+          language={language}
+        />
+
+        <Contact
+          theme={theme}
+          language={language}
+        />
+      </main>
+
+      <Footer
+        theme={theme}
+        language={language}
+      />
     </div>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// Navigation
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   NAV
+========================================================= */
 
 function Nav({
   active,
   theme,
+  themeIndex,
   setThemeIndex,
+  language,
+  setLanguage,
 }: {
   active: string;
-  theme: (typeof THEMES)[number];
+  theme: Theme;
+  themeIndex: number;
   setThemeIndex: (index: number) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [showThemes, setShowThemes] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 32);
-    };
+  const scrollTo = (href: string) => {
+    const element = document.querySelector(href);
 
-    window.addEventListener("scroll", handleScroll);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    setMobileOpen(false);
+  };
 
   return (
-    <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
-        }`}
-      style={
-        scrolled
-          ? {
-            background: "rgba(250,247,242,0.95)",
-            backdropFilter: "blur(12px)",
-            borderColor: "#E8DDD4",
-          }
-          : {}
-      }
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo */}
-        <a
-          href="#"
-          className="text-2xl font-semibold tracking-tight text-[#1A1614] leading-none"
-          style={{
-            ...serif,
-            fontStyle: "italic",
-          }}
-        >
-          Manthana Ngamsanthia
-        </a>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          {NAV.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
-                  ? ""
-                  : "text-[#8B7B72] hover:text-[#1A1614]"
-                }`}
-              style={
-                active === href.slice(1)
-                  ? {
-                    color: theme.color,
-                  }
-                  : undefined
-              }
-            >
-              {label}
-            </a>
-          ))}
-
-          {/* Theme Button */}
-          <div className="relative">
-            <button
-              onClick={() => setShowThemes(!showThemes)}
-              className="w-9 h-9 rounded-full border flex items-center justify-center hover:scale-105 transition-all"
-              style={{
-                borderColor: theme.border,
-                background: theme.light,
-                color: theme.color,
-              }}
-              aria-label="Change theme color"
-            >
-              <Palette size={16} />
-            </button>
-
-            {showThemes && (
-              <div
-                className="absolute right-0 top-12 p-3 rounded-2xl border bg-white shadow-xl flex gap-2"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
-              >
-                {THEMES.map((item, index) => (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      setThemeIndex(index);
-                      setShowThemes(false);
-                    }}
-                    title={item.name}
-                    className="relative w-8 h-8 rounded-full border-2 hover:scale-110 transition-transform flex items-center justify-center"
-                    style={{
-                      background: item.color,
-                      borderColor:
-                        theme.name === item.name
-                          ? "#1A1614"
-                          : "transparent",
-                    }}
-                  >
-                    {theme.name === item.name && (
-                      <Check size={14} className="text-white" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Controls */}
-        <div className="md:hidden flex items-center gap-2">
-          <div className="relative">
-            <button
-              onClick={() => setShowThemes(!showThemes)}
-              className="w-9 h-9 rounded-full border flex items-center justify-center"
-              style={{
-                borderColor: theme.border,
-                background: theme.light,
-                color: theme.color,
-              }}
-              aria-label="Change theme color"
-            >
-              <Palette size={16} />
-            </button>
-
-            {showThemes && (
-              <div
-                className="absolute right-0 top-12 p-3 rounded-2xl border bg-white shadow-xl flex gap-2"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
-              >
-                {THEMES.map((item, index) => (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      setThemeIndex(index);
-                      setShowThemes(false);
-                    }}
-                    title={item.name}
-                    className="relative w-8 h-8 rounded-full border-2 flex items-center justify-center"
-                    style={{
-                      background: item.color,
-                      borderColor:
-                        theme.name === item.name
-                          ? "#1A1614"
-                          : "transparent",
-                    }}
-                  >
-                    {theme.name === item.name && (
-                      <Check size={14} className="text-white" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 lg:px-8 pt-4">
+      <nav
+        className="mx-auto max-w-7xl rounded-2xl border border-[#E8DED6] bg-[#FFFDFB]/95 backdrop-blur-xl shadow-sm"
+        style={{ borderColor: `${theme.color}22` }}
+      >
+        <div className="h-16 px-5 md:px-7 flex items-center justify-between">
+          {/* Logo */}
           <button
-            className="text-[#8B7B72] hover:text-[#1A1614] transition-colors"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
+            onClick={() => scrollTo("#hero")}
+            className="flex items-center gap-2 shrink-0"
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            <span
+              className="text-2xl font-bold tracking-tight"
+              style={{
+                ...displayFont,
+                color: theme.color,
+              }}
+            >
+              M.
+            </span>
+
+            <span
+              className="hidden sm:block text-sm font-medium text-[#6E625C]"
+              style={mono}
+            >
+              Portfolio
+            </span>
+          </button>
+
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV.map((item) => {
+              const isActive =
+                active === item.href.replace("#", "");
+
+              return (
+                <button
+                  key={item.href}
+                  onClick={() => scrollTo(item.href)}
+                  className="relative px-4 py-2 rounded-full text-sm transition-colors"
+                  style={{
+                    color: isActive
+                      ? theme.color
+                      : "#746861",
+                    fontWeight: isActive ? 600 : 500,
+                  }}
+                >
+                  {language === "th"
+                    ? item.th
+                    : item.en}
+
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute left-1/2 -bottom-1 h-1 w-1 rounded-full"
+                      style={{
+                        backgroundColor:
+                          theme.color,
+                        transform:
+                          "translateX(-50%)",
+                      }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Controls */}
+          <div className="hidden md:flex items-center gap-2">
+            {/* Language */}
+            <div className="flex items-center rounded-full border border-[#E8DED6] bg-white p-1">
+              <button
+                onClick={() => setLanguage("th")}
+                className="px-3 py-1.5 rounded-full text-[10px] font-bold transition-all"
+                style={{
+                  ...mono,
+                  backgroundColor:
+                    language === "th"
+                      ? theme.color
+                      : "transparent",
+                  color:
+                    language === "th"
+                      ? "#FFFFFF"
+                      : "#8B7B72",
+                }}
+              >
+                TH
+              </button>
+
+              <button
+                onClick={() => setLanguage("en")}
+                className="px-3 py-1.5 rounded-full text-[10px] font-bold transition-all"
+                style={{
+                  ...mono,
+                  backgroundColor:
+                    language === "en"
+                      ? theme.color
+                      : "transparent",
+                  color:
+                    language === "en"
+                      ? "#FFFFFF"
+                      : "#8B7B72",
+                }}
+              >
+                EN
+              </button>
+            </div>
+
+            {/* Theme */}
+            <div className="relative group">
+              <button
+                className="w-10 h-10 rounded-full border border-[#E8DED6] bg-white flex items-center justify-center hover:bg-[#FAF7F2] transition-colors"
+                aria-label="Change theme"
+              >
+                <Palette
+                  size={17}
+                  style={{ color: theme.color }}
+                />
+              </button>
+
+              <div className="absolute right-0 top-11 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                <div className="rounded-2xl border border-[#E8DED6] bg-white shadow-xl p-3 flex gap-2">
+                  {THEMES.map((item, index) => (
+                    <button
+                      key={item.name}
+                      onClick={() =>
+                        setThemeIndex(index)
+                      }
+                      className="w-7 h-7 rounded-full border-2 border-white ring-1 ring-[#E4DCD5] transition-transform hover:scale-110"
+                      style={{
+                        backgroundColor:
+                          item.color,
+                      }}
+                      title={item.name}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => scrollTo("#contact")}
+              className="ml-1 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-all hover:scale-[1.02]"
+              style={{
+                backgroundColor: theme.color,
+              }}
+            >
+              {language === "th"
+                ? "ติดต่อฉัน"
+                : "Get In Touch"}
+            </button>
+          </div>
+
+          {/* Mobile */}
+          <button
+            className="lg:hidden w-10 h-10 rounded-full flex items-center justify-center text-[#5E534D]"
+            onClick={() =>
+              setMobileOpen(!mobileOpen)
+            }
+          >
+            {mobileOpen ? (
+              <X size={21} />
+            ) : (
+              <Menu size={21} />
+            )}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Navigation */}
-      {open && (
-        <div
-          className="md:hidden mx-4 mt-2 p-4 rounded-2xl border flex flex-col gap-1 shadow-lg"
-          style={{
-            background: "#FFFFFF",
-            borderColor: "#E8DDD4",
-          }}
-        >
-          {NAV.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className="py-2.5 px-3 rounded-xl text-sm font-medium text-[#5A4D45]"
-              style={{
-                color:
-                  active === href.slice(1)
-                    ? theme.color
-                    : undefined,
-              }}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
-    </nav>
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              height: 0,
+            }}
+            animate={{
+              opacity: 1,
+              height: "auto",
+            }}
+            className="lg:hidden border-t border-[#EEE5DE] px-5 py-4"
+          >
+            <div className="flex flex-col gap-1">
+              {NAV.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() =>
+                    scrollTo(item.href)
+                  }
+                  className="text-left px-4 py-3 rounded-xl text-sm"
+                  style={{
+                    color:
+                      active ===
+                      item.href.replace("#", "")
+                        ? theme.color
+                        : "#655A54",
+                    backgroundColor:
+                      active ===
+                      item.href.replace("#", "")
+                        ? `${theme.color}12`
+                        : "transparent",
+                  }}
+                >
+                  {language === "th"
+                    ? item.th
+                    : item.en}
+                </button>
+              ))}
+
+              <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#EEE5DE]">
+                <div className="flex items-center rounded-full border border-[#E8DED6] bg-white p-1">
+                  <button
+                    onClick={() =>
+                      setLanguage("th")
+                    }
+                    className="px-3 py-1.5 rounded-full text-[10px] font-bold"
+                    style={{
+                      ...mono,
+                      backgroundColor:
+                        language === "th"
+                          ? theme.color
+                          : "transparent",
+                      color:
+                        language === "th"
+                          ? "#fff"
+                          : "#8B7B72",
+                    }}
+                  >
+                    TH
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      setLanguage("en")
+                    }
+                    className="px-3 py-1.5 rounded-full text-[10px] font-bold"
+                    style={{
+                      ...mono,
+                      backgroundColor:
+                        language === "en"
+                          ? theme.color
+                          : "transparent",
+                      color:
+                        language === "en"
+                          ? "#fff"
+                          : "#8B7B72",
+                    }}
+                  >
+                    EN
+                  </button>
+                </div>
+
+                <button
+                  onClick={() =>
+                    scrollTo("#contact")
+                  }
+                  className="px-4 py-2 rounded-full text-xs font-semibold text-white"
+                  style={{
+                    backgroundColor:
+                      theme.color,
+                  }}
+                >
+                  {language === "th"
+                    ? "ติดต่อฉัน"
+                    : "Get In Touch"}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </nav>
+    </header>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// Hero
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   HERO
+========================================================= */
 
 function Hero({
   theme,
+  language,
 }: {
-  theme: (typeof THEMES)[number];
+  theme: Theme;
+  language: Language;
 }) {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center pt-24 pb-16 relative overflow-hidden"
+      className="min-h-screen pt-32 md:pt-36 pb-20 px-5 md:px-8 flex items-center"
     >
-      {/* Dot Background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage: `radial-gradient(${theme.color}22 1px, transparent 1px)`,
-          backgroundSize: "28px 28px",
-        }}
-      />
-
-      {/* Main Glow */}
-      <div
-        className="absolute top-24 right-1/3 w-[480px] h-[480px] rounded-full pointer-events-none"
-        style={{
-          background: theme.color,
-          opacity: 0.07,
-          filter: "blur(120px)",
-        }}
-      />
-
-      {/* Secondary Glow */}
-      <div
-        className="absolute bottom-24 left-1/4 w-80 h-80 rounded-full pointer-events-none"
-        style={{
-          background: "#9B7BB0",
-          opacity: 0.08,
-          filter: "blur(100px)",
-        }}
-      />
-
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-20 items-center">
-        {/* Hero Text */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 48,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.9,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <div
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-semibold border mb-8"
-            style={{
-              ...mono,
-              background: theme.light,
-              borderColor: theme.border,
-              color: theme.color,
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
+          {/* Text */}
+          <div>
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-7"
               style={{
-                background: "#34D399",
+                borderColor: `${theme.color}35`,
+                backgroundColor: `${theme.color}0C`,
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{
+                  backgroundColor:
+                    theme.color,
+                }}
+              />
+
+              <span
+                className="text-xs font-medium"
+                style={{
+                  color: theme.color,
+                  ...mono,
+                }}
+              >
+                {language === "th"
+                  ? "เปิดรับโอกาสฝึกงานและงานระดับเริ่มต้น"
+                  : "Available for Internship & Entry-Level Positions"}
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{
+                opacity: 0,
+                y: 25,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.7,
+                delay: 0.1,
+              }}
+              className="text-[clamp(3.5rem,9vw,7.5rem)] leading-[0.88] tracking-[-0.055em] font-semibold"
+              style={displayFont}
+            >
+              <span className="block">
+                {language === "th"
+                  ? "สวัสดีค่ะ,"
+                  : "Hello,"}
+              </span>
+
+              <span
+                className="block"
+                style={{
+                  color: theme.color,
+                }}
+              >
+                {language === "th"
+                  ? "ฉันคือมัณฑนา"
+                  : "I'm Manthana."}
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+                delay: 0.2,
+              }}
+              className="mt-8 max-w-xl text-lg md:text-xl leading-relaxed text-[#70645D]"
+            >
+              {language === "th"
+                ? "นักออกแบบ UX/UI และนักศึกษาวิทยาการคอมพิวเตอร์ที่สนใจการสร้างประสบการณ์ดิจิทัลที่ใช้งานง่าย สวยงาม และตอบโจทย์ผู้ใช้"
+                : "UX/UI Designer & Computer Science student passionate about crafting intuitive, visually compelling digital experiences through user-centered design."}
+            </motion.p>
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+                delay: 0.3,
+              }}
+              className="mt-9 flex flex-wrap gap-3"
+            >
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-all hover:translate-y-[-1px]"
+                style={{
+                  backgroundColor:
+                    theme.color,
+                }}
+              >
+                {language === "th"
+                  ? "ดูผลงานของฉัน"
+                  : "View My Work"}
+
+                <ArrowRight size={16} />
+              </a>
+
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[#DED4CC] bg-white text-[#4F4641] text-sm font-semibold hover:border-[#C9BDB4] transition-all"
+              >
+                {language === "th"
+                  ? "ติดต่อฉัน"
+                  : "Contact Me"}
+              </a>
+            </motion.div>
+
+            {/* Mini Stats */}
+            <div className="mt-12 flex flex-wrap gap-8">
+              <Stat
+                value="4+"
+                label={
+                  language === "th"
+                    ? "โปรเจกต์"
+                    : "Projects"
+                }
+                theme={theme}
+              />
+
+              <Stat
+                value="UI/UX"
+                label={
+                  language === "th"
+                    ? "ความสนใจหลัก"
+                    : "Main Focus"
+                }
+                theme={theme}
+              />
+
+              <Stat
+                value="CS"
+                label={
+                  language === "th"
+                    ? "นักศึกษาวิทยาการคอมพิวเตอร์"
+                    : "Computer Science"
+                }
+                theme={theme}
+              />
+            </div>
+          </div>
+
+          {/* Visual */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.95,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+            }}
+            className="relative"
+          >
+            <div
+              className="absolute -top-10 -right-8 w-32 h-32 rounded-full blur-3xl opacity-50"
+              style={{
+                backgroundColor:
+                  theme.soft,
               }}
             />
 
-            Available for Internship &amp; Entry-Level Positions
-          </div>
-
-          <h1
-            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight leading-[0.92] text-[#1A1614] mb-3"
-            style={serif}
-          >
-            Miss{" "}
-            <span
-              className="italic font-semibold"
-              style={{
-                color: theme.color,
-              }}
-            >
-              Manthana
-            </span>
-          </h1>
-
-          <h1
-            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-tight leading-[0.92] text-[#1A1614] mb-8"
-            style={serif}
-          >
-            Ngamsanthia
-          </h1>
-
-          <p className="text-lg text-[#6B5E54] leading-relaxed max-w-lg mb-10">
-            UX/UI Designer &amp; Computer Science student passionate
-            about crafting intuitive, visually compelling digital
-            experiences through user-centered design.
-          </p>
-
-          <div className="flex flex-wrap gap-4 mb-12">
-            <a
-              href="#projects"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm text-white hover:opacity-90 hover:scale-[1.02] transition-all"
-              style={{
-                background: theme.color,
-              }}
-            >
-              View My Work
-              <ArrowRight size={14} />
-            </a>
-
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
-              style={{
-                borderColor: "#E0D5CA",
-              }}
-            >
-              <Mail size={14} />
-              Contact Me
-            </a>
-          </div>
-        </motion.div>
-
-        {/* Design Canvas */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            scale: 0.88,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.9,
-            delay: 0.2,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="hidden lg:flex items-center justify-center relative"
-        >
-          <div className="relative w-full max-w-xs">
             <div
-              className="rounded-3xl overflow-hidden shadow-2xl border"
+              className="relative rounded-[2rem] overflow-hidden border bg-white shadow-[0_25px_80px_rgba(50,35,25,0.08)]"
               style={{
-                background: "#FFFFFF",
-                borderColor: "#E8DDD4",
+                borderColor: `${theme.color}25`,
               }}
             >
-              <div
-                className="flex items-center gap-1.5 px-4 py-3 border-b"
-                style={{
-                  borderColor: "#F0E9E1",
-                }}
-              >
-                <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
-
-                <div
-                  className="ml-3 flex-1 h-4 rounded"
-                  style={{
-                    background: "#F5F0EB",
-                  }}
-                />
-              </div>
-
-              <div className="p-5 space-y-3">
-                <div
-                  className="h-20 rounded-xl flex items-center justify-center"
-                  style={{
-                    background: `linear-gradient(135deg, ${theme.light}, #F5EEF8)`,
-                  }}
-                >
-                  <div className="text-center">
-                    <div
-                      className="w-9 h-9 rounded-full mx-auto mb-2"
-                      style={{
-                        background: `linear-gradient(135deg, ${theme.color}, #9B7BB0)`,
-                      }}
-                    />
-
-                    <div
-                      className="w-16 h-1.5 rounded mx-auto"
-                      style={{
-                        background: "#E8DDD4",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-4 gap-1.5">
-                  {[
-                    theme.color,
-                    "#9B7BB0",
-                    "#E8A87C",
-                    "#6BA5C9",
-                  ].map((color) => (
-                    <div
-                      key={color}
-                      className="h-10 rounded-lg"
-                      style={{
-                        background: color + "30",
-                        border: `1.5px solid ${color}50`,
-                      }}
-                    >
-                      <div className="flex items-end justify-center h-full pb-1.5">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{
-                            background: color,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-2">
-                  {[75, 50, 88].map((w, i) => (
-                    <div
-                      key={i}
-                      className="h-2 rounded-full"
-                      style={{
-                        background: "#F0E9E1",
-                      }}
-                    >
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${w}%`,
-                          background:
-                            i === 0
-                              ? `linear-gradient(90deg, ${theme.color}, #9B7BB0)`
-                              : i === 1
-                                ? "#E8A87C"
-                                : "#6BA5C9",
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex gap-2">
+              <div className="aspect-[4/5] flex items-center justify-center bg-[#F4EEE8]">
+                <div className="text-center px-8">
                   <div
-                    className="flex-1 h-8 rounded-xl flex items-center justify-center"
+                    className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center text-5xl md:text-6xl font-semibold text-white shadow-lg"
                     style={{
-                      background: theme.color,
+                      backgroundColor:
+                        theme.color,
                     }}
                   >
-                    <div
-                      className="w-10 h-1.5 rounded"
-                      style={{
-                        background: "rgba(255,255,255,0.5)",
-                      }}
-                    />
+                    M
                   </div>
 
-                  <div
-                    className="flex-1 h-8 rounded-xl flex items-center justify-center border"
-                    style={{
-                      borderColor: "#E8DDD4",
-                    }}
+                  <p
+                    className="mt-7 text-2xl md:text-3xl font-semibold"
+                    style={displayFont}
                   >
-                    <div
-                      className="w-10 h-1.5 rounded"
-                      style={{
-                        background: "#E0D5CA",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+                    Manthana
+                  </p>
 
-            {/* Figma Badge */}
-            <motion.div
-              className="absolute -top-5 -right-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
-              style={{
-                borderColor: "#E8DDD4",
-              }}
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                duration: 3.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <div
-                className="text-xs font-semibold text-[#1A1614]"
-                style={mono}
-              >
-                Figma
-              </div>
-
-              <div className="text-[10px] text-[#8B7B72]">
-                Primary Tool
-              </div>
-            </motion.div>
-
-            {/* UX/UI Badge */}
-            <motion.div
-              className="absolute -bottom-3 -left-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
-              style={{
-                borderColor: "#E8DDD4",
-              }}
-              animate={{
-                y: [0, -6, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.8,
-              }}
-            >
-              <div
-                className="text-xs font-semibold"
-                style={{
-                  ...mono,
-                  color: theme.color,
-                }}
-              >
-                UX/UI
-              </div>
-
-              <div className="text-[10px] text-[#8B7B72]">
-                Designer
-              </div>
-            </motion.div>
-
-            {/* Color Palette */}
-            <motion.div
-              className="absolute top-1/2 -left-12 -translate-y-1/2 p-3 rounded-2xl shadow-lg border bg-white"
-              style={{
-                borderColor: "#E8DDD4",
-              }}
-              animate={{
-                y: [0, -5, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1.4,
-              }}
-            >
-              <div className="flex gap-1.5 mb-1.5">
-                {[
-                  theme.color,
-                  "#9B7BB0",
-                  "#E8A87C",
-                  "#6BA5C9",
-                ].map((c) => (
-                  <div
-                    key={c}
-                    className="w-3.5 h-3.5 rounded-full"
-                    style={{
-                      background: c,
-                    }}
-                  />
-                ))}
-              </div>
-
-              <div
-                className="text-[10px] text-[#8B7B72]"
-                style={mono}
-              >
-                Color Palette
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span
-          className="text-[10px] tracking-[0.2em] uppercase font-semibold"
-          style={{
-            ...mono,
-            color: theme.color + "80",
-          }}
-        >
-          Scroll
-        </span>
-
-        <motion.div
-          animate={{
-            y: [0, 8, 0],
-            opacity: [0.4, 1, 0.4],
-          }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-          }}
-          className="w-px h-10 rounded-full"
-          style={{
-            background: `linear-gradient(to bottom, ${theme.color}80, transparent)`,
-          }}
-        />
-      </div>
-    </section>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// About
-// ─────────────────────────────────────────────────────────────
-
-function About({
-  theme,
-}: {
-  theme: (typeof THEMES)[number];
-}) {
-  const info = [
-    {
-      icon: Calendar,
-      label: "Date of Birth",
-      value: "2 July 2004 (22 years old)",
-    },
-    {
-      icon: Globe,
-      label: "Nationality",
-      value: "Thai",
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: "Nakhon Ratchasima, Thailand",
-    },
-    {
-      icon: Mail,
-      label: "Email",
-      value: "manthangamsanthia2547@gmail.com",
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "094-363-6445",
-    },
-  ];
-
-  return (
-    <section
-      id="about"
-      className="py-28 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[1fr_360px] gap-14 lg:gap-20 items-start">
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: -32,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-          >
-            <SectionTag theme={theme}>
-              Career Objective
-            </SectionTag>
-
-            <h2
-              className="text-4xl lg:text-5xl font-light leading-tight tracking-tight text-[#1A1614] mb-6"
-              style={serif}
-            >
-              Creating Meaningful
-              <br />
-              <span
-                className="italic font-semibold"
-                style={{
-                  color: theme.color,
-                }}
-              >
-                User Experiences
-              </span>
-            </h2>
-
-            <p className="text-[#5A4D45] leading-relaxed text-base lg:text-lg mb-4">
-              I am a Computer Science student with a strong interest in
-              UX/UI Design. I enjoy creating simple, intuitive, and
-              user-friendly digital experiences.
-            </p>
-
-            <p className="text-[#8B7B72] leading-relaxed mb-10">
-              I am looking for an internship opportunity where I can
-              apply what I have learned, improve my design skills, and
-              gain experience working with a professional team.
-            </p>
-
-            <h3
-              className="font-semibold text-[#1A1614] mb-5 text-sm"
-              style={mono}
-            >
-              Summary of Qualifications
-            </h3>
-
-            <ul className="space-y-3">
-              {HIGHLIGHTS.map((h, i) => (
-                <motion.li
-                  key={i}
-                  initial={{
-                    opacity: 0,
-                    x: -16,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    x: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                  }}
-                  transition={{
-                    duration: 0.45,
-                    delay: i * 0.07,
-                  }}
-                  className="flex items-start gap-3 text-sm text-[#5A4D45] leading-relaxed"
-                >
-                  <ChevronRight
-                    size={14}
-                    className="flex-shrink-0 mt-0.5"
-                    style={{
-                      color: theme.color,
-                    }}
-                  />
-
-                  <span>{h}</span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: 32,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-            className="space-y-3"
-          >
-            {info.map(({ icon: Icon, label, value }) => (
-              <div
-                key={label}
-                className="flex items-start gap-4 p-4 rounded-2xl border bg-white hover:shadow-sm transition-all duration-200"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
-              >
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: theme.light,
-                    border: `1px solid ${theme.border}`,
-                  }}
-                >
-                  <Icon
-                    size={14}
-                    style={{
-                      color: theme.color,
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <div
-                    className="text-[10px] text-[#8B7B72] mb-0.5"
+                  <p
+                    className="mt-2 text-xs text-[#8A7C73]"
                     style={mono}
                   >
-                    {label}
-                  </div>
-
-                  <div className="text-sm font-medium text-[#1A1614] break-all">
-                    {value}
-                  </div>
+                    UX/UI DESIGNER
+                  </p>
                 </div>
               </div>
-            ))}
 
-            {/* Languages */}
-            <div
-              className="p-4 rounded-2xl border bg-white"
-              style={{
-                borderColor: "#E8DDD4",
-              }}
-            >
-              <div
-                className="text-[10px] text-[#8B7B72] mb-3"
-                style={mono}
-              >
-                Languages
-              </div>
-
-              <div className="flex gap-3">
-                <div
-                  className="flex-1 p-3 rounded-xl text-center"
-                  style={{
-                    background: "#FAF7F2",
-                  }}
-                >
-                  <div className="text-sm font-semibold text-[#1A1614]">
-                    Thai
+              <div className="absolute left-5 bottom-5 right-5 rounded-2xl bg-white/90 backdrop-blur-md border border-white p-4">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{
+                      backgroundColor:
+                        theme.light,
+                      color: theme.color,
+                    }}
+                  >
+                    <Palette size={18} />
                   </div>
 
-                  <div className="text-[10px] text-[#8B7B72] mt-0.5">
-                    Native · Excellent
-                  </div>
-                </div>
+                  <div>
+                    <p className="text-sm font-semibold">
+                      UX/UI Designer
+                    </p>
 
-                <div
-                  className="flex-1 p-3 rounded-xl text-center"
-                  style={{
-                    background: "#FAF7F2",
-                  }}
-                >
-                  <div className="text-sm font-semibold text-[#1A1614]">
-                    English
-                  </div>
-
-                  <div className="text-[10px] text-[#8B7B72] mt-0.5">
-                    Basic Proficiency
+                    <p className="text-xs text-[#8A7C73]">
+                      {language === "th"
+                        ? "ออกแบบประสบการณ์ดิจิทัล"
+                        : "Designing digital experiences"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1095,96 +833,240 @@ function About({
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// Skills
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   STAT
+========================================================= */
+
+function Stat({
+  value,
+  label,
+  theme,
+}: {
+  value: string;
+  label: string;
+  theme: Theme;
+}) {
+  return (
+    <div>
+      <p
+        className="text-xl font-semibold"
+        style={{
+          ...displayFont,
+          color: theme.color,
+        }}
+      >
+        {value}
+      </p>
+
+      <p className="mt-1 text-xs text-[#8A7C73]">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+function About({
+  theme,
+  language,
+}: {
+  theme: Theme;
+  language: Language;
+}) {
+  return (
+    <section
+      id="about"
+      className="py-24 md:py-32 px-5 md:px-8 bg-white"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="01 / ABOUT"
+          title={
+            language === "th"
+              ? "เกี่ยวกับฉัน"
+              : "About Me"
+          }
+          description={
+            language === "th"
+              ? "ฉันสนใจการออกแบบเว็บไซต์และแอปพลิเคชันที่ผสมผสานความสวยงามเข้ากับการใช้งานจริง"
+              : "I enjoy designing websites and digital products that balance visual quality with real user needs."
+            }
+          theme={theme}
+        />
+
+        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 mt-16">
+          <div>
+            <p
+              className="text-4xl md:text-5xl font-semibold leading-tight"
+              style={displayFont}
+            >
+              {language === "th"
+                ? "Design with purpose."
+                : "Design with purpose."}
+            </p>
+
+            <div
+              className="w-16 h-1 rounded-full mt-6"
+              style={{
+                backgroundColor:
+                  theme.color,
+              }}
+            />
+          </div>
+
+          <div className="space-y-6 text-[#70645D] leading-8">
+            <p>
+              {language === "th"
+                ? "ฉันเป็นนักศึกษาวิทยาการคอมพิวเตอร์ที่มีความสนใจด้าน UX/UI Design และ Frontend Development ชอบเปลี่ยนปัญหาที่ซับซ้อนให้กลายเป็นหน้าจอและประสบการณ์ที่เข้าใจง่าย"
+                : "I am a Computer Science student interested in UX/UI Design and Frontend Development. I enjoy turning complex problems into clear interfaces and meaningful user experiences."}
+            </p>
+
+            <p>
+              {language === "th"
+                ? "ในการทำโปรเจกต์ ฉันให้ความสำคัญกับการทำความเข้าใจผู้ใช้ การวาง Information Architecture การออกแบบ User Flow การทำ Wireframe และ Prototype รวมถึงการทดสอบและปรับปรุงงาน"
+                : "In my projects, I focus on understanding users, information architecture, user flows, wireframing, prototyping, testing, and continuous improvement."}
+            </p>
+
+            <p>
+              {language === "th"
+                ? "ฉันกำลังมองหาโอกาสในการฝึกงานหรืองานระดับเริ่มต้นด้าน UX/UI Design, Product Design หรือ Frontend Development เพื่อเรียนรู้จากการทำงานจริงและพัฒนาทักษะของตัวเอง"
+                : "I am looking for internship or entry-level opportunities in UX/UI Design, Product Design, or Frontend Development where I can learn from real-world projects and continue growing."}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   SKILLS
+========================================================= */
 
 function Skills({
   theme,
+  language,
 }: {
-  theme: (typeof THEMES)[number];
+  theme: Theme;
+  language: Language;
 }) {
-  const categories = [
+  const skills = [
     {
-      title: "UX/UI Design",
+      icon: Palette,
+      title:
+        language === "th"
+          ? "UX/UI Design"
+          : "UX/UI Design",
+      items:
+        language === "th"
+          ? [
+              "User Research",
+              "User Flow",
+              "Wireframe",
+              "Prototype",
+              "Responsive Design",
+              "Usability Testing",
+            ]
+          : [
+              "User Research",
+              "User Flow",
+              "Wireframe",
+              "Prototype",
+              "Responsive Design",
+              "Usability Testing",
+            ],
+    },
+    {
       icon: Layers,
-      description:
-        "Designing clear and user-friendly experiences from user flows to high-fidelity interfaces.",
-      skills: DESIGN_SKILLS,
-      color: "rose" as ChipColor,
+      title:
+        language === "th"
+          ? "Design Tools"
+          : "Design Tools",
+      items: [
+        "Figma",
+        "FigJam",
+        "Design System",
+        "Component Design",
+        "Visual Design",
+        "Prototyping",
+      ],
     },
     {
-      title: "Design Tools",
-      icon: Layers,
-      description:
-        "Tools used to create visual designs, wireframes, prototypes, and supporting graphics.",
-      skills: DESIGN_TOOLS,
-      color: "stone" as ChipColor,
+      icon: Globe,
+      title:
+        language === "th"
+          ? "Frontend"
+          : "Frontend",
+      items: [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
     },
     {
-      title: "UX Research & Testing",
-      icon: BookOpen,
-      description:
-        "Understanding user needs, validating designs, and preparing structured testing activities.",
-      skills: UX_RESEARCH,
-      color: "purple" as ChipColor,
-    },
-    {
-      title: "Soft Skills",
       icon: Users2,
-      description:
-        "Professional qualities developed through coursework, project collaboration, and teamwork.",
-      skills: SOFT_SKILLS,
-      color: "rose" as ChipColor,
+      title:
+        language === "th"
+          ? "Working Style"
+          : "Working Style",
+      items:
+        language === "th"
+          ? [
+              "Teamwork",
+              "Communication",
+              "Problem Solving",
+              "Agile / Scrum",
+              "Documentation",
+              "Continuous Learning",
+            ]
+          : [
+              "Teamwork",
+              "Communication",
+              "Problem Solving",
+              "Agile / Scrum",
+              "Documentation",
+              "Continuous Learning",
+            ],
     },
   ];
 
   return (
     <section
       id="skills"
-      className="py-28 border-t relative"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
+      className="py-24 md:py-32 px-5 md:px-8"
     >
-      <div
-        className="absolute left-1/2 -translate-x-1/2 w-[700px] h-40 pointer-events-none opacity-[0.07]"
-        style={{
-          background: `linear-gradient(90deg, ${theme.color}, #9B7BB0)`,
-          filter: "blur(80px)",
-        }}
-      />
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="02 / SKILLS"
+          title={
+            language === "th"
+              ? "ทักษะ"
+              : "Skills"
+          }
+          description={
+            language === "th"
+              ? "ทักษะที่ใช้ในการออกแบบ พัฒนา และทำงานร่วมกับทีม"
+              : "Skills I use to design, build, and collaborate on digital products."
+          }
+          theme={theme}
+        />
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative">
-        <div className="text-center mb-16">
-          <SectionTag center theme={theme}>
-            UX/UI Skills &amp; Professional Skills
-          </SectionTag>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
+          {skills.map((skill, index) => {
+            const Icon = skill.icon;
 
-          <h2
-            className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
-            style={serif}
-          >
-            Tools of{" "}
-            <span
-              className="italic font-semibold"
-              style={{
-                color: theme.color,
-              }}
-            >
-              the Craft
-            </span>
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map(
-            ({ title, icon: Icon, description, skills, color }, i) => (
+            return (
               <motion.div
-                key={title}
+                key={skill.title}
                 initial={{
                   opacity: 0,
-                  y: 28,
+                  y: 20,
                 }}
                 whileInView={{
                   opacity: 1,
@@ -1192,173 +1074,164 @@ function Skills({
                 }}
                 viewport={{
                   once: true,
+                  amount: 0.2,
                 }}
                 transition={{
-                  duration: 0.55,
-                  delay: i * 0.1,
+                  delay: index * 0.08,
                 }}
-                className="p-7 rounded-3xl border bg-white hover:shadow-lg transition-all duration-300 group"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
+                className="rounded-3xl border border-[#E8DED6] bg-white p-6"
               >
                 <div
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300"
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center"
                   style={{
-                    background: theme.light,
-                    border: `1px solid ${theme.border}`,
+                    backgroundColor:
+                      theme.light,
+                    color: theme.color,
                   }}
                 >
-                  <Icon
-                    size={20}
-                    style={{
-                      color: theme.color,
-                    }}
-                  />
+                  <Icon size={20} />
                 </div>
 
-                <h3 className="text-base font-semibold text-[#1A1614] mb-2">
-                  {title}
+                <h3
+                  className="mt-6 text-lg font-semibold"
+                  style={displayFont}
+                >
+                  {skill.title}
                 </h3>
 
-                <p className="text-xs text-[#8B7B72] leading-relaxed mb-5">
-                  {description}
-                </p>
+                <div className="mt-5 space-y-3">
+                  {skill.items.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2 text-sm text-[#766A63]"
+                    >
+                      <Check
+                        size={14}
+                        style={{
+                          color: theme.color,
+                        }}
+                      />
 
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((s) => (
-                    <Chip
-                      key={s}
-                      label={s}
-                      color={color}
-                    />
+                      <span>{item}</span>
+                    </div>
                   ))}
                 </div>
               </motion.div>
-            )
-          )}
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// Projects
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   PROJECTS
+========================================================= */
 
 function Projects({
   theme,
+  language,
 }: {
-  theme: (typeof THEMES)[number];
+  theme: Theme;
+  language: Language;
 }) {
   const projects = [
     {
       number: "01",
-      type: "Senior Project",
-      status: "In Progress",
+      category:
+        language === "th"
+          ? "Senior Project"
+          : "Senior Project",
       title:
-        "Information System for Common Area Fee Management & Debt Tracking",
-      role: "UX/UI Designer & UX Researcher",
+        language === "th"
+          ? "ระบบสารสนเทศเพื่อบริหารจัดการค่าส่วนกลางและติดตามหนี้ค้างชำระ"
+          : "Information System for Common Area Fee Management & Debt Tracking",
       description:
-        "Designed user-friendly interfaces and user flows for a common area fee management system, focusing on clear information, easy navigation, and a better experience for residents and administrators.",
-      image: "/project1.png",
-      imageAlt: "Common Area Fee Management System UI Design",
-      background: "#F5EEE8",
+        language === "th"
+          ? "ระบบสำหรับบริหารจัดการค่าส่วนกลาง การออกใบแจ้งหนี้ การติดตามยอดค้างชำระ การตรวจสอบการชำระเงิน และการแจ้งเตือนผ่าน LINE"
+          : "A system for managing common area fees, invoices, outstanding balances, payment verification, and LINE notifications.",
       tags: [
         "Figma",
-        "UX/UI Design",
-        "User Flow",
-        "Wireframing",
-        "Prototyping",
-        "Usability Testing",
+        "UX/UI",
+        "LINE Messaging API",
+        "Database",
+        "Agile / Scrum",
       ],
-      contributions: [
-        "Analyzed user needs and system requirements.",
-        "Created user flows and wireframes.",
-        "Designed high-fidelity UI screens in Figma.",
-        "Created interactive prototypes.",
-        "Prepared usability testing and test cases.",
-      ],
+      image: "/project1.png",
+      role:
+        language === "th"
+          ? "UX/UI Designer · System Analyst"
+          : "UX/UI Designer · System Analyst",
     },
-
     {
       number: "02",
-      type: "Academic Project",
-      status: "Completed",
-      title: "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย",
-      subtitle:
-        "Online Food Ordering System for Thai Food Restaurant",
-      role: "UI/UX Designer · Figma",
+      category:
+        language === "th"
+          ? "Academic Project"
+          : "Academic Project",
+      title:
+        language === "th"
+          ? "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย"
+          : "Online Food Ordering System for Thai Food Restaurant",
       description:
-        "Designed a mobile food ordering interface for a Thai food restaurant, focusing on simple navigation, clear food information, and an easy-to-use ordering experience.",
-      image: "/project2.png",
-      imageAlt: "Online Food Ordering System UI Design",
-      background: "#F5EEE8",
+        language === "th"
+          ? "ออกแบบ Mobile Food Ordering Interface สำหรับร้านอาหารไทย โดยเน้นการนำทางที่ง่าย ข้อมูลอาหารชัดเจน และขั้นตอนการสั่งซื้อที่ใช้งานสะดวก"
+          : "Designed a mobile food ordering interface for a Thai food restaurant, focusing on simple navigation, clear food information, and an easy ordering experience.",
       tags: [
         "Figma",
-        "UI Design",
-        "Mobile App",
-        "Wireframing",
-        "Prototyping",
+        "UI/UX",
+        "Mobile Design",
+        "Prototype",
       ],
-      contributions: [
-        "Designed mobile interfaces for food browsing and ordering.",
-        "Designed login and food detail screens.",
-        "Focused on clear food information and pricing.",
-        "Created the visual design using Figma.",
-        "Designed an easy-to-understand mobile experience.",
-      ],
+      image: "/project2.png",
+      role:
+        language === "th"
+          ? "UI/UX Designer · Figma"
+          : "UI/UX Designer · Figma",
     },
-
     {
       number: "03",
-      type: "Personal Project",
-      status: "Completed",
+      category:
+        language === "th"
+          ? "Personal Project"
+          : "Personal Project",
       title: "JobTrackr: Job Application Tracker",
-      role: "UI/UX Designer & Frontend Developer",
       description:
-        "A web application designed to help users organize and track job applications in one place. Users can manage company information, job positions, salary details, application dates, and application status.",
-      image: "/jobtrackr.png",
-      imageAlt: "JobTrackr Job Application Tracker Dashboard",
-      background: "#F3F1FF",
+        language === "th"
+          ? "เว็บแอปสำหรับจัดการและติดตามการสมัครงานในที่เดียว พร้อม Dashboard, Application List และ Kanban Board เพื่อช่วยให้ผู้ใช้เห็นสถานะการสมัครงานได้ง่ายขึ้น"
+          : "A web application designed to organize and track job applications in one place, featuring a dashboard, application list, and Kanban board.",
       tags: [
         "React",
         "TypeScript",
         "Vite",
         "Tailwind CSS",
         "UI/UX Design",
-        "Dashboard",
-        "Kanban Board",
       ],
-      contributions: [
-        "Designed a dashboard to summarize job application progress.",
-        "Designed an application list with status filtering.",
-        "Designed a Kanban Board for application tracking.",
-        "Developed the web application using React and TypeScript.",
-        "Focused on creating a clean and easy-to-use interface.",
-      ],
+      image: "/jobtrackr.png",
+      role:
+        language === "th"
+          ? "UI/UX Designer · Frontend Developer"
+          : "UI/UX Designer · Frontend Developer",
       liveDemo:
         "https://job-application-tracker-wine-ten.vercel.app/",
       github:
         "https://github.com/manthangamsanthia2547-a11y/job-application-tracker",
     },
-
-    // ─────────────────────────────────────────────────────────
-    // PROJECT 04 — MangaVerse
-    // ─────────────────────────────────────────────────────────
-
     {
       number: "04",
-      type: "Personal Project",
-      status: "Completed",
-      title: "MangaVerse: Manga & Webtoon Reading Platform",
-      role: "UI/UX Designer & Frontend Developer",
+      category:
+        language === "th"
+          ? "Personal Project"
+          : "Personal Project",
+      title:
+        language === "th"
+          ? "MangaVerse: แพลตฟอร์มอ่านมังงะและเว็บตูน"
+          : "MangaVerse: Manga & Webtoon Reading Platform",
       description:
-        "Designed and developed a responsive web platform for discovering, reading, and managing manga and webtoons, focusing on intuitive navigation, comfortable reading, and a simple content discovery experience.",
-      image: "/mangaverse.png",
-      imageAlt: "MangaVerse Manga and Webtoon Reading Platform",
-      background: "#FFF4EA",
+        language === "th"
+          ? "เว็บไซต์สำหรับค้นหา อ่าน และจัดการมังงะและเว็บตูน โดยเน้นการนำทางที่เข้าใจง่าย ประสบการณ์การอ่านที่สะดวก และการค้นหาเนื้อหาที่เรียบง่าย"
+          : "A responsive web platform for discovering, reading, and managing manga and webtoons, focusing on intuitive navigation, comfortable reading, and simple content discovery.",
       tags: [
         "React",
         "TypeScript",
@@ -1368,15 +1241,13 @@ function Projects({
         "Responsive Design",
         "Dark/Light Mode",
       ],
-      contributions: [
-        "Designed Home, Explore, Manga Detail, Library, and Reading interfaces.",
-        "Created a user flow for discovering, selecting, reading, and saving manga.",
-        "Designed a responsive interface for desktop and mobile experiences.",
-        "Developed the frontend using React and TypeScript.",
-        "Implemented search, filtering, favorites, reading progress, and reading history.",
-        "Added dark/light mode to improve reading comfort.",
-      ],
-      liveDemo: "https://mangaverse-reading-platform.vercel.app/",
+      image: "/mangaverse.png",
+      role:
+        language === "th"
+          ? "UI/UX Designer · Frontend Developer"
+          : "UI/UX Designer · Frontend Developer",
+      liveDemo:
+        "https://mangaverse-reading-platform.vercel.app/",
       github:
         "https://github.com/manthangamsanthia2547-a11y/mangaverse-reading-platform",
     },
@@ -1385,897 +1256,759 @@ function Projects({
   return (
     <section
       id="projects"
-      className="py-24 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
+      className="py-24 md:py-32 px-5 md:px-8 bg-white"
     >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="03 / PROJECTS"
+          title={
+            language === "th"
+              ? "ผลงาน"
+              : "Selected Projects"
+          }
+          description={
+            language === "th"
+              ? "ตัวอย่างโปรเจกต์ด้าน UX/UI, Web Application และ Frontend Development"
+              : "Selected work across UX/UI design, web applications, and frontend development."
+          }
+          theme={theme}
+        />
 
-        {/* Header */}
-        <div className="text-center mb-14">
-          <SectionTag center theme={theme}>
-            My Projects
-          </SectionTag>
+        <div className="grid md:grid-cols-2 gap-6 mt-14">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.number}
+              project={project}
+              theme={theme}
+              language={language}
+              index={index}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          <h2
-            className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
-            style={serif}
-          >
-            Selected{" "}
-            <span
-              className="italic font-semibold"
-              style={{
-                color: theme.color,
-              }}
-            >
-              Work
-            </span>
-          </h2>
+/* =========================================================
+   PROJECT CARD
+========================================================= */
 
-          <p className="mt-4 text-sm text-[#8B7B72] max-w-2xl mx-auto leading-relaxed">
-            A collection of academic projects, personal projects,
-            and UX/UI design work created during my Computer Science
-            studies.
+function ProjectCard({
+  project,
+  theme,
+  language,
+  index,
+}: {
+  project: {
+    number: string;
+    category: string;
+    title: string;
+    description: string;
+    tags: string[];
+    image: string;
+    role: string;
+    liveDemo?: string;
+    github?: string;
+  };
+  theme: Theme;
+  language: Language;
+  index: number;
+}) {
+  return (
+    <motion.article
+      initial={{
+        opacity: 0,
+        y: 25,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.15,
+      }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.08,
+      }}
+      className="group overflow-hidden rounded-[2rem] border border-[#E8DED6] bg-[#FFFDFB]"
+    >
+      {/* Image */}
+      <div className="relative overflow-hidden bg-[#F3EDE7]">
+        <div className="aspect-[16/10] overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+          />
+        </div>
+
+        <div
+          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-[10px] font-bold text-white backdrop-blur-md"
+          style={{
+            backgroundColor: `${theme.color}E6`,
+            ...mono,
+          }}
+        >
+          PROJECT {project.number}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 md:p-7">
+        <div
+          className="text-[10px] uppercase tracking-[0.15em] font-bold"
+          style={{
+            color: theme.color,
+            ...mono,
+          }}
+        >
+          {project.category}
+        </div>
+
+        <h3
+          className="mt-3 text-2xl font-semibold leading-tight text-[#29221F]"
+          style={displayFont}
+        >
+          {project.title}
+        </h3>
+
+        <p className="mt-4 text-sm leading-7 text-[#756961]">
+          {project.description}
+        </p>
+
+        <div className="mt-5">
+          <p className="text-xs font-semibold text-[#5D524B]">
+            {language === "th"
+              ? "บทบาท"
+              : "My Role"}
+          </p>
+
+          <p className="mt-1 text-xs text-[#897A71]">
+            {project.role}
           </p>
         </div>
 
-        {/* Project Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-
-          {projects.map((project) => (
-            <div
-              key={project.number}
-              className="rounded-3xl overflow-hidden border bg-white shadow-sm hover:shadow-xl transition-all duration-300"
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mt-5">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1.5 rounded-full text-[10px] border"
               style={{
-                borderColor: "#E8DDD4",
+                color: theme.color,
+                borderColor: `${theme.color}25`,
+                backgroundColor:
+                  theme.light,
               }}
             >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-              {/* Project Image */}
-              <div
-                className="w-full h-[300px] lg:h-[340px] flex items-center justify-center p-5"
+        {/* Links */}
+        {(project.liveDemo ||
+          project.github) && (
+          <div className="flex flex-wrap gap-2 mt-7 pt-5 border-t border-[#EEE5DE]">
+            {project.liveDemo && (
+              <a
+                href={project.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold text-white transition-all hover:opacity-90"
                 style={{
-                  background: project.background,
+                  backgroundColor:
+                    theme.color,
                 }}
               >
-                <img
-                  src={project.image}
-                  alt={project.imageAlt}
-                  className="w-full h-full object-contain"
+                <ExternalLink size={14} />
+
+                {language === "th"
+                  ? "ดู Live Demo"
+                  : "Live Demo"}
+              </a>
+            )}
+
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold border border-[#DED4CC] bg-white text-[#544A44] hover:border-[#C9BDB4] transition-colors"
+              >
+                <Github size={14} />
+
+                GitHub
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </motion.article>
+  );
+}
+
+/* =========================================================
+   EDUCATION
+========================================================= */
+
+function Education({
+  theme,
+  language,
+}: {
+  theme: Theme;
+  language: Language;
+}) {
+  return (
+    <section
+      id="education"
+      className="py-24 md:py-32 px-5 md:px-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="04 / EDUCATION"
+          title={
+            language === "th"
+              ? "การศึกษา"
+              : "Education"
+          }
+          description={
+            language === "th"
+              ? "พื้นฐานด้าน Computer Science ที่นำมาประยุกต์ใช้กับงานออกแบบและพัฒนา"
+              : "A Computer Science background that supports my design and development work."
+          }
+          theme={theme}
+        />
+
+        <div className="mt-14 max-w-4xl">
+          <div
+            className="relative pl-8 md:pl-12 border-l-2"
+            style={{
+              borderColor:
+                `${theme.color}35`,
+            }}
+          >
+            <div
+              className="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-[#FAF7F2]"
+              style={{
+                backgroundColor:
+                  theme.color,
+              }}
+            />
+
+            <div className="rounded-3xl border border-[#E8DED6] bg-white p-7 md:p-9">
+              <div className="flex flex-wrap items-center gap-3 text-xs">
+                <span
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+                  style={{
+                    color: theme.color,
+                    backgroundColor:
+                      theme.light,
+                  }}
+                >
+                  <Calendar size={13} />
+
+                  {language === "th"
+                    ? "ปัจจุบัน"
+                    : "Present"}
+                </span>
+              </div>
+
+              <h3
+                className="mt-5 text-2xl md:text-3xl font-semibold"
+                style={displayFont}
+              >
+                {language === "th"
+                  ? "มหาวิทยาลัยราชภัฏนครราชสีมา"
+                  : "Nakhon Ratchasima Rajabhat University"}
+              </h3>
+
+              <p
+                className="mt-2 font-medium"
+                style={{
+                  color: theme.color,
+                }}
+              >
+                {language === "th"
+                  ? "วิทยาศาสตรบัณฑิต สาขาวิทยาการคอมพิวเตอร์"
+                  : "Bachelor of Science in Computer Science"}
+              </p>
+
+              <p className="mt-5 text-sm leading-7 text-[#756961]">
+                {language === "th"
+                  ? "ศึกษาเกี่ยวกับการพัฒนาซอฟต์แวร์ ฐานข้อมูล การวิเคราะห์ระบบ การออกแบบเว็บไซต์ และเทคโนโลยีสารสนเทศ พร้อมนำความรู้มาประยุกต์ใช้กับโปรเจกต์ด้าน UX/UI และ Web Application"
+                  : "Studying software development, databases, system analysis, web design, and information technology, while applying these skills to UX/UI and web application projects."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   TRAINING
+========================================================= */
+
+function Training({
+  theme,
+  language,
+}: {
+  theme: Theme;
+  language: Language;
+}) {
+  const trainings = [
+    {
+      icon: Palette,
+      title:
+        language === "th"
+          ? "UX/UI Design"
+          : "UX/UI Design",
+      description:
+        language === "th"
+          ? "ศึกษาแนวคิด User Experience, User Interface, Design Process, Persona, User Flow, Wireframe และ Prototype"
+          : "Studied User Experience, User Interface, design processes, personas, user flows, wireframes, and prototypes.",
+    },
+    {
+      icon: BookOpen,
+      title:
+        language === "th"
+          ? "Agile & Scrum"
+          : "Agile & Scrum",
+      description:
+        language === "th"
+          ? "เรียนรู้การทำงานแบบ Agile และ Scrum รวมถึง Product Backlog, Sprint Planning, Sprint Review และ Retrospective"
+          : "Learned Agile and Scrum practices including Product Backlog, Sprint Planning, Sprint Review, and Retrospective.",
+    },
+    {
+      icon: Globe,
+      title:
+        language === "th"
+          ? "Frontend Development"
+          : "Frontend Development",
+      description:
+        language === "th"
+          ? "พัฒนาเว็บไซต์ด้วย HTML, CSS, JavaScript, React, TypeScript และ Tailwind CSS"
+          : "Built web interfaces using HTML, CSS, JavaScript, React, TypeScript, and Tailwind CSS.",
+    },
+  ];
+
+  return (
+    <section
+      id="training"
+      className="py-24 md:py-32 px-5 md:px-8 bg-white"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="05 / TRAINING"
+          title={
+            language === "th"
+              ? "การอบรมและการเรียนรู้"
+              : "Training & Learning"
+          }
+          description={
+            language === "th"
+              ? "สิ่งที่ฉันศึกษาเพิ่มเติมเพื่อพัฒนาทักษะด้านการออกแบบและเทคโนโลยี"
+              : "Additional learning that supports my design and technology skills."
+          }
+          theme={theme}
+        />
+
+        <div className="grid md:grid-cols-3 gap-5 mt-14">
+          {trainings.map(
+            (training, index) => {
+              const Icon = training.icon;
+
+              return (
+                <motion.div
+                  key={training.title}
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                  }}
+                  transition={{
+                    delay: index * 0.08,
+                  }}
+                  className="rounded-3xl border border-[#E8DED6] bg-[#FFFDFB] p-7"
+                >
+                  <div
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                    style={{
+                      color: theme.color,
+                      backgroundColor:
+                        theme.light,
+                    }}
+                  >
+                    <Icon size={21} />
+                  </div>
+
+                  <h3
+                    className="mt-6 text-xl font-semibold"
+                    style={displayFont}
+                  >
+                    {training.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-[#756961]">
+                    {training.description}
+                  </p>
+                </motion.div>
+              );
+            }
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+function Contact({
+  theme,
+  language,
+}: {
+  theme: Theme;
+  language: Language;
+}) {
+  return (
+    <section
+      id="contact"
+      className="py-24 md:py-32 px-5 md:px-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading
+          eyebrow="06 / CONTACT"
+          title={
+            language === "th"
+              ? "มาพูดคุยกัน"
+              : "Let's Connect"
+          }
+          description={
+            language === "th"
+              ? "หากสนใจร่วมงาน ฝึกงาน หรืออยากพูดคุยเกี่ยวกับโปรเจกต์ สามารถติดต่อฉันได้เลยค่ะ"
+              : "If you're interested in working together, internship opportunities, or discussing a project, feel free to reach out."
+          }
+          theme={theme}
+        />
+
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6 mt-14">
+          {/* Contact Form */}
+          <div className="rounded-[2rem] border border-[#E8DED6] bg-white p-7 md:p-9">
+            <div className="space-y-5">
+              <div>
+                <label className="block text-xs font-semibold mb-2">
+                  {language === "th"
+                    ? "ชื่อ"
+                    : "Your Name"}
+                </label>
+
+                <input
+                  type="text"
+                  placeholder={
+                    language === "th"
+                      ? "ชื่อของคุณ"
+                      : "Your name"
+                  }
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#E4DAD2] bg-[#FFFCF9] outline-none focus:ring-2"
+                  style={{
+                    ["--tw-ring-color" as string]:
+                      `${theme.color}30`,
+                  }}
                 />
               </div>
 
-              {/* Project Content */}
-              <div className="p-6 lg:p-7">
+              <div>
+                <label className="block text-xs font-semibold mb-2">
+                  {language === "th"
+                    ? "อีเมล"
+                    : "Email Address"}
+                </label>
 
-                {/* Project Number + Type */}
-                <div className="flex items-center justify-between gap-3 mb-5">
+                <input
+                  type="email"
+                  placeholder={
+                    language === "th"
+                      ? "อีเมลของคุณ"
+                      : "Your email"
+                  }
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#E4DAD2] bg-[#FFFCF9] outline-none"
+                />
+              </div>
 
-                  <div
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border"
-                    style={{
-                      ...mono,
-                      background:
-                        project.number === "03" ||
-                          project.number === "04"
-                          ? "#F1EEFF"
-                          : "#FFF7ED",
-                      borderColor:
-                        project.number === "03" ||
-                          project.number === "04"
-                          ? "#D9D1FF"
-                          : "#FED7AA",
-                      color:
-                        project.number === "03" ||
-                          project.number === "04"
-                          ? "#5D50E6"
-                          : "#D97706",
-                    }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{
-                        background:
-                          project.number === "03" ||
-                            project.number === "04"
-                            ? "#6C5CE7"
-                            : "#F59E0B",
-                      }}
-                    />
+              <div>
+                <label className="block text-xs font-semibold mb-2">
+                  {language === "th"
+                    ? "ข้อความ"
+                    : "Message"}
+                </label>
 
-                    {project.type}
-                  </div>
+                <textarea
+                  rows={5}
+                  placeholder={
+                    language === "th"
+                      ? "บอกฉันเกี่ยวกับโอกาสหรือโปรเจกต์..."
+                      : "Tell me about the opportunity or project..."
+                  }
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#E4DAD2] bg-[#FFFCF9] outline-none resize-none"
+                />
+              </div>
 
-                  <span
-                    className="text-[10px] font-semibold"
-                    style={{
-                      ...mono,
-                      color: theme.color,
-                    }}
-                  >
-                    PROJECT {project.number}
-                  </span>
+              <a
+                href="mailto:manthana@example.com"
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 rounded-xl text-sm font-semibold text-white"
+                style={{
+                  backgroundColor:
+                    theme.color,
+                }}
+              >
+                {language === "th"
+                  ? "ส่งข้อความ"
+                  : "Send Message"}
 
-                </div>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
 
-                {/* Status */}
-                {project.status === "In Progress" && (
-                  <div className="mb-3">
-                    <span
-                      className="inline-flex items-center gap-1.5 text-[10px] font-medium"
-                      style={{
-                        ...mono,
-                        color: "#D97706",
-                      }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full animate-pulse"
-                        style={{
-                          background: "#F59E0B",
-                        }}
-                      />
+          {/* Contact Information */}
+          <div className="space-y-4">
+            <ContactCard
+              icon={Mail}
+              title="Email"
+              text={
+                language === "th"
+                  ? "สามารถติดต่อผ่านอีเมลได้เลยค่ะ"
+                  : "Let's connect via email."
+              }
+              theme={theme}
+            />
 
-                      Currently In Progress
-                    </span>
-                  </div>
-                )}
+            <ContactCard
+              icon={Phone}
+              title="Phone"
+              text={
+                language === "th"
+                  ? "พร้อมพูดคุยเกี่ยวกับโอกาสในการทำงาน"
+                  : "Let's connect via phone."
+              }
+              theme={theme}
+            />
 
-                {/* Title */}
-                <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-2">
-                  {project.title}
-                </h3>
+            <ContactCard
+              icon={MapPin}
+              title={
+                language === "th"
+                  ? "Location"
+                  : "Location"
+              }
+              text={
+                language === "th"
+                  ? "นครราชสีมา, ประเทศไทย"
+                  : "Nakhon Ratchasima, Thailand"
+              }
+              theme={theme}
+            />
 
-                {/* Subtitle */}
-                {"subtitle" in project && project.subtitle && (
-                  <p className="text-sm text-[#5A4D45] mb-2">
-                    {project.subtitle}
-                  </p>
-                )}
-
-                {/* Role */}
-                <p
-                  className="text-xs font-semibold mb-4"
+            <div
+              className="rounded-3xl border p-6"
+              style={{
+                borderColor: `${theme.color}30`,
+                backgroundColor:
+                  theme.light,
+              }}
+            >
+              <div className="flex gap-4">
+                <div
+                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0"
                   style={{
                     color: theme.color,
                   }}
                 >
-                  {project.role}
-                </p>
-
-                {/* Description */}
-                <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
-                  {project.description}
-                </p>
-
-                {/* Contribution */}
-                <div className="mb-5">
-
-                  <h4
-                    className="text-xs font-semibold text-[#1A1614] mb-2"
-                    style={mono}
-                  >
-                    My Contribution
-                  </h4>
-
-                  <ul className="space-y-1.5">
-                    {project.contributions.map(
-                      (item, index) => (
-                        <li
-                          key={index}
-                          className="flex items-start gap-2 text-xs text-[#5A4D45]"
-                        >
-                          <ChevronRight
-                            size={12}
-                            className="flex-shrink-0 mt-0.5"
-                            style={{
-                              color: theme.color,
-                            }}
-                          />
-
-                          <span>{item}</span>
-                        </li>
-                      )
-                    )}
-                  </ul>
-
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {project.tags.map((tag) => (
-                    <Chip
-                      key={tag}
-                      label={tag}
-                      color={
-                        project.number === "03" ||
-                          project.number === "04"
-                          ? "purple"
-                          : "rose"
-                      }
-                    />
-                  ))}
-                </div>
-
-                {/* Project Links */}
-                {(project.number === "03" ||
-                  project.number === "04") && (
-                    <div className="flex flex-wrap gap-3">
-
-                      {/* Live Demo */}
-                      {project.liveDemo && (
-                        <a
-                          href={project.liveDemo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.02] transition-all"
-                          style={{
-                            background: theme.color,
-                          }}
-                        >
-                          <Globe size={15} />
-                          Live Demo
-                          <ArrowRight size={14} />
-                        </a>
-                      )}
-
-                      {/* GitHub */}
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
-                          style={{
-                            borderColor: "#E0D5CA",
-                          }}
-                        >
-                          <Github size={15} />
-                          GitHub
-                        </a>
-                      )}
-
-                    </div>
-                  )}
-
-              </div>
-            </div>
-          ))}
-
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Education({
-  theme,
-}: {
-  theme: (typeof THEMES)[number];
-}) {
-  const schools = [
-    {
-      school: "Nakhon Ratchasima Rajabhat University",
-      degree: "Bachelor of Science in Computer Science",
-      duration: "July 2023 – Present (In Progress)",
-      gpa: "3.29",
-      location: "Nakhon Ratchasima, Thailand",
-      accent: theme.color,
-    },
-    {
-      school: "Thachangratbamroong School",
-      degree:
-        "General Education Program (High School Certificate)",
-      duration: "May 2019 – March 2022",
-      gpa: "3.41",
-      location: "Nakhon Ratchasima, Thailand",
-      accent: "#9B7BB0",
-    },
-  ];
-
-  return (
-    <section
-      id="education"
-      className="py-28 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
-
-          <div>
-            <SectionTag theme={theme}>
-              Education
-            </SectionTag>
-
-            <h2
-              className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
-              style={serif}
-            >
-              Academic
-              <br />
-
-              <span
-                className="italic font-semibold"
-                style={{
-                  color: theme.color,
-                }}
-              >
-                Background
-              </span>
-            </h2>
-          </div>
-
-          <div className="space-y-5">
-            {schools.map((s, i) => (
-              <motion.div
-                key={s.school}
-                initial={{
-                  opacity: 0,
-                  x: 28,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  x: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  duration: 0.55,
-                  delay: i * 0.12,
-                }}
-                className="p-7 rounded-3xl border bg-white hover:shadow-md transition-shadow duration-300"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
-              >
-                <div className="flex items-start justify-between gap-4 mb-5">
-
-                  <div>
-                    <h3 className="font-semibold text-lg text-[#1A1614] mb-1.5 leading-snug">
-                      {s.school}
-                    </h3>
-
-                    <p className="text-[#5A4D45] text-sm leading-relaxed">
-                      {s.degree}
-                    </p>
-                  </div>
-
-                  <div className="text-right flex-shrink-0">
-                    <div
-                      className="text-2xl font-bold leading-none"
-                      style={{
-                        ...serif,
-                        fontStyle: "italic",
-                        color: s.accent,
-                      }}
-                    >
-                      {s.gpa}
-                    </div>
-
-                    <div
-                      className="text-[10px] text-[#8B7B72] mt-1"
-                      style={mono}
-                    >
-                      GPA
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-4">
-
-                  <div
-                    className="flex items-center gap-1.5 text-xs text-[#8B7B72]"
-                    style={mono}
-                  >
-                    <Calendar
-                      size={11}
-                      style={{
-                        color: s.accent,
-                      }}
-                    />
-
-                    {s.duration}
-                  </div>
-
-                  <div
-                    className="flex items-center gap-1.5 text-xs text-[#8B7B72]"
-                    style={mono}
-                  >
-                    <MapPin
-                      size={11}
-                      style={{
-                        color: s.accent,
-                      }}
-                    />
-
-                    {s.location}
-                  </div>
-
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Training
-// ─────────────────────────────────────────────────────────────
-
-function Training({
-  theme,
-}: {
-  theme: (typeof THEMES)[number];
-}) {
-  return (
-    <section
-      id="training"
-      className="py-28 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
-
-          <div>
-            <SectionTag theme={theme}>
-              Training &amp; Seminars
-            </SectionTag>
-
-            <h2
-              className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
-              style={serif}
-            >
-              Continuous
-              <br />
-
-              <span
-                className="italic font-semibold"
-                style={{
-                  color: theme.color,
-                }}
-              >
-                Learning
-              </span>
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            {TRAINING.map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{
-                  opacity: 0,
-                  x: 28,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  x: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.1,
-                }}
-                className="flex items-start gap-4 p-6 rounded-2xl border bg-white transition-colors duration-200"
-                style={{
-                  borderColor: "#E8DDD4",
-                }}
-              >
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{
-                    background: theme.light,
-                    border: `1px solid ${theme.border}`,
-                  }}
-                >
-                  <BookOpen
-                    size={14}
-                    style={{
-                      color: theme.color,
-                    }}
-                  />
+                  <Check size={18} />
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-[#1A1614] mb-1.5 text-sm leading-relaxed">
-                    {t.title}
-                  </h4>
+                  <h3 className="font-semibold">
+                    {language === "th"
+                      ? "Open to Opportunities"
+                      : "Open to Opportunities"}
+                  </h3>
 
-                  <p className="text-xs text-[#8B7B72] leading-relaxed mb-2.5">
-                    {t.org}
+                  <p className="mt-2 text-sm leading-6 text-[#756961]">
+                    {language === "th"
+                      ? "กำลังมองหาโอกาสฝึกงานและงานระดับเริ่มต้นด้าน UX/UI Design, Product Design และ Frontend Development"
+                      : "Currently seeking internship and entry-level opportunities in UX/UI Design, Product Design, and Frontend Development."}
                   </p>
-
-                  <span
-                    className="text-xs font-medium"
-                    style={{
-                      ...mono,
-                      color: theme.color,
-                    }}
-                  >
-                    {t.date}
-                  </span>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Contact
-// ─────────────────────────────────────────────────────────────
-
-function Contact({
-  theme,
-}: {
-  theme: (typeof THEMES)[number];
-}) {
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "manthangamsanthia2547@gmail.com",
-      href: "mailto:manthangamsanthia2547@gmail.com",
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "094-363-6445",
-      href: "tel:0943636445",
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: "Nakhon Ratchasima 30230, Thailand",
-    },
-    {
-      icon: Github,
-      label: "GitHub",
-      value:
-        "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
-      href:
-        "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
-    },
-  ];
-
-  return (
-    <section
-      id="contact"
-      className="py-28 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-
-        {/* Header */}
-        <div className="text-center mb-16">
-          <SectionTag center theme={theme}>
-            Get In Touch
-          </SectionTag>
-
-          <h2
-            className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
-            style={serif}
-          >
-            Let’s Work{" "}
-            <span
-              className="italic font-semibold"
-              style={{
-                color: theme.color,
-              }}
-            >
-              Together
-            </span>
-          </h2>
-
-          <p className="mt-4 text-[#8B7B72] max-w-md mx-auto leading-relaxed">
-            Interested in internship opportunities or collaborations?
-            Feel free to contact me through the information below.
-          </p>
-        </div>
-
-        {/* Contact Information */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 24,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-          className="max-w-3xl mx-auto space-y-4"
-        >
-          {contactInfo.map(
-            ({ icon: Icon, label, value, href }) => {
-              const content = (
-                <>
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{
-                      background: theme.light,
-                      border: `1px solid ${theme.border}`,
-                    }}
-                  >
-                    <Icon
-                      size={18}
-                      style={{
-                        color: theme.color,
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <div
-                      className="text-xs text-[#8B7B72] mb-1"
-                      style={mono}
-                    >
-                      {label}
-                    </div>
-
-                    <div className="text-base font-medium text-[#1A1614] break-all">
-                      {value}
-                    </div>
-                  </div>
-                </>
-              );
-
-              if (href) {
-                return (
-                  <a
-                    key={label}
-                    href={href}
-                    target={
-                      label === "GitHub"
-                        ? "_blank"
-                        : undefined
-                    }
-                    rel={
-                      label === "GitHub"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
-                    style={{
-                      borderColor: "#E8DDD4",
-                    }}
-                  >
-                    {content}
-                  </a>
-                );
-              }
-
-              return (
-                <div
-                  key={label}
-                  className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
-                  style={{
-                    borderColor: "#E8DDD4",
-                  }}
-                >
-                  {content}
-                </div>
-              );
-            }
-          )}
-
-          {/* Open to Opportunities */}
-          <div
-            className="p-6 rounded-2xl border bg-white mt-6"
-            style={{
-              borderColor: "#E8DDD4",
-            }}
-          >
-            <div className="flex items-center gap-2.5 mb-2">
-              <span
-                className="w-2 h-2 rounded-full animate-pulse"
-                style={{
-                  background: "#34D399",
-                  boxShadow: "0 0 6px #34D39980",
-                }}
-              />
-
-              <span className="text-sm font-semibold text-[#1A1614]">
-                Open to Opportunities
-              </span>
+              </div>
             </div>
 
-            <p className="text-sm text-[#8B7B72] leading-relaxed">
-              Currently seeking internship opportunities in UX/UI
-              Design and related roles.
-            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <a
+                href="https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#DED4CC] bg-white text-xs font-semibold text-[#514741]"
+              >
+                <Github size={15} />
+                GitHub
+              </a>
+
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#DED4CC] bg-white text-xs font-semibold text-[#514741]"
+              >
+                {language === "th"
+                  ? "ดูผลงาน"
+                  : "View Projects"}
+
+                <ChevronRight size={15} />
+              </a>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// Footer
-// ─────────────────────────────────────────────────────────────
+/* =========================================================
+   CONTACT CARD
+========================================================= */
+
+function ContactCard({
+  icon: Icon,
+  title,
+  text,
+  theme,
+}: {
+  icon: typeof Mail;
+  title: string;
+  text: string;
+  theme: Theme;
+}) {
+  return (
+    <div className="rounded-3xl border border-[#E8DED6] bg-white p-5 flex items-center gap-4">
+      <div
+        className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+        style={{
+          color: theme.color,
+          backgroundColor:
+            theme.light,
+        }}
+      >
+        <Icon size={18} />
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold">
+          {title}
+        </p>
+
+        <p className="mt-1 text-xs text-[#8A7C73]">
+          {text}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  theme,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  theme: Theme;
+}) {
+  return (
+    <div className="max-w-3xl">
+      <div
+        className="text-[10px] tracking-[0.18em] font-bold"
+        style={{
+          ...mono,
+          color: theme.color,
+        }}
+      >
+        {eyebrow}
+      </div>
+
+      <h2
+        className="mt-4 text-4xl md:text-6xl tracking-[-0.04em] font-semibold"
+        style={displayFont}
+      >
+        {title}
+      </h2>
+
+      <p className="mt-5 text-base md:text-lg leading-8 text-[#796D65]">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 function Footer({
   theme,
+  language,
 }: {
-  theme: (typeof THEMES)[number];
+  theme: Theme;
+  language: Language;
 }) {
   return (
-    <footer
-      className="py-12 border-t"
-      style={{
-        borderColor: "#E8DDD4",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-
-        <div>
-          <div
-            className="text-lg font-semibold tracking-tight text-[#1A1614] mb-0.5"
-            style={{
-              ...serif,
-              fontStyle: "italic",
-            }}
-          >
-            Manthana Ngamsanthia
-          </div>
-
-          <div
-            className="text-xs text-[#8B7B72]"
-            style={mono}
-          >
-            UX/UI Designer · Nakhon Ratchasima, Thailand
-          </div>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-6">
-          {NAV.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className="text-sm text-[#8B7B72] transition-colors"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = theme.color;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#8B7B72";
+    <footer className="border-t border-[#E8DED6] bg-white">
+      <div className="max-w-7xl mx-auto px-5 md:px-8 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span
+              className="text-xl font-bold"
+              style={{
+                ...displayFont,
+                color: theme.color,
               }}
             >
-              {label}
-            </a>
-          ))}
-        </div>
+              M.
+            </span>
 
-        <div
-          className="text-xs text-[#C5B8B0]"
-          style={mono}
-        >
-          &copy; 2026 All rights reserved.
-        </div>
+            <span className="text-xs text-[#8A7C73]">
+              {language === "th"
+                ? "UX/UI Designer & Computer Science Student"
+                : "UX/UI Designer & Computer Science Student"}
+            </span>
+          </div>
 
+          <p
+            className="text-[10px] text-[#9A8C83]"
+            style={mono}
+          >
+            © {new Date().getFullYear()} Manthana Ngamsanthia
+          </p>
+        </div>
       </div>
     </footer>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// App
-// ─────────────────────────────────────────────────────────────
-
-export default function App() {
-  const [active, setActive] = useState("hero");
-
-  const [themeIndex, setThemeIndex] = useState(() => {
-    if (typeof window === "undefined") {
-      return 0;
-    }
-
-    const savedTheme = localStorage.getItem("portfolio-theme");
-
-    if (savedTheme !== null) {
-      const parsedTheme = Number(savedTheme);
-
-      if (
-        Number.isInteger(parsedTheme) &&
-        parsedTheme >= 0 &&
-        parsedTheme < THEMES.length
-      ) {
-        return parsedTheme;
-      }
-    }
-
-    return 0;
-  });
-
-  const theme = THEMES[themeIndex];
-
-  // Save selected theme
-  useEffect(() => {
-    localStorage.setItem(
-      "portfolio-theme",
-      String(themeIndex)
-    );
-  }, [themeIndex]);
-
-  // Detect active section
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries.find(
-          (entry) => entry.isIntersecting
-        );
-
-        if (visibleEntry) {
-          setActive(visibleEntry.target.id);
-        }
-      },
-      {
-        threshold: 0.3,
-      }
-    );
-
-    document
-      .querySelectorAll("section[id]")
-      .forEach((section) => observer.observe(section));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return (
-    <div
-      className="min-h-screen antialiased"
-      style={{
-        background: "#FAF7F2",
-        color: "#1A1614",
-        fontFamily:
-          "'Bricolage Grotesque', system-ui, sans-serif",
-      }}
-    >
-      <Nav
-        active={active}
-        theme={theme}
-        setThemeIndex={setThemeIndex}
-      />
-
-      <Hero theme={theme} />
-
-      <About theme={theme} />
-
-      <Skills theme={theme} />
-
-      <Projects theme={theme} />
-
-      <Education theme={theme} />
-
-      <Training theme={theme} />
-
-      <Contact theme={theme} />
-
-      <Footer theme={theme} />
-    </div>
   );
 }
