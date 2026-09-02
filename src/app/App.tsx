@@ -1376,7 +1376,7 @@ function Projects({
         "Implemented search, filtering, favorites, reading progress, and reading history.",
         "Added dark/light mode to improve reading comfort.",
       ],
-      liveDemo: "",
+      liveDemo: "https://mangaverse-reading-platform.vercel.app/",
       github:
         "https://github.com/manthangamsanthia2547-a11y/mangaverse-reading-platform",
     },
