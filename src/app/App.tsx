@@ -253,16 +253,15 @@ function Nav({
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3 border-b" : "py-6"
-      }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
+        }`}
       style={
         scrolled
           ? {
-              background: "rgba(250,247,242,0.95)",
-              backdropFilter: "blur(12px)",
-              borderColor: "#E8DDD4",
-            }
+            background: "rgba(250,247,242,0.95)",
+            backdropFilter: "blur(12px)",
+            borderColor: "#E8DDD4",
+          }
           : {}
       }
     >
@@ -285,11 +284,10 @@ function Nav({
             <a
               key={href}
               href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${
-                active === href.slice(1)
+              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
                   ? ""
                   : "text-[#8B7B72] hover:text-[#1A1614]"
-              }`}
+                }`}
               style={
                 active === href.slice(1)
                   ? { color: theme.color }
