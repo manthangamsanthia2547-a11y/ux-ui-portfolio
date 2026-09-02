@@ -184,9 +184,8 @@ function SectionTag({
 }) {
   return (
     <div
-      className={`flex items-center ${
-        center ? "justify-center" : ""
-      } gap-2.5 mb-5`}
+      className={`flex items-center ${center ? "justify-center" : ""
+        } gap-2.5 mb-5`}
     >
       <div
         className="w-6 h-px"
@@ -248,16 +247,15 @@ function Nav({
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3 border-b" : "py-6"
-      }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
+        }`}
       style={
         scrolled
           ? {
-              background: "rgba(250,247,242,0.95)",
-              backdropFilter: "blur(12px)",
-              borderColor: "#E8DDD4",
-            }
+            background: "rgba(250,247,242,0.95)",
+            backdropFilter: "blur(12px)",
+            borderColor: "#E8DDD4",
+          }
           : {}
       }
     >
@@ -280,16 +278,15 @@ function Nav({
             <a
               key={href}
               href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${
-                active === href.slice(1)
+              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
                   ? ""
                   : "text-[#8B7B72] hover:text-[#1A1614]"
-              }`}
+                }`}
               style={
                 active === href.slice(1)
                   ? {
-                      color: theme.color,
-                    }
+                    color: theme.color,
+                  }
                   : undefined
               }
             >
@@ -680,8 +677,8 @@ function Hero({
                             i === 0
                               ? `linear-gradient(90deg, ${theme.color}, #9B7BB0)`
                               : i === 1
-                              ? "#E8A87C"
-                              : "#6BA5C9",
+                                ? "#E8A87C"
+                                : "#6BA5C9",
                         }}
                       />
                     </div>
@@ -1290,7 +1287,8 @@ function Projects({
       type: "Academic Project",
       status: "Completed",
       title: "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย",
-      subtitle: "Online Food Ordering System for Thai Food Restaurant",
+      subtitle:
+        "Online Food Ordering System for Thai Food Restaurant",
       role: "UI/UX Designer · Figma",
       description:
         "Designed a mobile food ordering interface for a Thai food restaurant, focusing on simple navigation, clear food information, and an easy-to-use ordering experience.",
@@ -1344,6 +1342,43 @@ function Projects({
         "https://job-application-tracker-wine-ten.vercel.app/",
       github:
         "https://github.com/manthangamsanthia2547-a11y/job-application-tracker",
+    },
+
+    // ─────────────────────────────────────────────────────────
+    // PROJECT 04 — MangaVerse
+    // ─────────────────────────────────────────────────────────
+
+    {
+      number: "04",
+      type: "Personal Project",
+      status: "Completed",
+      title: "MangaVerse: Manga & Webtoon Reading Platform",
+      role: "UI/UX Designer & Frontend Developer",
+      description:
+        "Designed and developed a responsive web platform for discovering, reading, and managing manga and webtoons, focusing on intuitive navigation, comfortable reading, and a simple content discovery experience.",
+      image: "/mangaverse.png",
+      imageAlt: "MangaVerse Manga and Webtoon Reading Platform",
+      background: "#FFF4EA",
+      tags: [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "UI/UX Design",
+        "Responsive Design",
+        "Dark/Light Mode",
+      ],
+      contributions: [
+        "Designed Home, Explore, Manga Detail, Library, and Reading interfaces.",
+        "Created a user flow for discovering, selecting, reading, and saving manga.",
+        "Designed a responsive interface for desktop and mobile experiences.",
+        "Developed the frontend using React and TypeScript.",
+        "Implemented search, filtering, favorites, reading progress, and reading history.",
+        "Added dark/light mode to improve reading comfort.",
+      ],
+      liveDemo: "",
+      github:
+        "https://github.com/manthangamsanthia2547-a11y/mangaverse-reading-platform",
     },
   ];
 
@@ -1422,15 +1457,18 @@ function Projects({
                     style={{
                       ...mono,
                       background:
-                        project.number === "03"
+                        project.number === "03" ||
+                          project.number === "04"
                           ? "#F1EEFF"
                           : "#FFF7ED",
                       borderColor:
-                        project.number === "03"
+                        project.number === "03" ||
+                          project.number === "04"
                           ? "#D9D1FF"
                           : "#FED7AA",
                       color:
-                        project.number === "03"
+                        project.number === "03" ||
+                          project.number === "04"
                           ? "#5D50E6"
                           : "#D97706",
                     }}
@@ -1439,7 +1477,8 @@ function Projects({
                       className="w-1.5 h-1.5 rounded-full"
                       style={{
                         background:
-                          project.number === "03"
+                          project.number === "03" ||
+                            project.number === "04"
                             ? "#6C5CE7"
                             : "#F59E0B",
                       }}
@@ -1476,6 +1515,7 @@ function Projects({
                           background: "#F59E0B",
                         }}
                       />
+
                       Currently In Progress
                     </span>
                   </div>
@@ -1548,7 +1588,8 @@ function Projects({
                       key={tag}
                       label={tag}
                       color={
-                        project.number === "03"
+                        project.number === "03" ||
+                          project.number === "04"
                           ? "purple"
                           : "rose"
                       }
@@ -1556,39 +1597,46 @@ function Projects({
                   ))}
                 </div>
 
-                {/* Project 03 Links */}
-                {project.number === "03" && (
-                  <div className="flex flex-wrap gap-3">
+                {/* Project Links */}
+                {(project.number === "03" ||
+                  project.number === "04") && (
+                    <div className="flex flex-wrap gap-3">
 
-                    <a
-                      href={project.liveDemo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.02] transition-all"
-                      style={{
-                        background: theme.color,
-                      }}
-                    >
-                      <Globe size={15} />
-                      Live Demo
-                      <ArrowRight size={14} />
-                    </a>
+                      {/* Live Demo */}
+                      {project.liveDemo && (
+                        <a
+                          href={project.liveDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.02] transition-all"
+                          style={{
+                            background: theme.color,
+                          }}
+                        >
+                          <Globe size={15} />
+                          Live Demo
+                          <ArrowRight size={14} />
+                        </a>
+                      )}
 
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
-                      style={{
-                        borderColor: "#E0D5CA",
-                      }}
-                    >
-                      <Github size={15} />
-                      GitHub
-                    </a>
+                      {/* GitHub */}
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
+                          style={{
+                            borderColor: "#E0D5CA",
+                          }}
+                        >
+                          <Github size={15} />
+                          GitHub
+                        </a>
+                      )}
 
-                  </div>
-                )}
+                    </div>
+                  )}
 
               </div>
             </div>
