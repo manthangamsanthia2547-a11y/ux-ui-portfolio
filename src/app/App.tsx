@@ -16,6 +16,7 @@ import {
   Users2,
   Palette,
   Check,
+  Copy,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
@@ -298,19 +299,6 @@ const TRANSLATIONS = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// Navigation
-// ─────────────────────────────────────────────────────────────
-
-const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#education", label: "Education" },
-  { href: "#training", label: "Training" },
-  { href: "#contact", label: "Contact" },
-];
-
-// ─────────────────────────────────────────────────────────────
 // Skills
 // ─────────────────────────────────────────────────────────────
 
@@ -519,7 +507,6 @@ function Nav({
       }
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo */}
         <a
           href="#"
           className="text-2xl font-semibold tracking-tight text-[#1A1614] leading-none"
@@ -531,7 +518,6 @@ function Nav({
           Manthana Ngamsanthia
         </a>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           {translatedNav.map(({ href, label }) => (
             <a
@@ -628,7 +614,6 @@ function Nav({
 
         {/* Mobile Controls */}
         <div className="md:hidden flex items-center gap-2">
-          {/* Language Button */}
           <button
             onClick={() =>
               setLanguage(language === "EN" ? "TH" : "EN")
@@ -646,7 +631,6 @@ function Nav({
             {language}
           </button>
 
-          {/* Theme Button */}
           <div className="relative">
             <button
               onClick={() => setShowThemes(!showThemes)}
@@ -704,7 +688,6 @@ function Nav({
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {open && (
         <div
           className="md:hidden mx-4 mt-2 p-4 rounded-2xl border flex flex-col gap-1 shadow-lg"
@@ -753,7 +736,6 @@ function Hero({
       id="hero"
       className="min-h-screen flex items-center pt-24 pb-16 relative overflow-hidden"
     >
-      {/* Dot Background */}
       <div
         className="absolute inset-0 pointer-events-none opacity-30"
         style={{
@@ -762,7 +744,6 @@ function Hero({
         }}
       />
 
-      {/* Main Glow */}
       <div
         className="absolute top-24 right-1/3 w-[480px] h-[480px] rounded-full pointer-events-none"
         style={{
@@ -772,7 +753,6 @@ function Hero({
         }}
       />
 
-      {/* Secondary Glow */}
       <div
         className="absolute bottom-24 left-1/4 w-80 h-80 rounded-full pointer-events-none"
         style={{
@@ -783,7 +763,6 @@ function Hero({
       />
 
       <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-20 items-center">
-        {/* Hero Text */}
         <motion.div
           initial={{
             opacity: 0,
@@ -868,7 +847,6 @@ function Hero({
           </div>
         </motion.div>
 
-        {/* Design Canvas */}
         <motion.div
           initial={{
             opacity: 0,
@@ -1021,7 +999,6 @@ function Hero({
               </div>
             </div>
 
-            {/* Figma Badge */}
             <motion.div
               className="absolute -top-5 -right-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
               style={{
@@ -1048,7 +1025,6 @@ function Hero({
               </div>
             </motion.div>
 
-            {/* UX/UI Badge */}
             <motion.div
               className="absolute -bottom-3 -left-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
               style={{
@@ -1079,7 +1055,6 @@ function Hero({
               </div>
             </motion.div>
 
-            {/* Color Palette */}
             <motion.div
               className="absolute top-1/2 -left-12 -translate-y-1/2 p-3 rounded-2xl shadow-lg border bg-white"
               style={{
@@ -1123,7 +1098,6 @@ function Hero({
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <span
           className="text-[10px] tracking-[0.2em] uppercase font-semibold"
@@ -1346,7 +1320,6 @@ function About({
               </div>
             ))}
 
-            {/* Languages */}
             <div
               className="p-4 rounded-2xl border bg-white"
               style={{
@@ -1563,10 +1536,7 @@ function Projects({
   const projects = [
     {
       number: "01",
-      type:
-        language === "EN"
-          ? t.projects.seniorProject
-          : t.projects.seniorProject,
+      type: t.projects.seniorProject,
       status: "In Progress",
       title:
         "Information System for Common Area Fee Management & Debt Tracking",
@@ -1743,7 +1713,6 @@ function Projects({
       }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-14">
           <SectionTag center theme={theme}>
             {t.projects.heading}
@@ -1769,7 +1738,6 @@ function Projects({
           </p>
         </div>
 
-        {/* Project Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project) => (
             <div
@@ -1779,7 +1747,6 @@ function Projects({
                 borderColor: "#E8DDD4",
               }}
             >
-              {/* Project Image */}
               <div
                 className="w-full h-[300px] lg:h-[340px] flex items-center justify-center p-5"
                 style={{
@@ -1793,9 +1760,7 @@ function Projects({
                 />
               </div>
 
-              {/* Project Content */}
               <div className="p-6 lg:p-7">
-                {/* Project Number + Type */}
                 <div className="flex items-center justify-between gap-3 mb-5">
                   <div
                     className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border"
@@ -1843,7 +1808,6 @@ function Projects({
                   </span>
                 </div>
 
-                {/* Status */}
                 {project.status === "In Progress" && (
                   <div className="mb-3">
                     <span
@@ -1865,19 +1829,16 @@ function Projects({
                   </div>
                 )}
 
-                {/* Title */}
                 <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-2">
                   {project.title}
                 </h3>
 
-                {/* Subtitle */}
                 {"subtitle" in project && project.subtitle && (
                   <p className="text-sm text-[#5A4D45] mb-2">
                     {project.subtitle}
                   </p>
                 )}
 
-                {/* Role */}
                 <p
                   className="text-xs font-semibold mb-4"
                   style={{
@@ -1887,12 +1848,10 @@ function Projects({
                   {project.role}
                 </p>
 
-                {/* Description */}
                 <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
                   {project.description}
                 </p>
 
-                {/* Contribution */}
                 <div className="mb-5">
                   <h4
                     className="text-xs font-semibold text-[#1A1614] mb-2"
@@ -1923,7 +1882,6 @@ function Projects({
                   </ul>
                 </div>
 
-                {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 mb-6">
                   {project.tags.map((tag) => (
                     <Chip
@@ -1939,11 +1897,9 @@ function Projects({
                   ))}
                 </div>
 
-                {/* Project Links */}
                 {(project.number === "03" ||
                   project.number === "04") && (
                   <div className="flex flex-wrap gap-3">
-                    {/* Live Demo */}
                     {project.liveDemo && (
                       <a
                         href={project.liveDemo}
@@ -1960,7 +1916,6 @@ function Projects({
                       </a>
                     )}
 
-                    {/* GitHub */}
                     {project.github && (
                       <a
                         href={project.github}
@@ -2271,23 +2226,48 @@ function Contact({
 }) {
   const t = TRANSLATIONS[language];
 
+  const [copied, setCopied] = useState("");
+
+  const copyToClipboard = async (
+    text: string,
+    type: string
+  ) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(type);
+
+      setTimeout(() => {
+        setCopied("");
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to copy:", error);
+    }
+  };
+
   const contactInfo = [
     {
       icon: Mail,
       label: t.about.email,
       value: "manthangamsanthia2547@gmail.com",
-      href: "mailto:manthangamsanthia2547@gmail.com",
+      copyable: true,
+      copyText: "manthangamsanthia2547@gmail.com",
+      type: "email",
     },
     {
       icon: Phone,
       label: t.about.phone,
       value: "094-363-6445",
-      href: "tel:0943636445",
+      copyable: true,
+      copyText: "094-363-6445",
+      type: "phone",
     },
     {
       icon: MapPin,
       label: t.about.location,
       value: "Nakhon Ratchasima 30230, Thailand",
+      copyable: true,
+      copyText: "Nakhon Ratchasima 30230, Thailand",
+      type: "address",
     },
     {
       icon: Github,
@@ -2296,6 +2276,8 @@ function Contact({
         "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
       href:
         "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
+      copyable: false,
+      type: "github",
     },
   ];
 
@@ -2353,75 +2335,139 @@ function Contact({
           className="max-w-3xl mx-auto space-y-4"
         >
           {contactInfo.map(
-            ({ icon: Icon, label, value, href }) => {
-              const content = (
-                <>
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+            ({
+              icon: Icon,
+              label,
+              value,
+              href,
+              copyable,
+              copyText,
+              type,
+            }) => {
+              // Copyable items
+              if (copyable) {
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() =>
+                      copyToClipboard(copyText!, type)
+                    }
+                    className="w-full flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200 text-left"
                     style={{
-                      background: theme.light,
-                      border: `1px solid ${theme.border}`,
+                      borderColor: "#E8DDD4",
                     }}
                   >
-                    <Icon
-                      size={18}
-                      style={{
-                        color: theme.color,
-                      }}
-                    />
-                  </div>
-
-                  <div>
                     <div
-                      className="text-xs text-[#8B7B72] mb-1"
-                      style={mono}
+                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: theme.light,
+                        border: `1px solid ${theme.border}`,
+                      }}
                     >
-                      {label}
+                      <Icon
+                        size={18}
+                        style={{
+                          color: theme.color,
+                        }}
+                      />
                     </div>
 
-                    <div className="text-base font-medium text-[#1A1614] break-all">
-                      {value}
-                    </div>
-                  </div>
-                </>
-              );
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className="text-xs text-[#8B7B72] mb-1"
+                        style={mono}
+                      >
+                        {label}
+                      </div>
 
+                      <div className="flex items-center gap-2">
+                        <div className="text-base font-medium text-[#1A1614] break-all">
+                          {value}
+                        </div>
+
+                        {copied === type ? (
+                          <Check
+                            size={17}
+                            className="flex-shrink-0"
+                            style={{
+                              color: theme.color,
+                            }}
+                          />
+                        ) : (
+                          <Copy
+                            size={17}
+                            className="flex-shrink-0"
+                            style={{
+                              color: "#8B7B72",
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      {copied === type && (
+                        <div
+                          className="text-xs mt-1.5 font-medium"
+                          style={{
+                            ...mono,
+                            color: theme.color,
+                          }}
+                        >
+                          {language === "TH"
+                            ? "คัดลอกแล้ว ✓"
+                            : "Copied ✓"}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              }
+
+              // GitHub link
               if (href) {
                 return (
                   <a
                     key={label}
                     href={href}
-                    target={
-                      label === "GitHub"
-                        ? "_blank"
-                        : undefined
-                    }
-                    rel={
-                      label === "GitHub"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
                     style={{
                       borderColor: "#E8DDD4",
                     }}
                   >
-                    {content}
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: theme.light,
+                        border: `1px solid ${theme.border}`,
+                      }}
+                    >
+                      <Icon
+                        size={18}
+                        style={{
+                          color: theme.color,
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <div
+                        className="text-xs text-[#8B7B72] mb-1"
+                        style={mono}
+                      >
+                        {label}
+                      </div>
+
+                      <div className="text-base font-medium text-[#1A1614] break-all">
+                        {value}
+                      </div>
+                    </div>
                   </a>
                 );
               }
 
-              return (
-                <div
-                  key={label}
-                  className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
-                  style={{
-                    borderColor: "#E8DDD4",
-                  }}
-                >
-                  {content}
-                </div>
-              );
+              return null;
             }
           )}
 
@@ -2559,7 +2605,8 @@ export default function App() {
       return 0;
     }
 
-    const savedTheme = localStorage.getItem("portfolio-theme");
+    const savedTheme =
+      localStorage.getItem("portfolio-theme");
 
     if (savedTheme !== null) {
       const parsedTheme = Number(savedTheme);
@@ -2613,7 +2660,9 @@ export default function App() {
 
     document
       .querySelectorAll("section[id]")
-      .forEach((section) => observer.observe(section));
+      .forEach((section) =>
+        observer.observe(section)
+      );
 
     return () => {
       observer.disconnect();
