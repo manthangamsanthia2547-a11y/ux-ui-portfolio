@@ -1,11 +1,58 @@
+# เว็บไซต์ Portfolio ส่วนตัว
 
-  # Premium Portfolio Website Design (Community)
+เว็บไซต์ Portfolio สำหรับนำเสนอข้อมูลส่วนตัว ทักษะ ความสามารถ และผลงานด้าน UI/UX และการพัฒนาเว็บไซต์
 
-  This is a code bundle for Premium Portfolio Website Design (Community). The original project is available at https://www.figma.com/design/RIds2wYGEYizBSTdisB9jH/Premium-Portfolio-Website-Design--Community-.
+## 🌐 เว็บไซต์
 
-  ## Running the code
+สามารถดูเว็บไซต์ Portfolio ได้ที่:
 
-  Run `npm i` to install the dependencies.
+https://ux-ui-portfolio-five.vercel.app/
 
-  Run `npm run dev` to start the development server.
-  
+## ✨ ฟีเจอร์ของเว็บไซต์
+
+* หน้าแนะนำข้อมูลส่วนตัว
+* แสดงทักษะและความสามารถ
+* แสดงผลงานและโปรเจกต์
+* แสดงข้อมูลการศึกษาและประสบการณ์
+* ช่องทางการติดต่อ
+* รองรับการแสดงผลบน Desktop และ Mobile
+* มี Animation และ Interaction เพื่อเพิ่มความน่าสนใจ
+
+## 🛠️ เทคโนโลยีที่ใช้
+
+* React
+* Vite
+* Tailwind CSS
+* JavaScript
+* Lucide React
+* Motion
+
+## 🚀 วิธีการติดตั้งและใช้งาน
+
+### ติดตั้ง Dependencies
+
+```bash
+npm install
+```
+
+### เริ่มต้น Development Server
+
+```bash
+npm run dev
+```
+
+จากนั้นเปิดเว็บไซต์ที่
+
+```text
+http://localhost:5173
+```
+
+## 🎯 วัตถุประสงค์ของโปรเจกต์
+
+โปรเจกต์นี้จัดทำขึ้นเพื่อเป็นเว็บไซต์ Portfolio ส่วนตัว สำหรับนำเสนอทักษะ ผลงานด้าน UI/UX และโปรเจกต์ที่เกี่ยวข้องกับการพัฒนาเว็บไซต์ เพื่อใช้เป็นส่วนหนึ่งในการสมัครฝึกงานและสมัครงาน
+
+## 👩‍💻 บทบาท
+
+**UI/UX Designer & Frontend Developer**
+
+รับผิดชอบการออกแบบส่วนติดต่อผู้ใช้งาน (UI) และพัฒนาเว็บไซต์ด้วย React รวมถึงปรับแต่ง Responsive Design และ Animation ให้เหมาะสมกับการใช้งานบนอุปกรณ์ต่าง ๆ
