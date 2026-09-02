@@ -15,7 +15,9 @@ import {
   Users2,
 } from "lucide-react";
 
-// ── Typography ────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Typography
+// ─────────────────────────────────────────────────────────────
 
 const serif: React.CSSProperties = {
   fontFamily: "'Fraunces', Georgia, serif",
@@ -25,7 +27,9 @@ const mono: React.CSSProperties = {
   fontFamily: "'Geist Mono', 'Courier New', monospace",
 };
 
-// ── Navigation ────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Navigation
+// ─────────────────────────────────────────────────────────────
 
 const NAV = [
   { href: "#about", label: "About" },
@@ -36,7 +40,9 @@ const NAV = [
   { href: "#contact", label: "Contact" },
 ];
 
-// ── Skills ───────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Skills
+// ─────────────────────────────────────────────────────────────
 
 const DESIGN_SKILLS = [
   "UI Design",
@@ -71,7 +77,9 @@ const SOFT_SKILLS = [
   "Analytical Thinking",
 ];
 
-// ── Highlights ───────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Highlights
+// ─────────────────────────────────────────────────────────────
 
 const HIGHLIGHTS = [
   "Experience using Figma to create UI designs, wireframes, and interactive prototypes.",
@@ -81,11 +89,13 @@ const HIGHLIGHTS = [
   "Able to work independently, communicate effectively, and collaborate with a team.",
 ];
 
-// ── Training ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Training
+// ─────────────────────────────────────────────────────────────
 
 const TRAINING = [
   {
-    title: "Information Literacy Training: “Innovation Review and AI”",
+    title: 'Information Literacy Training: "Innovation Review and AI"',
     org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
     date: "December 17, 2025",
   },
@@ -96,7 +106,9 @@ const TRAINING = [
   },
 ];
 
-// ── Shared Components ───────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Shared Components
+// ─────────────────────────────────────────────────────────────
 
 type ChipColor = "rose" | "stone" | "purple";
 
@@ -170,7 +182,9 @@ function SectionTag({
   );
 }
 
-// ── Navigation ───────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Navigation
+// ─────────────────────────────────────────────────────────────
 
 function Nav({ active }: { active: string }) {
   const [open, setOpen] = useState(false);
@@ -215,6 +229,7 @@ function Nav({ active }: { active: string }) {
           M.
         </a>
 
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           {NAV.map(({ href, label }) => (
             <a
@@ -231,14 +246,7 @@ function Nav({ active }: { active: string }) {
           ))}
         </div>
 
-        <a
-          href="#contact"
-          className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-all duration-200 hover:scale-[1.02]"
-          style={{ background: "#C2748A" }}
-        >
-          Get In Touch
-        </a>
-
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-[#8B7B72] hover:text-[#1A1614] transition-colors"
           onClick={() => setOpen(!open)}
@@ -248,6 +256,7 @@ function Nav({ active }: { active: string }) {
         </button>
       </div>
 
+      {/* Mobile Navigation */}
       {open && (
         <div
           className="md:hidden mx-4 mt-2 p-4 rounded-2xl border flex flex-col gap-1 shadow-lg"
@@ -266,22 +275,15 @@ function Nav({ active }: { active: string }) {
               {label}
             </a>
           ))}
-
-          <a
-            href="mailto:manthangamsanthia2547@gmail.com"
-            onClick={() => setOpen(false)}
-            className="mt-2 text-center py-2.5 rounded-full text-sm font-semibold text-white"
-            style={{ background: "#C2748A" }}
-          >
-            Get In Touch
-          </a>
         </div>
       )}
     </nav>
   );
 }
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Hero
+// ─────────────────────────────────────────────────────────────
 
 function Hero() {
   return (
@@ -486,8 +488,8 @@ function Hero() {
                             i === 0
                               ? "linear-gradient(90deg, #C2748A, #9B7BB0)"
                               : i === 1
-                              ? "#E8A87C"
-                              : "#6BA5C9",
+                                ? "#E8A87C"
+                                : "#6BA5C9",
                         }}
                       />
                     </div>
@@ -636,7 +638,9 @@ function Hero() {
   );
 }
 
-// ── About ────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// About
+// ─────────────────────────────────────────────────────────────
 
 function About() {
   const info = [
@@ -829,7 +833,9 @@ function About() {
   );
 }
 
-// ── Skills ───────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Skills
+// ─────────────────────────────────────────────────────────────
 
 function Skills() {
   const categories = [
@@ -959,7 +965,9 @@ function Skills() {
   );
 }
 
-// ── Projects ────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Projects
+// ─────────────────────────────────────────────────────────────
 
 function Projects() {
   return (
@@ -1034,12 +1042,13 @@ function Projects() {
                   className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "#F59E0B" }}
                 />
+
                 In Progress — Senior Project
               </div>
 
               <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-3">
-                Information System for Common Area Fee Management &amp; Debt
-                Tracking
+                Information System for Common Area Fee Management &amp;
+                Debt Tracking
               </h3>
 
               <p
@@ -1082,6 +1091,7 @@ function Projects() {
                         className="flex-shrink-0 mt-0.5"
                         style={{ color: "#C2748A" }}
                       />
+
                       {item}
                     </li>
                   ))}
@@ -1105,7 +1115,6 @@ function Projects() {
                   />
                 ))}
               </div>
-
             </div>
           </div>
         </motion.div>
@@ -1151,6 +1160,7 @@ function Projects() {
                   className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "#F59E0B" }}
                 />
+
                 Academic Project
               </div>
 
@@ -1203,6 +1213,7 @@ function Projects() {
                         className="flex-shrink-0 mt-0.5"
                         style={{ color: "#C2748A" }}
                       />
+
                       {item}
                     </li>
                   ))}
@@ -1225,17 +1236,17 @@ function Projects() {
                   />
                 ))}
               </div>
-
             </div>
           </div>
         </motion.div>
-
       </div>
     </section>
   );
 }
 
-// ── Education ────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Education
+// ─────────────────────────────────────────────────────────────
 
 function Education() {
   const schools = [
@@ -1343,6 +1354,7 @@ function Education() {
                       size={11}
                       style={{ color: s.accent }}
                     />
+
                     {s.duration}
                   </div>
 
@@ -1354,6 +1366,7 @@ function Education() {
                       size={11}
                       style={{ color: s.accent }}
                     />
+
                     {s.location}
                   </div>
 
@@ -1367,7 +1380,9 @@ function Education() {
   );
 }
 
-// ── Training ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Training
+// ─────────────────────────────────────────────────────────────
 
 function Training() {
   return (
@@ -1447,16 +1462,15 @@ function Training() {
               </motion.div>
             ))}
           </div>
-
         </div>
       </div>
     </section>
   );
 }
 
-// ── Contact ──────────────────────────────────────────────────────────────────
-// ไม่มีแบบฟอร์มกรอกข้อมูลแล้ว
-// แสดงเฉพาะช่องทางการติดต่อ
+// ─────────────────────────────────────────────────────────────
+// Contact
+// ─────────────────────────────────────────────────────────────
 
 function Contact() {
   const contactInfo = [
@@ -1476,7 +1490,12 @@ function Contact() {
       icon: MapPin,
       label: "Location",
       value: "Nakhon Ratchasima 30230, Thailand",
-      href: "#",
+    },
+    {
+      icon: Globe,
+      label: "GitHub",
+      value: "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
+      href: "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
     },
   ];
 
@@ -1519,42 +1538,67 @@ function Contact() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto space-y-4"
         >
-
           {contactInfo.map(
-            ({ icon: Icon, label, value, href }) => (
-              <a
-                key={label}
-                href={href}
-                className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:border-[#D4A0B0] hover:shadow-md transition-all duration-200"
-                style={{ borderColor: "#E8DDD4" }}
-              >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: "#FFF0F3",
-                    border: "1px solid #FCCDD4",
-                  }}
-                >
-                  <Icon
-                    size={18}
-                    style={{ color: "#C2748A" }}
-                  />
-                </div>
-
-                <div>
+            ({ icon: Icon, label, value, href }) => {
+              const content = (
+                <>
                   <div
-                    className="text-xs text-[#8B7B72] mb-1"
-                    style={mono}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: "#FFF0F3",
+                      border: "1px solid #FCCDD4",
+                    }}
                   >
-                    {label}
+                    <Icon
+                      size={18}
+                      style={{ color: "#C2748A" }}
+                    />
                   </div>
 
-                  <div className="text-base font-medium text-[#1A1614] break-all">
-                    {value}
+                  <div>
+                    <div
+                      className="text-xs text-[#8B7B72] mb-1"
+                      style={mono}
+                    >
+                      {label}
+                    </div>
+
+                    <div className="text-base font-medium text-[#1A1614] break-all">
+                      {value}
+                    </div>
                   </div>
+                </>
+              );
+
+              if (href) {
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    target={label === "GitHub" ? "_blank" : undefined}
+                    rel={
+                      label === "GitHub"
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:border-[#D4A0B0] hover:shadow-md transition-all duration-200"
+                    style={{ borderColor: "#E8DDD4" }}
+                  >
+                    {content}
+                  </a>
+                );
+              }
+
+              return (
+                <div
+                  key={label}
+                  className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
+                  style={{ borderColor: "#E8DDD4" }}
+                >
+                  {content}
                 </div>
-              </a>
-            )
+              );
+            }
           )}
 
           {/* Open to Opportunities */}
@@ -1581,14 +1625,15 @@ function Contact() {
               Design and related roles.
             </p>
           </div>
-
         </motion.div>
       </div>
     </section>
   );
 }
 
-// ── Footer ───────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Footer
+// ─────────────────────────────────────────────────────────────
 
 function Footer() {
   return (
@@ -1635,13 +1680,14 @@ function Footer() {
         >
           &copy; 2026 All rights reserved.
         </div>
-
       </div>
     </footer>
   );
 }
 
-// ── App ──────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// App
+// ─────────────────────────────────────────────────────────────
 
 export default function App() {
   const [active, setActive] = useState("hero");
