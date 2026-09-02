@@ -226,7 +226,7 @@ function Nav({ active }: { active: string }) {
             fontStyle: "italic",
           }}
         >
-          M.
+          Manthana Ngamsanthia
         </a>
 
         {/* Desktop Navigation */}
