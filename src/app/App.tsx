@@ -11,8 +11,11 @@ import {
   Calendar,
   BookOpen,
   Globe,
+  Github,
   Layers,
   Users2,
+  Palette,
+  Check,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
@@ -26,6 +29,41 @@ const serif: React.CSSProperties = {
 const mono: React.CSSProperties = {
   fontFamily: "'Geist Mono', 'Courier New', monospace",
 };
+
+// ─────────────────────────────────────────────────────────────
+// Theme Colors
+// ─────────────────────────────────────────────────────────────
+
+const THEMES = [
+  {
+    name: "Rose",
+    color: "#C2748A",
+    light: "#FFF0F3",
+    border: "#FCCDD4",
+    soft: "#D4A0B0",
+  },
+  {
+    name: "Sage",
+    color: "#5F8F82",
+    light: "#EEF7F3",
+    border: "#C9E3DA",
+    soft: "#9FC5B9",
+  },
+  {
+    name: "Lavender",
+    color: "#8B78A8",
+    light: "#F4F0FA",
+    border: "#DDD3EA",
+    soft: "#B8A9CE",
+  },
+  {
+    name: "Blue",
+    color: "#5F8FAF",
+    light: "#EFF7FB",
+    border: "#C9E2EF",
+    soft: "#9FC4D8",
+  },
+];
 
 // ─────────────────────────────────────────────────────────────
 // Navigation
@@ -138,28 +176,30 @@ function Chip({
 function SectionTag({
   children,
   center = false,
+  theme,
 }: {
   children: React.ReactNode;
   center?: boolean;
+  theme: (typeof THEMES)[number];
 }) {
   if (center) {
     return (
       <div className="flex items-center justify-center gap-2.5 mb-5">
         <div
           className="w-6 h-px"
-          style={{ background: "#C2748A" }}
+          style={{ background: theme.color }}
         />
 
         <span
           className="text-xs font-semibold tracking-[0.2em] uppercase"
-          style={{ ...mono, color: "#C2748A" }}
+          style={{ ...mono, color: theme.color }}
         >
           {children}
         </span>
 
         <div
           className="w-6 h-px"
-          style={{ background: "#C2748A" }}
+          style={{ background: theme.color }}
         />
       </div>
     );
@@ -169,12 +209,12 @@ function SectionTag({
     <div className="flex items-center gap-2.5 mb-5">
       <div
         className="w-6 h-px"
-        style={{ background: "#C2748A" }}
+        style={{ background: theme.color }}
       />
 
       <span
         className="text-xs font-semibold tracking-[0.2em] uppercase"
-        style={{ ...mono, color: "#C2748A" }}
+        style={{ ...mono, color: theme.color }}
       >
         {children}
       </span>
@@ -186,9 +226,18 @@ function SectionTag({
 // Navigation
 // ─────────────────────────────────────────────────────────────
 
-function Nav({ active }: { active: string }) {
+function Nav({
+  active,
+  theme,
+  setThemeIndex,
+}: {
+  active: string;
+  theme: (typeof THEMES)[number];
+  setThemeIndex: (index: number) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showThemes, setShowThemes] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -218,6 +267,7 @@ function Nav({ active }: { active: string }) {
       }
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+        {/* Logo */}
         <a
           href="#"
           className="text-2xl font-semibold tracking-tight text-[#1A1614] leading-none"
@@ -230,30 +280,140 @@ function Nav({ active }: { active: string }) {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {NAV.map(({ href, label }) => (
             <a
               key={href}
               href={href}
               className={`text-sm font-medium transition-colors duration-200 ${
                 active === href.slice(1)
-                  ? "text-[#C2748A]"
+                  ? ""
                   : "text-[#8B7B72] hover:text-[#1A1614]"
               }`}
+              style={
+                active === href.slice(1)
+                  ? { color: theme.color }
+                  : undefined
+              }
             >
               {label}
             </a>
           ))}
+
+          {/* Theme Button */}
+          <div className="relative">
+            <button
+              onClick={() => setShowThemes(!showThemes)}
+              className="w-9 h-9 rounded-full border flex items-center justify-center hover:scale-105 transition-all"
+              style={{
+                borderColor: theme.border,
+                background: theme.light,
+                color: theme.color,
+              }}
+              aria-label="Change theme color"
+            >
+              <Palette size={16} />
+            </button>
+
+            {showThemes && (
+              <div
+                className="absolute right-0 top-12 p-3 rounded-2xl border bg-white shadow-xl flex gap-2"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
+              >
+                {THEMES.map((item, index) => (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      setThemeIndex(index);
+                      setShowThemes(false);
+                    }}
+                    title={item.name}
+                    className="relative w-8 h-8 rounded-full border-2 hover:scale-110 transition-transform flex items-center justify-center"
+                    style={{
+                      background: item.color,
+                      borderColor:
+                        theme.name === item.name
+                          ? "#1A1614"
+                          : "transparent",
+                    }}
+                  >
+                    {theme.name === item.name && (
+                      <Check
+                        size={14}
+                        className="text-white"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-[#8B7B72] hover:text-[#1A1614] transition-colors"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Mobile Controls */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Theme Button */}
+          <div className="relative">
+            <button
+              onClick={() => setShowThemes(!showThemes)}
+              className="w-9 h-9 rounded-full border flex items-center justify-center"
+              style={{
+                borderColor: theme.border,
+                background: theme.light,
+                color: theme.color,
+              }}
+              aria-label="Change theme color"
+            >
+              <Palette size={16} />
+            </button>
+
+            {showThemes && (
+              <div
+                className="absolute right-0 top-12 p-3 rounded-2xl border bg-white shadow-xl flex gap-2"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
+              >
+                {THEMES.map((item, index) => (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      setThemeIndex(index);
+                      setShowThemes(false);
+                    }}
+                    title={item.name}
+                    className="relative w-8 h-8 rounded-full border-2 flex items-center justify-center"
+                    style={{
+                      background: item.color,
+                      borderColor:
+                        theme.name === item.name
+                          ? "#1A1614"
+                          : "transparent",
+                    }}
+                  >
+                    {theme.name === item.name && (
+                      <Check
+                        size={14}
+                        className="text-white"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="text-[#8B7B72] hover:text-[#1A1614] transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -270,7 +430,13 @@ function Nav({ active }: { active: string }) {
               key={href}
               href={href}
               onClick={() => setOpen(false)}
-              className="py-2.5 px-3 rounded-xl text-sm font-medium text-[#5A4D45] hover:text-[#C2748A] hover:bg-rose-50 transition-colors"
+              className="py-2.5 px-3 rounded-xl text-sm font-medium text-[#5A4D45] transition-colors"
+              style={{
+                color:
+                  active === href.slice(1)
+                    ? theme.color
+                    : undefined,
+              }}
             >
               {label}
             </a>
@@ -285,30 +451,36 @@ function Nav({ active }: { active: string }) {
 // Hero
 // ─────────────────────────────────────────────────────────────
 
-function Hero() {
+function Hero({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   return (
     <section
       id="hero"
       className="min-h-screen flex items-center pt-24 pb-16 relative overflow-hidden"
     >
+      {/* Dot Background */}
       <div
         className="absolute inset-0 pointer-events-none opacity-30"
         style={{
-          backgroundImage:
-            "radial-gradient(#C2748A22 1px, transparent 1px)",
+          backgroundImage: `radial-gradient(${theme.color}22 1px, transparent 1px)`,
           backgroundSize: "28px 28px",
         }}
       />
 
+      {/* Main Glow */}
       <div
         className="absolute top-24 right-1/3 w-[480px] h-[480px] rounded-full pointer-events-none"
         style={{
-          background: "#C2748A",
+          background: theme.color,
           opacity: 0.07,
           filter: "blur(120px)",
         }}
       />
 
+      {/* Secondary Glow */}
       <div
         className="absolute bottom-24 left-1/4 w-80 h-80 rounded-full pointer-events-none"
         style={{
@@ -319,9 +491,16 @@ function Hero() {
       />
 
       <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-20 items-center">
+        {/* Hero Text */}
         <motion.div
-          initial={{ opacity: 0, y: 48 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{
+            opacity: 0,
+            y: 48,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
           transition={{
             duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
@@ -331,14 +510,16 @@ function Hero() {
             className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-semibold border mb-8"
             style={{
               ...mono,
-              background: "#FFF0F3",
-              borderColor: "#FCCDD4",
-              color: "#C2748A",
+              background: theme.light,
+              borderColor: theme.border,
+              color: theme.color,
             }}
           >
             <span
               className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: "#34D399" }}
+              style={{
+                background: "#34D399",
+              }}
             />
 
             Available for Internship &amp; Entry-Level Positions
@@ -351,7 +532,9 @@ function Hero() {
             Miss{" "}
             <span
               className="italic font-semibold"
-              style={{ color: "#C2748A" }}
+              style={{
+                color: theme.color,
+              }}
             >
               Manthana
             </span>
@@ -374,7 +557,9 @@ function Hero() {
             <a
               href="#projects"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm text-white hover:opacity-90 hover:scale-[1.02] transition-all"
-              style={{ background: "#C2748A" }}
+              style={{
+                background: theme.color,
+              }}
             >
               View My Work
               <ArrowRight size={14} />
@@ -383,7 +568,9 @@ function Hero() {
             <a
               href="#contact"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-sm text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
-              style={{ borderColor: "#E0D5CA" }}
+              style={{
+                borderColor: "#E0D5CA",
+              }}
             >
               <Mail size={14} />
               Contact Me
@@ -393,8 +580,16 @@ function Hero() {
 
         {/* Design Canvas */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.88, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
+          initial={{
+            opacity: 0,
+            scale: 0.88,
+            y: 20,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            y: 0,
+          }}
           transition={{
             duration: 0.9,
             delay: 0.2,
@@ -412,7 +607,9 @@ function Hero() {
             >
               <div
                 className="flex items-center gap-1.5 px-4 py-3 border-b"
-                style={{ borderColor: "#F0E9E1" }}
+                style={{
+                  borderColor: "#F0E9E1",
+                }}
               >
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
@@ -420,7 +617,9 @@ function Hero() {
 
                 <div
                   className="ml-3 flex-1 h-4 rounded"
-                  style={{ background: "#F5F0EB" }}
+                  style={{
+                    background: "#F5F0EB",
+                  }}
                 />
               </div>
 
@@ -428,29 +627,29 @@ function Hero() {
                 <div
                   className="h-20 rounded-xl flex items-center justify-center"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #FAF0EC, #F5EEF8)",
+                    background: `linear-gradient(135deg, ${theme.light}, #F5EEF8)`,
                   }}
                 >
                   <div className="text-center">
                     <div
                       className="w-9 h-9 rounded-full mx-auto mb-2"
                       style={{
-                        background:
-                          "linear-gradient(135deg, #C2748A, #9B7BB0)",
+                        background: `linear-gradient(135deg, ${theme.color}, #9B7BB0)`,
                       }}
                     />
 
                     <div
                       className="w-16 h-1.5 rounded mx-auto"
-                      style={{ background: "#E8DDD4" }}
+                      style={{
+                        background: "#E8DDD4",
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-4 gap-1.5">
                   {[
-                    "#C2748A",
+                    theme.color,
                     "#9B7BB0",
                     "#E8A87C",
                     "#6BA5C9",
@@ -466,7 +665,9 @@ function Hero() {
                       <div className="flex items-end justify-center h-full pb-1.5">
                         <div
                           className="w-3 h-3 rounded-full"
-                          style={{ background: color }}
+                          style={{
+                            background: color,
+                          }}
                         />
                       </div>
                     </div>
@@ -478,7 +679,9 @@ function Hero() {
                     <div
                       key={i}
                       className="h-2 rounded-full"
-                      style={{ background: "#F0E9E1" }}
+                      style={{
+                        background: "#F0E9E1",
+                      }}
                     >
                       <div
                         className="h-full rounded-full"
@@ -486,7 +689,7 @@ function Hero() {
                           width: `${w}%`,
                           background:
                             i === 0
-                              ? "linear-gradient(90deg, #C2748A, #9B7BB0)"
+                              ? `linear-gradient(90deg, ${theme.color}, #9B7BB0)`
                               : i === 1
                                 ? "#E8A87C"
                                 : "#6BA5C9",
@@ -499,7 +702,9 @@ function Hero() {
                 <div className="flex gap-2">
                   <div
                     className="flex-1 h-8 rounded-xl flex items-center justify-center"
-                    style={{ background: "#C2748A" }}
+                    style={{
+                      background: theme.color,
+                    }}
                   >
                     <div
                       className="w-10 h-1.5 rounded"
@@ -511,21 +716,30 @@ function Hero() {
 
                   <div
                     className="flex-1 h-8 rounded-xl flex items-center justify-center border"
-                    style={{ borderColor: "#E8DDD4" }}
+                    style={{
+                      borderColor: "#E8DDD4",
+                    }}
                   >
                     <div
                       className="w-10 h-1.5 rounded"
-                      style={{ background: "#E0D5CA" }}
+                      style={{
+                        background: "#E0D5CA",
+                      }}
                     />
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* Figma Badge */}
             <motion.div
               className="absolute -top-5 -right-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
-              style={{ borderColor: "#E8DDD4" }}
-              animate={{ y: [0, -8, 0] }}
+              style={{
+                borderColor: "#E8DDD4",
+              }}
+              animate={{
+                y: [0, -8, 0],
+              }}
               transition={{
                 duration: 3.5,
                 repeat: Infinity,
@@ -544,10 +758,15 @@ function Hero() {
               </div>
             </motion.div>
 
+            {/* UX/UI Badge */}
             <motion.div
               className="absolute -bottom-3 -left-8 px-4 py-2.5 rounded-2xl shadow-lg border bg-white"
-              style={{ borderColor: "#E8DDD4" }}
-              animate={{ y: [0, -6, 0] }}
+              style={{
+                borderColor: "#E8DDD4",
+              }}
+              animate={{
+                y: [0, -6, 0],
+              }}
               transition={{
                 duration: 3,
                 repeat: Infinity,
@@ -559,7 +778,7 @@ function Hero() {
                 className="text-xs font-semibold"
                 style={{
                   ...mono,
-                  color: "#C2748A",
+                  color: theme.color,
                 }}
               >
                 UX/UI
@@ -570,10 +789,15 @@ function Hero() {
               </div>
             </motion.div>
 
+            {/* Color Palette */}
             <motion.div
               className="absolute top-1/2 -left-12 -translate-y-1/2 p-3 rounded-2xl shadow-lg border bg-white"
-              style={{ borderColor: "#E8DDD4" }}
-              animate={{ y: [0, -5, 0] }}
+              style={{
+                borderColor: "#E8DDD4",
+              }}
+              animate={{
+                y: [0, -5, 0],
+              }}
               transition={{
                 duration: 4,
                 repeat: Infinity,
@@ -583,7 +807,7 @@ function Hero() {
             >
               <div className="flex gap-1.5 mb-1.5">
                 {[
-                  "#C2748A",
+                  theme.color,
                   "#9B7BB0",
                   "#E8A87C",
                   "#6BA5C9",
@@ -591,7 +815,9 @@ function Hero() {
                   <div
                     key={c}
                     className="w-3.5 h-3.5 rounded-full"
-                    style={{ background: c }}
+                    style={{
+                      background: c,
+                    }}
                   />
                 ))}
               </div>
@@ -607,12 +833,13 @@ function Hero() {
         </motion.div>
       </div>
 
+      {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <span
           className="text-[10px] tracking-[0.2em] uppercase font-semibold"
           style={{
             ...mono,
-            color: "#C2748A80",
+            color: theme.color + "80",
           }}
         >
           Scroll
@@ -629,8 +856,7 @@ function Hero() {
           }}
           className="w-px h-10 rounded-full"
           style={{
-            background:
-              "linear-gradient(to bottom, #C2748A80, transparent)",
+            background: `linear-gradient(to bottom, ${theme.color}80, transparent)`,
           }}
         />
       </div>
@@ -642,7 +868,11 @@ function Hero() {
 // About
 // ─────────────────────────────────────────────────────────────
 
-function About() {
+function About({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   const info = [
     {
       icon: Calendar,
@@ -675,17 +905,31 @@ function About() {
     <section
       id="about"
       className="py-28 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[1fr_360px] gap-14 lg:gap-20 items-start">
           <motion.div
-            initial={{ opacity: 0, x: -32 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            initial={{
+              opacity: 0,
+              x: -32,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
           >
-            <SectionTag>Career Objective</SectionTag>
+            <SectionTag theme={theme}>
+              Career Objective
+            </SectionTag>
 
             <h2
               className="text-4xl lg:text-5xl font-light leading-tight tracking-tight text-[#1A1614] mb-6"
@@ -696,7 +940,9 @@ function About() {
 
               <span
                 className="italic font-semibold"
-                style={{ color: "#C2748A" }}
+                style={{
+                  color: theme.color,
+                }}
               >
                 User Experiences
               </span>
@@ -725,9 +971,17 @@ function About() {
               {HIGHLIGHTS.map((h, i) => (
                 <motion.li
                   key={i}
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
+                  initial={{
+                    opacity: 0,
+                    x: -16,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                  }}
                   transition={{
                     duration: 0.45,
                     delay: i * 0.07,
@@ -737,7 +991,9 @@ function About() {
                   <ChevronRight
                     size={14}
                     className="flex-shrink-0 mt-0.5"
-                    style={{ color: "#C2748A" }}
+                    style={{
+                      color: theme.color,
+                    }}
                   />
 
                   {h}
@@ -747,28 +1003,42 @@ function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 32 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            initial={{
+              opacity: 0,
+              x: 32,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
             className="space-y-3"
           >
             {info.map(({ icon: Icon, label, value }) => (
               <div
                 key={label}
-                className="flex items-start gap-4 p-4 rounded-2xl border bg-white hover:border-[#D4A0B0] transition-colors duration-200"
-                style={{ borderColor: "#E8DDD4" }}
+                className="flex items-start gap-4 p-4 rounded-2xl border bg-white hover:shadow-sm transition-all duration-200"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
               >
                 <div
                   className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{
-                    background: "#FFF0F3",
-                    border: "1px solid #FCCDD4",
+                    background: theme.light,
+                    border: `1px solid ${theme.border}`,
                   }}
                 >
                   <Icon
                     size={14}
-                    style={{ color: "#C2748A" }}
+                    style={{
+                      color: theme.color,
+                    }}
                   />
                 </div>
 
@@ -787,9 +1057,12 @@ function About() {
               </div>
             ))}
 
+            {/* Languages */}
             <div
               className="p-4 rounded-2xl border bg-white"
-              style={{ borderColor: "#E8DDD4" }}
+              style={{
+                borderColor: "#E8DDD4",
+              }}
             >
               <div
                 className="text-[10px] text-[#8B7B72] mb-3"
@@ -801,7 +1074,9 @@ function About() {
               <div className="flex gap-3">
                 <div
                   className="flex-1 p-3 rounded-xl text-center"
-                  style={{ background: "#FAF7F2" }}
+                  style={{
+                    background: "#FAF7F2",
+                  }}
                 >
                   <div className="text-sm font-semibold text-[#1A1614]">
                     Thai
@@ -814,7 +1089,9 @@ function About() {
 
                 <div
                   className="flex-1 p-3 rounded-xl text-center"
-                  style={{ background: "#FAF7F2" }}
+                  style={{
+                    background: "#FAF7F2",
+                  }}
                 >
                   <div className="text-sm font-semibold text-[#1A1614]">
                     English
@@ -837,7 +1114,11 @@ function About() {
 // Skills
 // ─────────────────────────────────────────────────────────────
 
-function Skills() {
+function Skills({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   const categories = [
     {
       title: "UX/UI Design",
@@ -877,20 +1158,21 @@ function Skills() {
     <section
       id="skills"
       className="py-28 border-t relative"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div
         className="absolute left-1/2 -translate-x-1/2 w-[700px] h-40 pointer-events-none opacity-[0.07]"
         style={{
-          background:
-            "linear-gradient(90deg, #C2748A, #9B7BB0)",
+          background: `linear-gradient(90deg, ${theme.color}, #9B7BB0)`,
           filter: "blur(80px)",
         }}
       />
 
       <div className="max-w-6xl mx-auto px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <SectionTag center>
+          <SectionTag center theme={theme}>
             UX/UI Skills &amp; Professional Skills
           </SectionTag>
 
@@ -901,7 +1183,9 @@ function Skills() {
             Tools of{" "}
             <span
               className="italic font-semibold"
-              style={{ color: "#C2748A" }}
+              style={{
+                color: theme.color,
+              }}
             >
               the Craft
             </span>
@@ -916,26 +1200,38 @@ function Skills() {
             ) => (
               <motion.div
                 key={title}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                initial={{
+                  opacity: 0,
+                  y: 28,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
                 transition={{
                   duration: 0.55,
                   delay: i * 0.1,
                 }}
-                className="p-7 rounded-3xl border bg-white hover:shadow-lg hover:border-[#D4A0B0] transition-all duration-300 group"
-                style={{ borderColor: "#E8DDD4" }}
+                className="p-7 rounded-3xl border bg-white hover:shadow-lg transition-all duration-300 group"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
               >
                 <div
                   className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300"
                   style={{
-                    background: "#FFF0F3",
-                    border: "1px solid #FCCDD4",
+                    background: theme.light,
+                    border: `1px solid ${theme.border}`,
                   }}
                 >
                   <Icon
                     size={20}
-                    style={{ color: "#C2748A" }}
+                    style={{
+                      color: theme.color,
+                    }}
                   />
                 </div>
 
@@ -969,18 +1265,25 @@ function Skills() {
 // Projects
 // ─────────────────────────────────────────────────────────────
 
-function Projects() {
+function Projects({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   return (
     <section
       id="projects"
       className="py-24 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-
         {/* Header */}
         <div className="text-center mb-12">
-          <SectionTag center>My Projects</SectionTag>
+          <SectionTag center theme={theme}>
+            My Projects
+          </SectionTag>
 
           <h2
             className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
@@ -989,7 +1292,9 @@ function Projects() {
             Selected{" "}
             <span
               className="italic font-semibold"
-              style={{ color: "#C2748A" }}
+              style={{
+                color: theme.color,
+              }}
             >
               Work
             </span>
@@ -1003,19 +1308,32 @@ function Projects() {
 
         {/* Project 01 */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
           className="mb-8 rounded-3xl overflow-hidden border bg-white shadow-sm"
-          style={{ borderColor: "#E8DDD4" }}
+          style={{
+            borderColor: "#E8DDD4",
+          }}
         >
           <div className="grid lg:grid-cols-2 gap-0">
-
             {/* Image */}
             <div
               className="flex items-center justify-center p-4 lg:p-5"
-              style={{ background: "#F5EEE8" }}
+              style={{
+                background: "#F5EEE8",
+              }}
             >
               <div className="w-full h-[520px] lg:h-[580px] flex items-center justify-center">
                 <img
@@ -1028,7 +1346,6 @@ function Projects() {
 
             {/* Project Info */}
             <div className="p-7 lg:p-9 flex flex-col justify-center">
-
               <div
                 className="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border mb-4"
                 style={{
@@ -1040,7 +1357,9 @@ function Projects() {
               >
                 <span
                   className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "#F59E0B" }}
+                  style={{
+                    background: "#F59E0B",
+                  }}
                 />
 
                 In Progress — Senior Project
@@ -1053,7 +1372,9 @@ function Projects() {
 
               <p
                 className="text-xs font-semibold mb-4"
-                style={{ color: "#C2748A" }}
+                style={{
+                  color: theme.color,
+                }}
               >
                 UX/UI Designer &amp; UX Researcher
               </p>
@@ -1089,7 +1410,9 @@ function Projects() {
                       <ChevronRight
                         size={12}
                         className="flex-shrink-0 mt-0.5"
-                        style={{ color: "#C2748A" }}
+                        style={{
+                          color: theme.color,
+                        }}
                       />
 
                       {item}
@@ -1121,19 +1444,32 @@ function Projects() {
 
         {/* Project 02 */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
           className="rounded-3xl overflow-hidden border bg-white shadow-sm"
-          style={{ borderColor: "#E8DDD4" }}
+          style={{
+            borderColor: "#E8DDD4",
+          }}
         >
           <div className="grid lg:grid-cols-2 gap-0">
-
             {/* Image */}
             <div
               className="flex items-center justify-center p-5 lg:p-7"
-              style={{ background: "#F5EEE8" }}
+              style={{
+                background: "#F5EEE8",
+              }}
             >
               <div className="w-full h-[520px] lg:h-[580px] flex items-center justify-center">
                 <img
@@ -1146,7 +1482,6 @@ function Projects() {
 
             {/* Project Info */}
             <div className="p-7 lg:p-9 flex flex-col justify-center">
-
               <div
                 className="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border mb-4"
                 style={{
@@ -1158,7 +1493,9 @@ function Projects() {
               >
                 <span
                   className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "#F59E0B" }}
+                  style={{
+                    background: "#F59E0B",
+                  }}
                 />
 
                 Academic Project
@@ -1176,7 +1513,9 @@ function Projects() {
 
               <p
                 className="text-xs font-semibold mb-4"
-                style={{ color: "#C2748A" }}
+                style={{
+                  color: theme.color,
+                }}
               >
                 UI/UX Designer · Figma
               </p>
@@ -1211,7 +1550,9 @@ function Projects() {
                       <ChevronRight
                         size={12}
                         className="flex-shrink-0 mt-0.5"
-                        style={{ color: "#C2748A" }}
+                        style={{
+                          color: theme.color,
+                        }}
                       />
 
                       {item}
@@ -1248,7 +1589,11 @@ function Projects() {
 // Education
 // ─────────────────────────────────────────────────────────────
 
-function Education() {
+function Education({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   const schools = [
     {
       school: "Nakhon Ratchasima Rajabhat University",
@@ -1256,7 +1601,7 @@ function Education() {
       duration: "July 2023 – Present (In Progress)",
       gpa: "3.29",
       location: "Nakhon Ratchasima, Thailand",
-      accent: "#C2748A",
+      accent: theme.color,
     },
     {
       school: "Thachangratbamroong School",
@@ -1273,13 +1618,16 @@ function Education() {
     <section
       id="education"
       className="py-28 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
-
           <div>
-            <SectionTag>Education</SectionTag>
+            <SectionTag theme={theme}>
+              Education
+            </SectionTag>
 
             <h2
               className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
@@ -1290,7 +1638,9 @@ function Education() {
 
               <span
                 className="italic font-semibold"
-                style={{ color: "#C2748A" }}
+                style={{
+                  color: theme.color,
+                }}
               >
                 Background
               </span>
@@ -1301,18 +1651,27 @@ function Education() {
             {schools.map((s, i) => (
               <motion.div
                 key={s.school}
-                initial={{ opacity: 0, x: 28 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                initial={{
+                  opacity: 0,
+                  x: 28,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
                 transition={{
                   duration: 0.55,
                   delay: i * 0.12,
                 }}
                 className="p-7 rounded-3xl border bg-white hover:shadow-md transition-shadow duration-300"
-                style={{ borderColor: "#E8DDD4" }}
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
               >
                 <div className="flex items-start justify-between gap-4 mb-5">
-
                   <div>
                     <h3 className="font-semibold text-lg text-[#1A1614] mb-1.5 leading-snug">
                       {s.school}
@@ -1345,14 +1704,15 @@ function Education() {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
-
                   <div
                     className="flex items-center gap-1.5 text-xs text-[#8B7B72]"
                     style={mono}
                   >
                     <Calendar
                       size={11}
-                      style={{ color: s.accent }}
+                      style={{
+                        color: s.accent,
+                      }}
                     />
 
                     {s.duration}
@@ -1364,12 +1724,13 @@ function Education() {
                   >
                     <MapPin
                       size={11}
-                      style={{ color: s.accent }}
+                      style={{
+                        color: s.accent,
+                      }}
                     />
 
                     {s.location}
                   </div>
-
                 </div>
               </motion.div>
             ))}
@@ -1384,18 +1745,25 @@ function Education() {
 // Training
 // ─────────────────────────────────────────────────────────────
 
-function Training() {
+function Training({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   return (
     <section
       id="training"
       className="py-28 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
-
           <div>
-            <SectionTag>Training &amp; Seminars</SectionTag>
+            <SectionTag theme={theme}>
+              Training &amp; Seminars
+            </SectionTag>
 
             <h2
               className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
@@ -1406,7 +1774,9 @@ function Training() {
 
               <span
                 className="italic font-semibold"
-                style={{ color: "#C2748A" }}
+                style={{
+                  color: theme.color,
+                }}
               >
                 Learning
               </span>
@@ -1417,26 +1787,38 @@ function Training() {
             {TRAINING.map((t, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: 28 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                initial={{
+                  opacity: 0,
+                  x: 28,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                viewport={{
+                  once: true,
+                }}
                 transition={{
                   duration: 0.5,
                   delay: i * 0.1,
                 }}
-                className="flex items-start gap-4 p-6 rounded-2xl border bg-white hover:border-[#D4A0B0] transition-colors duration-200"
-                style={{ borderColor: "#E8DDD4" }}
+                className="flex items-start gap-4 p-6 rounded-2xl border bg-white transition-colors duration-200"
+                style={{
+                  borderColor: "#E8DDD4",
+                }}
               >
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
                   style={{
-                    background: "#FFF0F3",
-                    border: "1px solid #FCCDD4",
+                    background: theme.light,
+                    border: `1px solid ${theme.border}`,
                   }}
                 >
                   <BookOpen
                     size={14}
-                    style={{ color: "#C2748A" }}
+                    style={{
+                      color: theme.color,
+                    }}
                   />
                 </div>
 
@@ -1453,7 +1835,7 @@ function Training() {
                     className="text-xs font-medium"
                     style={{
                       ...mono,
-                      color: "#C2748A",
+                      color: theme.color,
                     }}
                   >
                     {t.date}
@@ -1472,7 +1854,11 @@ function Training() {
 // Contact
 // ─────────────────────────────────────────────────────────────
 
-function Contact() {
+function Contact({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   const contactInfo = [
     {
       icon: Mail,
@@ -1492,9 +1878,10 @@ function Contact() {
       value: "Nakhon Ratchasima 30230, Thailand",
     },
     {
-      icon: Globe,
+      icon: Github,
       label: "GitHub",
-      value: "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
+      value:
+        "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
       href: "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
     },
   ];
@@ -1503,13 +1890,16 @@ function Contact() {
     <section
       id="contact"
       className="py-28 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-
         {/* Header */}
         <div className="text-center mb-16">
-          <SectionTag center>Get In Touch</SectionTag>
+          <SectionTag center theme={theme}>
+            Get In Touch
+          </SectionTag>
 
           <h2
             className="text-4xl lg:text-5xl font-light tracking-tight text-[#1A1614]"
@@ -1518,7 +1908,9 @@ function Contact() {
             Let’s Work{" "}
             <span
               className="italic font-semibold"
-              style={{ color: "#C2748A" }}
+              style={{
+                color: theme.color,
+              }}
             >
               Together
             </span>
@@ -1532,10 +1924,20 @@ function Contact() {
 
         {/* Contact Information */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
           className="max-w-3xl mx-auto space-y-4"
         >
           {contactInfo.map(
@@ -1545,13 +1947,15 @@ function Contact() {
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{
-                      background: "#FFF0F3",
-                      border: "1px solid #FCCDD4",
+                      background: theme.light,
+                      border: `1px solid ${theme.border}`,
                     }}
                   >
                     <Icon
                       size={18}
-                      style={{ color: "#C2748A" }}
+                      style={{
+                        color: theme.color,
+                      }}
                     />
                   </div>
 
@@ -1575,14 +1979,20 @@ function Contact() {
                   <a
                     key={label}
                     href={href}
-                    target={label === "GitHub" ? "_blank" : undefined}
+                    target={
+                      label === "GitHub"
+                        ? "_blank"
+                        : undefined
+                    }
                     rel={
                       label === "GitHub"
                         ? "noopener noreferrer"
                         : undefined
                     }
-                    className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:border-[#D4A0B0] hover:shadow-md transition-all duration-200"
-                    style={{ borderColor: "#E8DDD4" }}
+                    className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
+                    style={{
+                      borderColor: "#E8DDD4",
+                    }}
                   >
                     {content}
                   </a>
@@ -1593,7 +2003,9 @@ function Contact() {
                 <div
                   key={label}
                   className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
-                  style={{ borderColor: "#E8DDD4" }}
+                  style={{
+                    borderColor: "#E8DDD4",
+                  }}
                 >
                   {content}
                 </div>
@@ -1604,7 +2016,9 @@ function Contact() {
           {/* Open to Opportunities */}
           <div
             className="p-6 rounded-2xl border bg-white mt-6"
-            style={{ borderColor: "#E8DDD4" }}
+            style={{
+              borderColor: "#E8DDD4",
+            }}
           >
             <div className="flex items-center gap-2.5 mb-2">
               <span
@@ -1635,14 +2049,19 @@ function Contact() {
 // Footer
 // ─────────────────────────────────────────────────────────────
 
-function Footer() {
+function Footer({
+  theme,
+}: {
+  theme: (typeof THEMES)[number];
+}) {
   return (
     <footer
       className="py-12 border-t"
-      style={{ borderColor: "#E8DDD4" }}
+      style={{
+        borderColor: "#E8DDD4",
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-
         <div>
           <div
             className="text-lg font-semibold tracking-tight text-[#1A1614] mb-0.5"
@@ -1667,7 +2086,13 @@ function Footer() {
             <a
               key={href}
               href={href}
-              className="text-sm text-[#8B7B72] hover:text-[#C2748A] transition-colors"
+              className="text-sm text-[#8B7B72] transition-colors"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = theme.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#8B7B72";
+              }}
             >
               {label}
             </a>
@@ -1692,6 +2117,39 @@ function Footer() {
 export default function App() {
   const [active, setActive] = useState("hero");
 
+  const [themeIndex, setThemeIndex] = useState(() => {
+    if (typeof window === "undefined") {
+      return 0;
+    }
+
+    const savedTheme = localStorage.getItem("portfolio-theme");
+
+    if (savedTheme !== null) {
+      const parsedTheme = Number(savedTheme);
+
+      if (
+        Number.isInteger(parsedTheme) &&
+        parsedTheme >= 0 &&
+        parsedTheme < THEMES.length
+      ) {
+        return parsedTheme;
+      }
+    }
+
+    return 0;
+  });
+
+  const theme = THEMES[themeIndex];
+
+  // Save selected theme
+  useEffect(() => {
+    localStorage.setItem(
+      "portfolio-theme",
+      String(themeIndex)
+    );
+  }, [themeIndex]);
+
+  // Detect active section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -1723,23 +2181,27 @@ export default function App() {
           "'Bricolage Grotesque', system-ui, sans-serif",
       }}
     >
-      <Nav active={active} />
+      <Nav
+        active={active}
+        theme={theme}
+        setThemeIndex={setThemeIndex}
+      />
 
-      <Hero />
+      <Hero theme={theme} />
 
-      <About />
+      <About theme={theme} />
 
-      <Skills />
+      <Skills theme={theme} />
 
-      <Projects />
+      <Projects theme={theme} />
 
-      <Education />
+      <Education theme={theme} />
 
-      <Training />
+      <Training theme={theme} />
 
-      <Contact />
+      <Contact theme={theme} />
 
-      <Footer />
+      <Footer theme={theme} />
     </div>
   );
 }
