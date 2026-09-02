@@ -182,42 +182,37 @@ function SectionTag({
   center?: boolean;
   theme: (typeof THEMES)[number];
 }) {
-  if (center) {
-    return (
-      <div className="flex items-center justify-center gap-2.5 mb-5">
-        <div
-          className="w-6 h-px"
-          style={{ background: theme.color }}
-        />
-
-        <span
-          className="text-xs font-semibold tracking-[0.2em] uppercase"
-          style={{ ...mono, color: theme.color }}
-        >
-          {children}
-        </span>
-
-        <div
-          className="w-6 h-px"
-          style={{ background: theme.color }}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div className="flex items-center gap-2.5 mb-5">
+    <div
+      className={`flex items-center ${
+        center ? "justify-center" : ""
+      } gap-2.5 mb-5`}
+    >
       <div
         className="w-6 h-px"
-        style={{ background: theme.color }}
+        style={{
+          background: theme.color,
+        }}
       />
 
       <span
         className="text-xs font-semibold tracking-[0.2em] uppercase"
-        style={{ ...mono, color: theme.color }}
+        style={{
+          ...mono,
+          color: theme.color,
+        }}
       >
         {children}
       </span>
+
+      {center && (
+        <div
+          className="w-6 h-px"
+          style={{
+            background: theme.color,
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -253,15 +248,16 @@ function Nav({
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
-        }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+        scrolled ? "py-3 border-b" : "py-6"
+      }`}
       style={
         scrolled
           ? {
-            background: "rgba(250,247,242,0.95)",
-            backdropFilter: "blur(12px)",
-            borderColor: "#E8DDD4",
-          }
+              background: "rgba(250,247,242,0.95)",
+              backdropFilter: "blur(12px)",
+              borderColor: "#E8DDD4",
+            }
           : {}
       }
     >
@@ -284,13 +280,16 @@ function Nav({
             <a
               key={href}
               href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
+              className={`text-sm font-medium transition-colors duration-200 ${
+                active === href.slice(1)
                   ? ""
                   : "text-[#8B7B72] hover:text-[#1A1614]"
-                }`}
+              }`}
               style={
                 active === href.slice(1)
-                  ? { color: theme.color }
+                  ? {
+                      color: theme.color,
+                    }
                   : undefined
               }
             >
@@ -338,10 +337,7 @@ function Nav({
                     }}
                   >
                     {theme.name === item.name && (
-                      <Check
-                        size={14}
-                        className="text-white"
-                      />
+                      <Check size={14} className="text-white" />
                     )}
                   </button>
                 ))}
@@ -352,7 +348,6 @@ function Nav({
 
         {/* Mobile Controls */}
         <div className="md:hidden flex items-center gap-2">
-          {/* Mobile Theme Button */}
           <div className="relative">
             <button
               onClick={() => setShowThemes(!showThemes)}
@@ -392,10 +387,7 @@ function Nav({
                     }}
                   >
                     {theme.name === item.name && (
-                      <Check
-                        size={14}
-                        className="text-white"
-                      />
+                      <Check size={14} className="text-white" />
                     )}
                   </button>
                 ))}
@@ -403,7 +395,6 @@ function Nav({
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="text-[#8B7B72] hover:text-[#1A1614] transition-colors"
             onClick={() => setOpen(!open)}
@@ -428,7 +419,7 @@ function Nav({
               key={href}
               href={href}
               onClick={() => setOpen(false)}
-              className="py-2.5 px-3 rounded-xl text-sm font-medium text-[#5A4D45] transition-colors"
+              className="py-2.5 px-3 rounded-xl text-sm font-medium text-[#5A4D45]"
               style={{
                 color:
                   active === href.slice(1)
@@ -689,8 +680,8 @@ function Hero({
                             i === 0
                               ? `linear-gradient(90deg, ${theme.color}, #9B7BB0)`
                               : i === 1
-                                ? "#E8A87C"
-                                : "#6BA5C9",
+                              ? "#E8A87C"
+                              : "#6BA5C9",
                         }}
                       />
                     </div>
@@ -935,7 +926,6 @@ function About({
             >
               Creating Meaningful
               <br />
-
               <span
                 className="italic font-semibold"
                 style={{
@@ -994,7 +984,7 @@ function About({
                     }}
                   />
 
-                  {h}
+                  <span>{h}</span>
                 </motion.li>
               ))}
             </ul>
@@ -1192,10 +1182,7 @@ function Skills({
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map(
-            (
-              { title, icon: Icon, description, skills, color },
-              i
-            ) => (
+            ({ title, icon: Icon, description, skills, color }, i) => (
               <motion.div
                 key={title}
                 initial={{
@@ -1268,6 +1255,98 @@ function Projects({
 }: {
   theme: (typeof THEMES)[number];
 }) {
+  const projects = [
+    {
+      number: "01",
+      type: "Senior Project",
+      status: "In Progress",
+      title:
+        "Information System for Common Area Fee Management & Debt Tracking",
+      role: "UX/UI Designer & UX Researcher",
+      description:
+        "Designed user-friendly interfaces and user flows for a common area fee management system, focusing on clear information, easy navigation, and a better experience for residents and administrators.",
+      image: "/project1.png",
+      imageAlt: "Common Area Fee Management System UI Design",
+      background: "#F5EEE8",
+      tags: [
+        "Figma",
+        "UX/UI Design",
+        "User Flow",
+        "Wireframing",
+        "Prototyping",
+        "Usability Testing",
+      ],
+      contributions: [
+        "Analyzed user needs and system requirements.",
+        "Created user flows and wireframes.",
+        "Designed high-fidelity UI screens in Figma.",
+        "Created interactive prototypes.",
+        "Prepared usability testing and test cases.",
+      ],
+    },
+
+    {
+      number: "02",
+      type: "Academic Project",
+      status: "Completed",
+      title: "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย",
+      subtitle: "Online Food Ordering System for Thai Food Restaurant",
+      role: "UI/UX Designer · Figma",
+      description:
+        "Designed a mobile food ordering interface for a Thai food restaurant, focusing on simple navigation, clear food information, and an easy-to-use ordering experience.",
+      image: "/project2.png",
+      imageAlt: "Online Food Ordering System UI Design",
+      background: "#F5EEE8",
+      tags: [
+        "Figma",
+        "UI Design",
+        "Mobile App",
+        "Wireframing",
+        "Prototyping",
+      ],
+      contributions: [
+        "Designed mobile interfaces for food browsing and ordering.",
+        "Designed login and food detail screens.",
+        "Focused on clear food information and pricing.",
+        "Created the visual design using Figma.",
+        "Designed an easy-to-understand mobile experience.",
+      ],
+    },
+
+    {
+      number: "03",
+      type: "Personal Project",
+      status: "Completed",
+      title: "JobTrackr: Job Application Tracker",
+      role: "UI/UX Designer & Frontend Developer",
+      description:
+        "A web application designed to help users organize and track job applications in one place. Users can manage company information, job positions, salary details, application dates, and application status.",
+      image: "/jobtrackr.png",
+      imageAlt: "JobTrackr Job Application Tracker Dashboard",
+      background: "#F3F1FF",
+      tags: [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "UI/UX Design",
+        "Dashboard",
+        "Kanban Board",
+      ],
+      contributions: [
+        "Designed a dashboard to summarize job application progress.",
+        "Designed an application list with status filtering.",
+        "Designed a Kanban Board for application tracking.",
+        "Developed the web application using React and TypeScript.",
+        "Focused on creating a clean and easy-to-use interface.",
+      ],
+      liveDemo:
+        "https://job-application-tracker-wine-ten.vercel.app/",
+      github:
+        "https://github.com/manthangamsanthia2547-a11y/job-application-tracker",
+    },
+  ];
+
   return (
     <section
       id="projects"
@@ -1277,8 +1356,9 @@ function Projects({
       }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
+
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <SectionTag center theme={theme}>
             My Projects
           </SectionTag>
@@ -1298,294 +1378,227 @@ function Projects({
             </span>
           </h2>
 
-          <p className="mt-3 text-sm text-[#8B7B72] max-w-xl mx-auto">
-            A collection of academic projects and UX/UI design work
-            created during my Computer Science studies.
+          <p className="mt-4 text-sm text-[#8B7B72] max-w-2xl mx-auto leading-relaxed">
+            A collection of academic projects, personal projects,
+            and UX/UI design work created during my Computer Science
+            studies.
           </p>
         </div>
 
-        {/* Project 01 */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-          className="mb-8 rounded-3xl overflow-hidden border bg-white shadow-sm"
-          style={{
-            borderColor: "#E8DDD4",
-          }}
-        >
-          <div className="grid lg:grid-cols-2 gap-0">
-            {/* Image */}
+        {/* Project Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {projects.map((project) => (
             <div
-              className="flex items-center justify-center p-4 lg:p-5"
+              key={project.number}
+              className="rounded-3xl overflow-hidden border bg-white shadow-sm hover:shadow-xl transition-all duration-300"
               style={{
-                background: "#F5EEE8",
+                borderColor: "#E8DDD4",
               }}
             >
-              <div className="w-full h-[520px] lg:h-[580px] flex items-center justify-center">
-                <img
-                  src="/project1.png"
-                  alt="Common Area Fee Management System UI Design"
-                  className="w-[100%] h-[100%] object-contain"
-                />
-              </div>
-            </div>
 
-            {/* Project Info */}
-            <div className="p-7 lg:p-9 flex flex-col justify-center">
+              {/* Project Image */}
               <div
-                className="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border mb-4"
+                className="w-full h-[300px] lg:h-[340px] flex items-center justify-center p-5"
                 style={{
-                  ...mono,
-                  background: "#FFF7ED",
-                  borderColor: "#FED7AA",
-                  color: "#D97706",
+                  background: project.background,
                 }}
               >
-                <span
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{
-                    background: "#F59E0B",
-                  }}
-                />
-
-                In Progress — Senior Project
-              </div>
-
-              <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-3">
-                Information System for Common Area Fee Management &amp;
-                Debt Tracking
-              </h3>
-
-              <p
-                className="text-xs font-semibold mb-4"
-                style={{
-                  color: theme.color,
-                }}
-              >
-                UX/UI Designer &amp; UX Researcher
-              </p>
-
-              <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
-                Designed user-friendly interfaces and user flows for a
-                common area fee management system, focusing on clear
-                information, easy navigation, and a better experience
-                for residents and administrators.
-              </p>
-
-              {/* Contribution */}
-              <div className="mb-5">
-                <h4
-                  className="text-xs font-semibold text-[#1A1614] mb-2"
-                  style={mono}
-                >
-                  My Contribution
-                </h4>
-
-                <ul className="space-y-1.5">
-                  {[
-                    "Analyzed user needs and system requirements.",
-                    "Created user flows and wireframes.",
-                    "Designed high-fidelity UI screens in Figma.",
-                    "Created interactive prototypes.",
-                    "Prepared usability testing and test cases.",
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start gap-2 text-xs text-[#5A4D45]"
-                    >
-                      <ChevronRight
-                        size={12}
-                        className="flex-shrink-0 mt-0.5"
-                        style={{
-                          color: theme.color,
-                        }}
-                      />
-
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {[
-                  "Figma",
-                  "UX/UI Design",
-                  "User Flow",
-                  "Wireframing",
-                  "Prototyping",
-                  "Usability Testing",
-                ].map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    color="rose"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Project 02 */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-          className="rounded-3xl overflow-hidden border bg-white shadow-sm"
-          style={{
-            borderColor: "#E8DDD4",
-          }}
-        >
-          <div className="grid lg:grid-cols-2 gap-0">
-            {/* Image */}
-            <div
-              className="flex items-center justify-center p-5 lg:p-7"
-              style={{
-                background: "#F5EEE8",
-              }}
-            >
-              <div className="w-full h-[520px] lg:h-[580px] flex items-center justify-center">
                 <img
-                  src="/project2.png"
-                  alt="Online Food Ordering System UI Design"
+                  src={project.image}
+                  alt={project.imageAlt}
                   className="w-full h-full object-contain"
                 />
               </div>
-            </div>
 
-            {/* Project Info */}
-            <div className="p-7 lg:p-9 flex flex-col justify-center">
-              <div
-                className="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border mb-4"
-                style={{
-                  ...mono,
-                  background: "#FFF7ED",
-                  borderColor: "#FED7AA",
-                  color: "#D97706",
-                }}
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{
-                    background: "#F59E0B",
-                  }}
-                />
+              {/* Project Content */}
+              <div className="p-6 lg:p-7">
 
-                Academic Project
-              </div>
+                {/* Project Number + Type */}
+                <div className="flex items-center justify-between gap-3 mb-5">
 
-              <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-3">
-                ระบบสั่งอาหารออนไลน์
-                <br />
-                สำหรับร้านข้าวแกงครัวไทย
-              </h3>
+                  <div
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border"
+                    style={{
+                      ...mono,
+                      background:
+                        project.number === "03"
+                          ? "#F1EEFF"
+                          : "#FFF7ED",
+                      borderColor:
+                        project.number === "03"
+                          ? "#D9D1FF"
+                          : "#FED7AA",
+                      color:
+                        project.number === "03"
+                          ? "#5D50E6"
+                          : "#D97706",
+                    }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{
+                        background:
+                          project.number === "03"
+                            ? "#6C5CE7"
+                            : "#F59E0B",
+                      }}
+                    />
 
-              <p className="text-sm text-[#5A4D45] mb-2">
-                Online Food Ordering System for Thai Food Restaurant
-              </p>
+                    {project.type}
+                  </div>
 
-              <p
-                className="text-xs font-semibold mb-4"
-                style={{
-                  color: theme.color,
-                }}
-              >
-                UI/UX Designer · Figma
-              </p>
+                  <span
+                    className="text-[10px] font-semibold"
+                    style={{
+                      ...mono,
+                      color: theme.color,
+                    }}
+                  >
+                    PROJECT {project.number}
+                  </span>
 
-              <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
-                Designed a mobile food ordering interface for a Thai
-                food restaurant, focusing on simple navigation, clear
-                food information, and an easy-to-use ordering experience.
-              </p>
+                </div>
 
-              {/* Contribution */}
-              <div className="mb-5">
-                <h4
-                  className="text-xs font-semibold text-[#1A1614] mb-2"
-                  style={mono}
-                >
-                  My Contribution
-                </h4>
-
-                <ul className="space-y-1.5">
-                  {[
-                    "Designed mobile interfaces for food browsing and ordering.",
-                    "Designed login and food detail screens.",
-                    "Focused on clear food information and pricing.",
-                    "Created the visual design using Figma.",
-                    "Designed an easy-to-understand mobile experience.",
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start gap-2 text-xs text-[#5A4D45]"
+                {/* Status */}
+                {project.status === "In Progress" && (
+                  <div className="mb-3">
+                    <span
+                      className="inline-flex items-center gap-1.5 text-[10px] font-medium"
+                      style={{
+                        ...mono,
+                        color: "#D97706",
+                      }}
                     >
-                      <ChevronRight
-                        size={12}
-                        className="flex-shrink-0 mt-0.5"
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
                         style={{
-                          color: theme.color,
+                          background: "#F59E0B",
                         }}
                       />
+                      Currently In Progress
+                    </span>
+                  </div>
+                )}
 
-                      {item}
-                    </li>
+                {/* Title */}
+                <h3 className="text-xl lg:text-2xl font-semibold text-[#1A1614] leading-tight mb-2">
+                  {project.title}
+                </h3>
+
+                {/* Subtitle */}
+                {"subtitle" in project && project.subtitle && (
+                  <p className="text-sm text-[#5A4D45] mb-2">
+                    {project.subtitle}
+                  </p>
+                )}
+
+                {/* Role */}
+                <p
+                  className="text-xs font-semibold mb-4"
+                  style={{
+                    color: theme.color,
+                  }}
+                >
+                  {project.role}
+                </p>
+
+                {/* Description */}
+                <p className="text-sm text-[#5A4D45] leading-relaxed mb-5">
+                  {project.description}
+                </p>
+
+                {/* Contribution */}
+                <div className="mb-5">
+
+                  <h4
+                    className="text-xs font-semibold text-[#1A1614] mb-2"
+                    style={mono}
+                  >
+                    My Contribution
+                  </h4>
+
+                  <ul className="space-y-1.5">
+                    {project.contributions.map(
+                      (item, index) => (
+                        <li
+                          key={index}
+                          className="flex items-start gap-2 text-xs text-[#5A4D45]"
+                        >
+                          <ChevronRight
+                            size={12}
+                            className="flex-shrink-0 mt-0.5"
+                            style={{
+                              color: theme.color,
+                            }}
+                          />
+
+                          <span>{item}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {project.tags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      label={tag}
+                      color={
+                        project.number === "03"
+                          ? "purple"
+                          : "rose"
+                      }
+                    />
                   ))}
-                </ul>
-              </div>
+                </div>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {[
-                  "Figma",
-                  "UI Design",
-                  "Mobile App",
-                  "Wireframing",
-                  "Prototyping",
-                ].map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    color="rose"
-                  />
-                ))}
+                {/* Project 03 Links */}
+                {project.number === "03" && (
+                  <div className="flex flex-wrap gap-3">
+
+                    <a
+                      href={project.liveDemo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.02] transition-all"
+                      style={{
+                        background: theme.color,
+                      }}
+                    >
+                      <Globe size={15} />
+                      Live Demo
+                      <ArrowRight size={14} />
+                    </a>
+
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
+                      style={{
+                        borderColor: "#E0D5CA",
+                      }}
+                    >
+                      <Github size={15} />
+                      GitHub
+                    </a>
+
+                  </div>
+                )}
+
               </div>
             </div>
-          </div>
-        </motion.div>
+          ))}
+
+        </div>
       </div>
     </section>
   );
 }
-
-// ─────────────────────────────────────────────────────────────
-// Education
-// ─────────────────────────────────────────────────────────────
 
 function Education({
   theme,
@@ -1622,6 +1635,7 @@ function Education({
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
+
           <div>
             <SectionTag theme={theme}>
               Education
@@ -1670,6 +1684,7 @@ function Education({
                 }}
               >
                 <div className="flex items-start justify-between gap-4 mb-5">
+
                   <div>
                     <h3 className="font-semibold text-lg text-[#1A1614] mb-1.5 leading-snug">
                       {s.school}
@@ -1702,6 +1717,7 @@ function Education({
                 </div>
 
                 <div className="flex flex-wrap gap-4">
+
                   <div
                     className="flex items-center gap-1.5 text-xs text-[#8B7B72]"
                     style={mono}
@@ -1729,10 +1745,12 @@ function Education({
 
                     {s.location}
                   </div>
+
                 </div>
               </motion.div>
             ))}
           </div>
+
         </div>
       </div>
     </section>
@@ -1758,6 +1776,7 @@ function Training({
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
+
           <div>
             <SectionTag theme={theme}>
               Training &amp; Seminars
@@ -1842,6 +1861,7 @@ function Training({
               </motion.div>
             ))}
           </div>
+
         </div>
       </div>
     </section>
@@ -1880,7 +1900,8 @@ function Contact({
       label: "GitHub",
       value:
         "github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
-      href: "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
+      href:
+        "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
     },
   ];
 
@@ -1893,6 +1914,7 @@ function Contact({
       }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
+
         {/* Header */}
         <div className="text-center mb-16">
           <SectionTag center theme={theme}>
@@ -2060,6 +2082,7 @@ function Footer({
       }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+
         <div>
           <div
             className="text-lg font-semibold tracking-tight text-[#1A1614] mb-0.5"
@@ -2103,6 +2126,7 @@ function Footer({
         >
           &copy; 2026 All rights reserved.
         </div>
+
       </div>
     </footer>
   );
@@ -2151,10 +2175,12 @@ export default function App() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
+        const visibleEntry = entries.find(
+          (entry) => entry.isIntersecting
+        );
+
+        if (visibleEntry) {
+          setActive(visibleEntry.target.id);
         }
       },
       {
@@ -2166,7 +2192,9 @@ export default function App() {
       .querySelectorAll("section[id]")
       .forEach((section) => observer.observe(section));
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return (
