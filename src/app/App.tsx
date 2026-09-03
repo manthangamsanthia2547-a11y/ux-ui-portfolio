@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
 import {
   Menu,
@@ -23,11 +24,11 @@ import {
 // Typography
 // ─────────────────────────────────────────────────────────────
 
-const serif: React.CSSProperties = {
+const serif: CSSProperties = {
   fontFamily: "'Fraunces', Georgia, serif",
 };
 
-const mono: React.CSSProperties = {
+const mono: CSSProperties = {
   fontFamily: "'Geist Mono', 'Courier New', monospace",
 };
 
@@ -259,7 +260,8 @@ const TRANSLATIONS = {
       title1: "ประวัติ",
       title2: "การศึกษา",
       gpa: "เกรดเฉลี่ย",
-      universityDegree: "วิทยาศาสตรบัณฑิต สาขาวิทยาการคอมพิวเตอร์",
+      universityDegree:
+        "วิทยาศาสตรบัณฑิต สาขาวิทยาการคอมพิวเตอร์",
       universityDuration: "กรกฎาคม 2566 – ปัจจุบัน",
       highSchoolDegree:
         "หลักสูตรการศึกษาขั้นพื้นฐาน ระดับมัธยมศึกษาตอนปลาย",
@@ -357,13 +359,14 @@ const TRAINING = [
   {
     title:
       'Information Literacy Training: "Innovation Review and AI"',
-    org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
+    org:
+      "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
     date: "December 17, 2025",
   },
-
   {
     title: "Workshop on Document Formatting and Academic Citation",
-    org: "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
+    org:
+      "Office of Academic Resources and Information Technology, Nakhon Ratchasima Rajabhat University",
     date: "January 7, 2026",
   },
 ];
@@ -402,7 +405,7 @@ function SectionTag({
   center = false,
   theme,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   center?: boolean;
   theme: (typeof THEMES)[number];
 }) {
@@ -1443,7 +1446,10 @@ function Skills({
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map(
-            ({ title, icon: Icon, description, skills, color }, i) => (
+            (
+              { title, icon: Icon, description, skills, color },
+              i
+            ) => (
               <motion.div
                 key={title}
                 initial={{
@@ -1521,6 +1527,10 @@ function Projects({
   const t = TRANSLATIONS[language];
 
   const projects = [
+    // ─────────────────────────────────────────────────────────
+    // PROJECT 01
+    // ─────────────────────────────────────────────────────────
+
     {
       number: "01",
       type: t.projects.seniorProject,
@@ -1533,7 +1543,8 @@ function Projects({
           ? "Designed user-friendly interfaces and user flows for a common area fee management system, focusing on clear information, easy navigation, and a better experience for residents and administrators."
           : "ออกแบบอินเทอร์เฟซและ User Flow สำหรับระบบบริหารจัดการค่าส่วนกลางและติดตามหนี้ค้างชำระ โดยเน้นข้อมูลที่ชัดเจน การใช้งานที่ง่าย และประสบการณ์ที่ดีสำหรับผู้อยู่อาศัยและผู้ดูแลระบบ",
       image: "/project1.png",
-      imageAlt: "Common Area Fee Management System UI Design",
+      imageAlt:
+        "Common Area Fee Management System UI Design",
       background: "#F5EEE8",
       tags: [
         "Figma",
@@ -1561,11 +1572,16 @@ function Projects({
             ],
     },
 
+    // ─────────────────────────────────────────────────────────
+    // PROJECT 02
+    // ─────────────────────────────────────────────────────────
+
     {
       number: "02",
       type: t.projects.academicProject,
       status: "Completed",
-      title: "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย",
+      title:
+        "ระบบสั่งอาหารออนไลน์ สำหรับร้านข้าวแกงครัวไทย",
       subtitle:
         "Online Food Ordering System for Thai Food Restaurant",
       role: "UI/UX Designer · Figma",
@@ -1574,7 +1590,8 @@ function Projects({
           ? "Designed a mobile food ordering interface for a Thai food restaurant, focusing on simple navigation, clear food information, and an easy-to-use ordering experience."
           : "ออกแบบอินเทอร์เฟซระบบสั่งอาหารบนมือถือสำหรับร้านอาหารไทย โดยเน้นการนำทางที่เข้าใจง่าย ข้อมูลอาหารที่ชัดเจน และประสบการณ์การสั่งอาหารที่สะดวก",
       image: "/project2.png",
-      imageAlt: "Online Food Ordering System UI Design",
+      imageAlt:
+        "Online Food Ordering System UI Design",
       background: "#F5EEE8",
       tags: [
         "Figma",
@@ -1598,6 +1615,51 @@ function Projects({
               "เน้นข้อมูลอาหารและราคาที่ชัดเจน",
               "ออกแบบ Visual Design ด้วย Figma",
               "ออกแบบประสบการณ์การใช้งานบนมือถือให้เข้าใจง่าย",
+            ],
+    },
+
+    // ─────────────────────────────────────────────────────────
+    // PROJECT 03 — SWEETTIME
+    // ─────────────────────────────────────────────────────────
+
+    {
+      number: "03",
+      type: t.projects.academicProject,
+      status: "Completed",
+      title: "SweetTime — Dessert Ordering Website",
+      subtitle:
+        "เว็บไซต์สั่งขนมหวานสำหรับโปรเจกต์ในรายวิชา",
+      role: "Web Designer & Frontend Developer",
+      description:
+        language === "EN"
+          ? "Designed and developed a simple dessert ordering website as part of a university course. The website presents dessert products with clear images, descriptions, prices, and easy-to-use ordering buttons."
+          : "ออกแบบและพัฒนาเว็บไซต์สั่งขนมหวานเป็นส่วนหนึ่งของงานในรายวิชา โดยเน้นการนำเสนอสินค้าให้ดูน่าสนใจ มีข้อมูล ราคา และปุ่มสั่งซื้อที่เข้าใจง่าย",
+      image: "/project3.png",
+      imageAlt: "SweetTime Dessert Ordering Website",
+      background: "#FFF1F3",
+      tags: [
+        "Web Design",
+        "Frontend Development",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Responsive Design",
+      ],
+      contributions:
+        language === "EN"
+          ? [
+              "Designed the overall webpage layout and visual style.",
+              "Created dessert product cards with images, descriptions, and prices.",
+              "Designed clear and easy-to-use ordering buttons.",
+              "Created the contact and social media section.",
+              "Developed the webpage based on the designed interface.",
+            ]
+          : [
+              "ออกแบบโครงสร้างหน้าเว็บและรูปแบบ Visual Design โดยรวม",
+              "ออกแบบ Product Card สำหรับแสดงรูปภาพ รายละเอียด และราคาขนม",
+              "ออกแบบปุ่มสั่งซื้อให้มองเห็นและใช้งานได้ง่าย",
+              "ออกแบบส่วนติดต่อและช่องทาง Social Media",
+              "พัฒนาเว็บไซต์ตามรูปแบบที่ออกแบบไว้",
             ],
     },
   ];
@@ -1638,8 +1700,22 @@ function Projects({
 
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project) => (
-            <div
+            <motion.div
               key={project.number}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                duration: 0.55,
+              }}
               className="rounded-3xl overflow-hidden border bg-white shadow-sm hover:shadow-xl transition-all duration-300"
               style={{
                 borderColor: "#E8DDD4",
@@ -1654,7 +1730,8 @@ function Projects({
                 <img
                   src={project.image}
                   alt={project.imageAlt}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-xl"
+                  loading="lazy"
                 />
               </div>
 
@@ -1714,11 +1791,12 @@ function Projects({
                   {project.title}
                 </h3>
 
-                {"subtitle" in project && project.subtitle && (
-                  <p className="text-sm text-[#5A4D45] mb-2">
-                    {project.subtitle}
-                  </p>
-                )}
+                {"subtitle" in project &&
+                  project.subtitle && (
+                    <p className="text-sm text-[#5A4D45] mb-2">
+                      {project.subtitle}
+                    </p>
+                  )}
 
                 <p
                   className="text-xs font-semibold mb-4"
@@ -1773,7 +1851,7 @@ function Projects({
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -2249,6 +2327,7 @@ function Contact({
           )}
 
           {/* GitHub */}
+
           <a
             href="https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio"
             target="_blank"
@@ -2288,6 +2367,7 @@ function Contact({
           </a>
 
           {/* Open to Opportunities */}
+
           <div
             className="p-6 rounded-2xl border bg-white mt-6"
             style={{
@@ -2473,7 +2553,9 @@ export default function App() {
             );
 
           if (visibleEntry) {
-            setActive(visibleEntry.target.id);
+            setActive(
+              visibleEntry.target.id
+            );
           }
         },
         {
