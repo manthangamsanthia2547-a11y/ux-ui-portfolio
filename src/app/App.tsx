@@ -139,15 +139,11 @@ const TRANSLATIONS = {
       title1: "Selected",
       title2: "Work",
       description:
-        "A collection of academic projects, personal projects, and UX/UI design work created during my Computer Science studies.",
+        "A collection of academic projects and UX/UI design work created during my Computer Science studies.",
       contribution: "My Contribution",
-      liveDemo: "Live Demo",
-      github: "GitHub",
       inProgress: "Currently In Progress",
       seniorProject: "Senior Project",
       academicProject: "Academic Project",
-      personalProject: "Personal Project",
-      completed: "Completed",
     },
 
     education: {
@@ -251,15 +247,11 @@ const TRANSLATIONS = {
       title1: "ผลงานที่",
       title2: "คัดเลือก",
       description:
-        "รวมผลงานจากโครงงานการศึกษา โปรเจกต์ส่วนตัว และงาน UX/UI ที่พัฒนาระหว่างการศึกษาด้านวิทยาการคอมพิวเตอร์",
+        "รวมผลงานจากโครงงานการศึกษาและงาน UX/UI ที่พัฒนาระหว่างการศึกษาด้านวิทยาการคอมพิวเตอร์",
       contribution: "สิ่งที่ฉันรับผิดชอบ",
-      liveDemo: "ดูเว็บไซต์",
-      github: "GitHub",
       inProgress: "กำลังดำเนินการ",
       seniorProject: "โครงงานจบ",
       academicProject: "โครงงานการศึกษา",
-      personalProject: "โปรเจกต์ส่วนตัว",
-      completed: "เสร็จสมบูรณ์",
     },
 
     education: {
@@ -1608,96 +1600,6 @@ function Projects({
               "ออกแบบประสบการณ์การใช้งานบนมือถือให้เข้าใจง่าย",
             ],
     },
-
-    {
-      number: "03",
-      type: t.projects.personalProject,
-      status: "Completed",
-      title: "JobTrackr: Job Application Tracker",
-      role: "UI/UX Designer & Frontend Developer",
-      description:
-        language === "EN"
-          ? "A web application designed to help users organize and track job applications in one place. Users can manage company information, job positions, salary details, application dates, and application status."
-          : "เว็บแอปพลิเคชันสำหรับช่วยจัดการและติดตามการสมัครงานไว้ในที่เดียว ผู้ใช้สามารถจัดการข้อมูลบริษัท ตำแหน่งงาน เงินเดือน วันที่สมัคร และสถานะการสมัครงานได้",
-      image: "/jobtrackr.png",
-      imageAlt: "JobTrackr Job Application Tracker Dashboard",
-      background: "#F3F1FF",
-      tags: [
-        "React",
-        "TypeScript",
-        "Vite",
-        "Tailwind CSS",
-        "UI/UX Design",
-        "Dashboard",
-        "Kanban Board",
-      ],
-      contributions:
-        language === "EN"
-          ? [
-              "Designed a dashboard to summarize job application progress.",
-              "Designed an application list with status filtering.",
-              "Designed a Kanban Board for application tracking.",
-              "Developed the web application using React and TypeScript.",
-              "Focused on creating a clean and easy-to-use interface.",
-            ]
-          : [
-              "ออกแบบ Dashboard สำหรับสรุปความคืบหน้าการสมัครงาน",
-              "ออกแบบรายการสมัครงานพร้อมระบบกรองตามสถานะ",
-              "ออกแบบ Kanban Board สำหรับติดตามสถานะการสมัครงาน",
-              "พัฒนาเว็บแอปพลิเคชันด้วย React และ TypeScript",
-              "เน้นการออกแบบอินเทอร์เฟซที่สะอาดและใช้งานง่าย",
-            ],
-      liveDemo:
-        "https://job-application-tracker-wine-ten.vercel.app/",
-      github:
-        "https://github.com/manthangamsanthia2547-a11y/job-application-tracker",
-    },
-
-    {
-      number: "04",
-      type: t.projects.personalProject,
-      status: "Completed",
-      title: "MangaVerse: Manga & Webtoon Reading Platform",
-      role: "UI/UX Designer & Frontend Developer",
-      description:
-        language === "EN"
-          ? "Designed and developed a responsive web platform for discovering, reading, and managing manga and webtoons, focusing on intuitive navigation, comfortable reading, and a simple content discovery experience."
-          : "ออกแบบและพัฒนาแพลตฟอร์มเว็บไซต์ Responsive สำหรับค้นหา อ่าน และจัดการ Manga และ Webtoon โดยเน้นการนำทางที่เข้าใจง่าย การอ่านที่สะดวก และประสบการณ์ค้นหาเนื้อหาที่เรียบง่าย",
-      image: "/mangaverse.png",
-      imageAlt: "MangaVerse Manga and Webtoon Reading Platform",
-      background: "#FFF4EA",
-      tags: [
-        "React",
-        "TypeScript",
-        "Vite",
-        "Tailwind CSS",
-        "UI/UX Design",
-        "Responsive Design",
-        "Dark/Light Mode",
-      ],
-      contributions:
-        language === "EN"
-          ? [
-              "Designed Home, Explore, Manga Detail, Library, and Reading interfaces.",
-              "Created a user flow for discovering, selecting, reading, and saving manga.",
-              "Designed a responsive interface for desktop and mobile experiences.",
-              "Developed the frontend using React and TypeScript.",
-              "Implemented search, filtering, favorites, reading progress, and reading history.",
-              "Added dark/light mode to improve reading comfort.",
-            ]
-          : [
-              "ออกแบบหน้า Home, Explore, Manga Detail, Library และ Reading",
-              "สร้าง User Flow สำหรับการค้นหา เลือก อ่าน และบันทึก Manga",
-              "ออกแบบ Responsive Interface สำหรับ Desktop และ Mobile",
-              "พัฒนา Frontend ด้วย React และ TypeScript",
-              "พัฒนาระบบค้นหา Filter Favorites Reading Progress และ Reading History",
-              "เพิ่ม Dark/Light Mode เพื่อช่วยให้การอ่านสะดวกมากขึ้น",
-            ],
-      liveDemo:
-        "https://mangaverse-reading-platform.vercel.app/",
-      github:
-        "https://github.com/manthangamsanthia2547-a11y/mangaverse-reading-platform",
-    },
   ];
 
   return (
@@ -1761,32 +1663,15 @@ function Projects({
                   <div
                     className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium border"
                     style={{
-                      ...mono,
-                      background:
-                        project.number === "03" ||
-                        project.number === "04"
-                          ? "#F1EEFF"
-                          : "#FFF7ED",
-                      borderColor:
-                        project.number === "03" ||
-                        project.number === "04"
-                          ? "#D9D1FF"
-                          : "#FED7AA",
-                      color:
-                        project.number === "03" ||
-                        project.number === "04"
-                          ? "#5D50E6"
-                          : "#D97706",
+                      background: "#FFF7ED",
+                      borderColor: "#FED7AA",
+                      color: "#D97706",
                     }}
                   >
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{
-                        background:
-                          project.number === "03" ||
-                          project.number === "04"
-                            ? "#6C5CE7"
-                            : "#F59E0B",
+                        background: "#F59E0B",
                       }}
                     />
 
@@ -1878,56 +1763,15 @@ function Projects({
                   </ul>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 mb-6">
+                <div className="flex flex-wrap gap-1.5">
                   {project.tags.map((tag) => (
                     <Chip
                       key={tag}
                       label={tag}
-                      color={
-                        project.number === "03" ||
-                        project.number === "04"
-                          ? "purple"
-                          : "rose"
-                      }
+                      color="rose"
                     />
                   ))}
                 </div>
-
-                {(project.number === "03" ||
-                  project.number === "04") && (
-                  <div className="flex flex-wrap gap-3">
-                    {project.liveDemo && (
-                      <a
-                        href={project.liveDemo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 hover:scale-[1.02] transition-all"
-                        style={{
-                          background: theme.color,
-                        }}
-                      >
-                        <Globe size={15} />
-                        {t.projects.liveDemo}
-                        <ArrowRight size={14} />
-                      </a>
-                    )}
-
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#5A4D45] border hover:bg-[#F5EEE8] transition-colors"
-                        style={{
-                          borderColor: "#E0D5CA",
-                        }}
-                      >
-                        <Github size={15} />
-                        {t.projects.github}
-                      </a>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           ))}
@@ -2316,7 +2160,6 @@ function Contact({
           }}
           className="max-w-3xl mx-auto space-y-4"
         >
-          {/* Email / Phone / Address */}
           {contactInfo.map(
             ({
               icon: Icon,
@@ -2331,7 +2174,6 @@ function Contact({
                   borderColor: "#E8DDD4",
                 }}
               >
-                {/* Icon */}
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{
@@ -2347,7 +2189,6 @@ function Contact({
                   />
                 </div>
 
-                {/* Text */}
                 <div className="flex-1 min-w-0">
                   <div
                     className="text-xs text-[#8B7B72] mb-1"
@@ -2361,7 +2202,6 @@ function Contact({
                   </div>
                 </div>
 
-                {/* Copy Button */}
                 <button
                   type="button"
                   onClick={() =>
