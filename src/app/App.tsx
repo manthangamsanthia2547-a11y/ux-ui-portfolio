@@ -411,8 +411,9 @@ function SectionTag({
 }) {
   return (
     <div
-      className={`flex items-center ${center ? "justify-center" : ""
-        } gap-2.5 mb-5`}
+      className={`flex items-center ${
+        center ? "justify-center" : ""
+      } gap-2.5 mb-5`}
     >
       <div
         className="w-6 h-px"
@@ -489,15 +490,16 @@ function Nav({
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3 border-b" : "py-6"
-        }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+        scrolled ? "py-3 border-b" : "py-6"
+      }`}
       style={
         scrolled
           ? {
-            background: "rgba(250,247,242,0.95)",
-            backdropFilter: "blur(12px)",
-            borderColor: "#E8DDD4",
-          }
+              background: "rgba(250,247,242,0.95)",
+              backdropFilter: "blur(12px)",
+              borderColor: "#E8DDD4",
+            }
           : undefined
       }
     >
@@ -518,15 +520,16 @@ function Nav({
             <a
               key={href}
               href={href}
-              className={`text-sm font-medium transition-colors duration-200 ${active === href.slice(1)
+              className={`text-sm font-medium transition-colors duration-200 ${
+                active === href.slice(1)
                   ? ""
                   : "text-[#8B7B72] hover:text-[#1A1614]"
-                }`}
+              }`}
               style={
                 active === href.slice(1)
                   ? {
-                    color: theme.color,
-                  }
+                      color: theme.color,
+                    }
                   : undefined
               }
             >
@@ -945,8 +948,8 @@ function Hero({
                             i === 0
                               ? `linear-gradient(90deg, ${theme.color}, #9B7BB0)`
                               : i === 1
-                                ? "#E8A87C"
-                                : "#6BA5C9",
+                              ? "#E8A87C"
+                              : "#6BA5C9",
                         }}
                       />
                     </div>
@@ -1554,22 +1557,23 @@ function Projects({
       contributions:
         language === "EN"
           ? [
-            "Analyzed user needs and system requirements.",
-            "Created user flows and wireframes.",
-            "Designed high-fidelity UI screens in Figma.",
-            "Created interactive prototypes.",
-            "Prepared usability testing and test cases.",
-            "Collaborated with Apivit Tornsri on system analysis, UX/UI design, and development.",
-          ]
+              "Analyzed user needs and system requirements.",
+              "Created user flows and wireframes.",
+              "Designed high-fidelity UI screens in Figma.",
+              "Created interactive prototypes.",
+              "Prepared usability testing and test cases.",
+              "Collaborated with Apivit Tornsri on system analysis, UX/UI design, and development.",
+            ]
           : [
-            "วิเคราะห์ความต้องการของผู้ใช้และความต้องการของระบบ",
-            "ออกแบบ User Flow และ Wireframe",
-            "ออกแบบ High-Fidelity UI ด้วย Figma",
-            "สร้าง Interactive Prototype",
-            "จัดเตรียมการทดสอบ Usability และ Test Case",
-            "ทำงานร่วมกับ นายอภิวิชญ์ ต้นศรี ในการวิเคราะห์ ออกแบบ UX/UI และพัฒนาระบบ",
-          ],
+              "วิเคราะห์ความต้องการของผู้ใช้และความต้องการของระบบ",
+              "ออกแบบ User Flow และ Wireframe",
+              "ออกแบบ High-Fidelity UI ด้วย Figma",
+              "สร้าง Interactive Prototype",
+              "จัดเตรียมการทดสอบ Usability และ Test Case",
+              "ทำงานร่วมกับ นายอภิวิชญ์ ต้นศรี ในการวิเคราะห์ ออกแบบ UX/UI และพัฒนาระบบ",
+            ],
     },
+
     // ─────────────────────────────────────────────────────────
     // PROJECT 02
     // ─────────────────────────────────────────────────────────
@@ -1601,19 +1605,19 @@ function Projects({
       contributions:
         language === "EN"
           ? [
-            "Designed mobile interfaces for food browsing and ordering.",
-            "Designed login and food detail screens.",
-            "Focused on clear food information and pricing.",
-            "Created the visual design using Figma.",
-            "Designed an easy-to-understand mobile experience.",
-          ]
+              "Designed mobile interfaces for food browsing and ordering.",
+              "Designed login and food detail screens.",
+              "Focused on clear food information and pricing.",
+              "Created the visual design using Figma.",
+              "Designed an easy-to-understand mobile experience.",
+            ]
           : [
-            "ออกแบบหน้าจอมือถือสำหรับการเลือกดูอาหารและสั่งอาหาร",
-            "ออกแบบหน้าล็อกอินและรายละเอียดอาหาร",
-            "เน้นข้อมูลอาหารและราคาที่ชัดเจน",
-            "ออกแบบ Visual Design ด้วย Figma",
-            "ออกแบบประสบการณ์การใช้งานบนมือถือให้เข้าใจง่าย",
-          ],
+              "ออกแบบหน้าจอมือถือสำหรับการเลือกดูอาหารและสั่งอาหาร",
+              "ออกแบบหน้าล็อกอินและรายละเอียดอาหาร",
+              "เน้นข้อมูลอาหารและราคาที่ชัดเจน",
+              "ออกแบบ Visual Design ด้วย Figma",
+              "ออกแบบประสบการณ์การใช้งานบนมือถือให้เข้าใจง่าย",
+            ],
     },
 
     // ─────────────────────────────────────────────────────────
@@ -1646,19 +1650,61 @@ function Projects({
       contributions:
         language === "EN"
           ? [
-            "Designed the overall webpage layout and visual style.",
-            "Created dessert product cards with images, descriptions, and prices.",
-            "Designed clear and easy-to-use ordering buttons.",
-            "Created the contact and social media section.",
-            "Developed the webpage based on the designed interface.",
-          ]
+              "Designed the overall webpage layout and visual style.",
+              "Created dessert product cards with images, descriptions, and prices.",
+              "Designed clear and easy-to-use ordering buttons.",
+              "Created the contact and social media section.",
+              "Developed the webpage based on the designed interface.",
+            ]
           : [
-            "ออกแบบโครงสร้างหน้าเว็บและรูปแบบ Visual Design โดยรวม",
-            "ออกแบบ Product Card สำหรับแสดงรูปภาพ รายละเอียด และราคาขนม",
-            "ออกแบบปุ่มสั่งซื้อให้มองเห็นและใช้งานได้ง่าย",
-            "ออกแบบส่วนติดต่อและช่องทาง Social Media",
-            "พัฒนาเว็บไซต์ตามรูปแบบที่ออกแบบไว้",
-          ],
+              "ออกแบบโครงสร้างหน้าเว็บและรูปแบบ Visual Design โดยรวม",
+              "ออกแบบ Product Card สำหรับแสดงรูปภาพ รายละเอียด และราคาขนม",
+              "ออกแบบปุ่มสั่งซื้อให้มองเห็นและใช้งานได้ง่าย",
+              "ออกแบบส่วนติดต่อและช่องทาง Social Media",
+              "พัฒนาเว็บไซต์ตามรูปแบบที่ออกแบบไว้",
+            ],
+    },
+
+    // ─────────────────────────────────────────────────────────
+    // PROJECT 04 — MOBILE PROFILE & ACCOUNT MANAGEMENT UI
+    // ─────────────────────────────────────────────────────────
+
+    {
+      number: "04",
+      type: t.projects.academicProject,
+      status: "Completed",
+      title: "Mobile Profile & Account Management UI",
+      role: "UI/UX Designer · Figma",
+      description:
+        language === "EN"
+          ? "Designed a mobile account management interface as part of a classroom project, focusing on clear navigation, simple interactions, and consistent visual design across login, registration, profile, and settings screens."
+          : "ออกแบบอินเทอร์เฟซสำหรับจัดการบัญชีผู้ใช้งานบนมือถือ ซึ่งเป็นส่วนหนึ่งของงานในชั้นเรียน โดยเน้นการนำทางที่ชัดเจน การใช้งานที่ง่าย และการออกแบบที่มีความสอดคล้องกันในหน้าล็อกอิน สมัครสมาชิก โปรไฟล์ และการตั้งค่าบัญชี",
+      image: "/project4.png",
+      imageAlt:
+        "Mobile Profile and Account Management UI Design",
+      background: "#F5EEE8",
+      tags: [
+        "Figma",
+        "UI/UX Design",
+        "Wireframing",
+        "Prototyping",
+      ],
+      contributions:
+        language === "EN"
+          ? [
+              "Designed Login and Registration screens.",
+              "Designed Profile and Account Settings interfaces.",
+              "Created UI components and screen layouts in Figma.",
+              "Designed notification, language, privacy, and security settings.",
+              "Focused on clear navigation and consistent UI design.",
+            ]
+          : [
+              "ออกแบบหน้าล็อกอินและสมัครสมาชิก",
+              "ออกแบบหน้าโปรไฟล์และการตั้งค่าบัญชี",
+              "สร้าง UI Components และจัดวางหน้าจอด้วย Figma",
+              "ออกแบบการตั้งค่าการแจ้งเตือน ภาษา ความเป็นส่วนตัว และความปลอดภัย",
+              "เน้นการนำทางที่ชัดเจนและรูปแบบ UI ที่มีความสอดคล้องกัน",
+            ],
     },
   ];
 
@@ -2295,10 +2341,11 @@ function Contact({
                         ? "#16A34A"
                         : theme.color,
 
-                    border: `1px solid ${copied === type
+                    border: `1px solid ${
+                      copied === type
                         ? "#BBF7D0"
                         : theme.border
-                      }`,
+                    }`,
                   }}
                 >
                   {copied === type ? (
