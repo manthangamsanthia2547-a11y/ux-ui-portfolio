@@ -1527,10 +1527,6 @@ function Projects({
   const t = TRANSLATIONS[language];
 
   const projects = [
-    // ─────────────────────────────────────────────────────────
-    // PROJECT 01
-    // ─────────────────────────────────────────────────────────
-
     {
       number: "01",
       type: t.projects.seniorProject,
@@ -1574,10 +1570,6 @@ function Projects({
             ],
     },
 
-    // ─────────────────────────────────────────────────────────
-    // PROJECT 02
-    // ─────────────────────────────────────────────────────────
-
     {
       number: "02",
       type: t.projects.academicProject,
@@ -1620,10 +1612,6 @@ function Projects({
             ],
     },
 
-    // ─────────────────────────────────────────────────────────
-    // PROJECT 03 — SWEETTIME
-    // ─────────────────────────────────────────────────────────
-
     {
       number: "03",
       type: t.projects.academicProject,
@@ -1664,10 +1652,6 @@ function Projects({
               "พัฒนาเว็บไซต์ตามรูปแบบที่ออกแบบไว้",
             ],
     },
-
-    // ─────────────────────────────────────────────────────────
-    // PROJECT 04 — MOBILE PROFILE & ACCOUNT MANAGEMENT UI
-    // ─────────────────────────────────────────────────────────
 
     {
       number: "04",
@@ -2372,15 +2356,14 @@ function Contact({
 
           {/* GitHub */}
 
-          <a
-            href="https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-5 p-6 rounded-2xl border bg-white hover:shadow-md transition-all duration-200"
+          <div
+            className="flex items-center gap-5 p-6 rounded-2xl border bg-white"
             style={{
               borderColor: "#E8DDD4",
             }}
           >
+            {/* GitHub Icon */}
+
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{
@@ -2396,7 +2379,9 @@ function Contact({
               />
             </div>
 
-            <div>
+            {/* GitHub Text */}
+
+            <div className="flex-1 min-w-0">
               <div
                 className="text-xs text-[#8B7B72] mb-1"
                 style={mono}
@@ -2404,11 +2389,64 @@ function Contact({
                 GitHub
               </div>
 
-              <div className="text-base font-medium text-[#1A1614] break-all">
+              <a
+                href="https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-medium text-[#1A1614] break-all hover:underline"
+              >
                 github.com/manthangamsanthia2547-a11y/ux-ui-portfolio
-              </div>
+              </a>
             </div>
-          </a>
+
+            {/* Copy Button */}
+
+            <button
+              type="button"
+              onClick={() =>
+                copyToClipboard(
+                  "https://github.com/manthangamsanthia2547-a11y/ux-ui-portfolio",
+                  "github"
+                )
+              }
+              className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{
+                background:
+                  copied === "github"
+                    ? "#DCFCE7"
+                    : theme.light,
+
+                color:
+                  copied === "github"
+                    ? "#16A34A"
+                    : theme.color,
+
+                border: `1px solid ${
+                  copied === "github"
+                    ? "#BBF7D0"
+                    : theme.border
+                }`,
+              }}
+            >
+              {copied === "github" ? (
+                <>
+                  <Check size={14} />
+
+                  {language === "TH"
+                    ? "คัดลอกแล้ว"
+                    : "Copied"}
+                </>
+              ) : (
+                <>
+                  <Copy size={14} />
+
+                  {language === "TH"
+                    ? "คัดลอก"
+                    : "Copy"}
+                </>
+              )}
+            </button>
+          </div>
 
           {/* Open to Opportunities */}
 
